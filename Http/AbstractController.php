@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Simples\Http;
 
 use App\Http\Controllers\Controller;
-use Simples\Response\Answer\AnswerTrait;
+use Simples\Http\Response\AnswerTrait;
 
 /**
  * Class Controller

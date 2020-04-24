@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Simples\Response\Answer;
+namespace Simples\Http\Response;
 
 use Simples\Http\Status;
 use Illuminate\Http\JsonResponse;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Response;
 /**
  * Class Answer
  *
- * @package Simples\Response\Answer
+ * @package Simples\Http\Response\Answer
  */
 abstract class Answer
 {
