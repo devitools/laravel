@@ -21,17 +21,17 @@ trait Validation
     /**
      * @var array
      */
-    protected $uniques = [];
-
-    /**
-     * @var array
-     */
     protected $rules = [];
 
     /**
      * @var array
      */
-    private $errors = [];
+    protected array $uniques = [];
+
+    /**
+     * @var array
+     */
+    private array $errors = [];
 
     /**
      * @return bool

@@ -20,12 +20,12 @@ trait Value
     /**
      * @var array
      */
-    protected $getters = [];
+    protected array $getters = [];
 
     /**
      * @var array
      */
-    protected $setters = [];
+    protected array $setters = [];
 
     /**
      * @param array [$names]

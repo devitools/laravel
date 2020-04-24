@@ -279,6 +279,10 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
      */
     public function counter(): self
     {
+        if (!config('app.counter')) {
+            return $this;
+        }
+
         try {
             $random = random_int(1, 99);
         } catch (Exception $e) {

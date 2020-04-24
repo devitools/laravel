@@ -36,7 +36,10 @@ trait Replaceable
      */
     public function sorter(): array
     {
-        return ['counter' => 'ASC'];
+        if (config('app.counter')) {
+            return ['counter' => 'ASC'];
+        }
+        return [static::CREATED_AT => 'ASC'];
     }
 
     /**
