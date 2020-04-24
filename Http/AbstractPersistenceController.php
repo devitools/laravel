@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Simples\Http;
+namespace DeviTools\Http;
 
 use Illuminate\Http\Request;
-use Simples\Persistence\AbstractRepository;
-use Simples\Persistence\RepositoryInterface;
+use DeviTools\Persistence\AbstractRepository;
+use DeviTools\Persistence\RepositoryInterface;
 
 /**
  * Class AbstractPersistenceController

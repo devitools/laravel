@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence\Model;
+namespace DeviTools\Persistence\Model;
 
 use function App\Helper\currencyToNumber;
 use function count;
@@ -13,7 +13,7 @@ use function is_callable;
 /**
  * Trait Value
  *
- * @package Simples\Persistence\Model
+ * @package DeviTools\Persistence\Model
  */
 trait Value
 {

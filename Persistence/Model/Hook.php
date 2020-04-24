@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence\Model;
+namespace DeviTools\Persistence\Model;
 
 use App\Exceptions\ErrorInvalidArgument;
 use Ramsey\Uuid\Uuid;
-use Simples\Persistence\AbstractModel;
+use DeviTools\Persistence\AbstractModel;
 
 use function App\Helper\numberToCurrency;
 use function is_array;
@@ -14,7 +14,7 @@ use function is_array;
 /**
  * Trait Configure
  *
- * @package Simples\Persistence\Model
+ * @package DeviTools\Persistence\Model
  */
 trait Hook
 {

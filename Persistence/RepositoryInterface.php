@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence;
+namespace DeviTools\Persistence;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

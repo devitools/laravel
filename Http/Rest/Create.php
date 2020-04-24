@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Simples\Http\Rest;
+namespace DeviTools\Http\Rest;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Simples\Persistence\RepositoryInterface;
+use DeviTools\Persistence\RepositoryInterface;
 
 /**
  * Trait Create
  *
- * @package Simples\Http\Rest
+ * @package DeviTools\Http\Rest
  * @method RepositoryInterface repository()
  */
 trait Create

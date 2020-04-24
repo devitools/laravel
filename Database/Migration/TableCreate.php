@@ -1,15 +1,17 @@
 <?php
 
-namespace Simples\Database\Migration;
+declare(strict_types=1);
 
-use Simples\Database\Migration;
-use Simples\Database\Schema;
-use Simples\Database\Table;
+namespace DeviTools\Database\Migration;
+
+use DeviTools\Database\Migration;
+use DeviTools\Database\Schema;
+use DeviTools\Database\Table;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
  * Class TableCreate
- * @package Simples\Database\Migration
+ * @package DeviTools\Database\Migration
  */
 abstract class TableCreate extends Migration
 {

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence\Repository;
+namespace DeviTools\Persistence\Repository;
 
-use Simples\Persistence\AbstractModel;
+use DeviTools\Persistence\AbstractModel;
 
 /**
  * Trait Update
  *
- * @package Simples\Persistence\Repository
+ * @package DeviTools\Persistence\Repository
  */
 trait Update
 {

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence\Model;
+namespace DeviTools\Persistence\Model;
 
-use Simples\Persistence\AbstractModel;
+use DeviTools\Persistence\AbstractModel;
 
 use function count;
 
 /**
  * Trait Fill
  *
- * @package Simples\Persistence\Model
+ * @package DeviTools\Persistence\Model
  */
 trait Fill
 {

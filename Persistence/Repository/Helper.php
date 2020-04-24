@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence\Repository;
+namespace DeviTools\Persistence\Repository;
 
-use Simples\Persistence\AbstractModel;
+use DeviTools\Persistence\AbstractModel;
 
 use function App\Helper\encodeUuid;
 use function App\Helper\is_binary;
@@ -12,7 +12,7 @@ use function App\Helper\is_binary;
 /**
  * Trait Helper
  *
- * @package Simples\Persistence\Repository
+ * @package DeviTools\Persistence\Repository
  * @property AbstractModel model
  */
 trait Helper

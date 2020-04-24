@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence\Repository;
+namespace DeviTools\Persistence\Repository;
 
 use Exception;
-use Simples\Persistence\AbstractModel;
+use DeviTools\Persistence\AbstractModel;
 
 /**
  * Trait Destroy
  *
- * @package Simples\Persistence\Repository
+ * @package DeviTools\Persistence\Repository
  */
 trait Destroy
 {

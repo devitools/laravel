@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Simples\Http\Rest;
+namespace DeviTools\Http\Rest;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Php\JSON;
 use Ramsey\Uuid\Uuid;
-use Simples\Persistence\Filter\Connectors;
-use Simples\Persistence\Filter\Operators;
-use Simples\Persistence\RepositoryInterface;
+use DeviTools\Persistence\Filter\Connectors;
+use DeviTools\Persistence\Filter\Operators;
+use DeviTools\Persistence\RepositoryInterface;
 
 use function count;
 use function explode;
@@ -20,7 +20,7 @@ use function is_numeric;
 /**
  * Trait Search
  *
- * @package Simples\Http\Rest
+ * @package DeviTools\Http\Rest
  * @method RepositoryInterface repository()
  */
 trait Search

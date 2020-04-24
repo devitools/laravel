@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Simples\Http\Report;
+namespace DeviTools\Http\Report;
 
 use App\Http\Controllers\Controller;
 
 /**
  * Class ReportLoading
  *
- * @package Simples\Http\Report
+ * @package DeviTools\Http\Report
  */
 class ReportLoading extends Controller
 {

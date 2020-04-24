@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Simples\Http\Routing;
+namespace DeviTools\Http\Routing;
 
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Facades\Route as Facade;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route as Facade;
 /**
  * Class Router
  *
- * @package Simples\Http\Routing
+ * @package DeviTools\Http\Routing
  */
 class Router extends Facade
 {

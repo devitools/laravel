@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Simples\Http\Report;
+namespace DeviTools\Http\Report;
 
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\Request;
 use RuntimeException;
-use Simples\Report\AbstractReport;
+use DeviTools\Report\AbstractReport;
 
 /**
  * Class ReportProcess

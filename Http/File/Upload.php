@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Simples\Http\File;
+namespace DeviTools\Http\File;
 
 use App\Exceptions\ErrorValidation;
 use Exception;
@@ -10,14 +10,14 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Simples\Http\AbstractController;
+use DeviTools\Http\AbstractController;
 
 use function App\Helper\uuid;
 
 /**
  * Class Upload
  *
- * @package Simples\Http\File
+ * @package DeviTools\Http\File
  */
 class Upload extends AbstractController
 {

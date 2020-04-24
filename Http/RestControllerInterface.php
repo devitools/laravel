@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Simples\Http;
+namespace DeviTools\Http;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

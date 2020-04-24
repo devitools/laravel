@@ -1,6 +1,8 @@
 <?php
 
-namespace Simples\Database;
+declare(strict_types=1);
+
+namespace DeviTools\Database;
 
 use Illuminate\Database\Schema\Blueprint;
 
@@ -151,14 +153,14 @@ use Illuminate\Database\Schema\Blueprint;
  * @method void dropRememberToken()
  * @method void dropMorphs(string $name, $indexName = null)
  *
- * @package Simples\Database
+ * @package DeviTools\Database
  */
 class Table
 {
     /**
      * @var Blueprint
      */
-    protected $blueprint = null;
+    protected Blueprint $blueprint;
 
     /**
      * Table constructor.
@@ -171,9 +173,10 @@ class Table
 
     /**
      * @param Blueprint $blueprint
-     * @return Table
+     *
+     * @return static
      */
-    public static function make(Blueprint $blueprint)
+    public static function make(Blueprint $blueprint): self
     {
         return new static($blueprint);
     }
@@ -214,7 +217,7 @@ class Table
      * @param string $column
      * @return bool
      */
-    private function alreadyExists(string $column)
+    private function alreadyExists(string $column): bool
     {
         return Schema::hasColumn($this->blueprint->getTable(), $column);
     }
@@ -223,7 +226,7 @@ class Table
      * @param string $method
      * @return bool
      */
-    private function isCreator(string $method)
+    private function isCreator(string $method): bool
     {
         $creators = [
             'bigIncrements',

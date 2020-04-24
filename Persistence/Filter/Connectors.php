@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence\Filter;
+namespace DeviTools\Persistence\Filter;
 
 /**
  * Class Connectors
  *
- * @package Simples\Persistence\Filter
+ * @package DeviTools\Persistence\Filter
  */
 final class Connectors
 {

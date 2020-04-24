@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence;
+namespace DeviTools\Persistence;
 
 use Dyrynda\Database\Support\GeneratesUuid as HasBinaryUuid;
 use Exception;
@@ -14,12 +14,12 @@ use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as Auditing;
 use OwenIt\Auditing\Exceptions\AuditingException;
 use Ramsey\Uuid\Uuid;
-use Simples\Persistence\Model\Fill;
-use Simples\Persistence\Model\Helper;
-use Simples\Persistence\Model\Hook;
-use Simples\Persistence\Model\Replaceable;
-use Simples\Persistence\Model\Validation;
-use Simples\Persistence\Model\Value;
+use DeviTools\Persistence\Model\Fill;
+use DeviTools\Persistence\Model\Helper;
+use DeviTools\Persistence\Model\Hook;
+use DeviTools\Persistence\Model\Replaceable;
+use DeviTools\Persistence\Model\Validation;
+use DeviTools\Persistence\Model\Value;
 
 use function App\Helper\is_binary;
 use function in_array;

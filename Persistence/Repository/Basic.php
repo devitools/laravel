@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence\Repository;
+namespace DeviTools\Persistence\Repository;
 
 use App\Exceptions\ErrorInvalidArgument;
 use Illuminate\Database\Eloquent\Builder;
-use Simples\Persistence\AbstractModel;
-use Simples\Persistence\Filter\Connectors;
-use Simples\Persistence\Filter\Operators;
+use DeviTools\Persistence\AbstractModel;
+use DeviTools\Persistence\Filter\Connectors;
+use DeviTools\Persistence\Filter\Operators;
 
 use function App\Helper\numberToCurrency;
 use function in_array;
@@ -17,7 +17,7 @@ use function is_array;
 /**
  * Trait Basic
  *
- * @package Simples\Persistence\Repository
+ * @package DeviTools\Persistence\Repository
  * @property AbstractModel model
  */
 trait Basic

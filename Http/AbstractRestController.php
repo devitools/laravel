@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Simples\Http;
+namespace DeviTools\Http;
 
-use Simples\Http\Rest\Create;
-use Simples\Http\Rest\Destroy;
-use Simples\Http\Rest\Read;
-use Simples\Http\Rest\Restore;
-use Simples\Http\Rest\Search;
-use Simples\Http\Rest\Update;
+use DeviTools\Http\Rest\Create;
+use DeviTools\Http\Rest\Destroy;
+use DeviTools\Http\Rest\Read;
+use DeviTools\Http\Rest\Restore;
+use DeviTools\Http\Rest\Search;
+use DeviTools\Http\Rest\Update;
 
 /**
  * Class AbstractRestController

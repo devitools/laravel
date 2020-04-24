@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Simples\Report\Where;
+namespace DeviTools\Report\Where;
 
 /**
  * Trait WhereBetween
  *
- * @package Simples\Report\Where
+ * @package DeviTools\Report\Where
  * @property array $where
  */
 trait WhereBetween

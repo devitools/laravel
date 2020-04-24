@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence;
+namespace DeviTools\Persistence;
 
 /**
  * Interface ModelInterface

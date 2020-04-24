@@ -1,6 +1,8 @@
 <?php
 
-namespace Simples\Database;
+declare(strict_types=1);
+
+namespace DeviTools\Database;
 
 use Closure;
 use Illuminate\Support\Facades\Schema as Base;
@@ -11,7 +13,7 @@ use Illuminate\Support\Facades\Schema as Base;
  * @method static boolean hasTable(string $table)
  * @method static boolean hasColumn(string $table, string $column)
  *
- * @package Simples\Database
+ * @package DeviTools\Database
  */
 class Schema extends Base
 {
@@ -19,7 +21,7 @@ class Schema extends Base
      * @param string $table
      * @param Closure $callback
      */
-    public static function alter(string $table, Closure $callback)
+    public static function alter(string $table, Closure $callback): void
     {
         parent::table($table, $callback);
     }

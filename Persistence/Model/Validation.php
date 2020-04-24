@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence\Model;
+namespace DeviTools\Persistence\Model;
 
 use App\Exceptions\ErrorValidation;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
@@ -14,7 +14,7 @@ use function App\Helper\error;
 /**
  * Trait Validation
  *
- * @package Simples\Persistence\Model
+ * @package DeviTools\Persistence\Model
  */
 trait Validation
 {

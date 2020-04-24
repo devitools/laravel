@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence\Model;
+namespace DeviTools\Persistence\Model;
 
 use function App\Helper\decodeUuid;
 use function App\Helper\encodeUuid;
@@ -10,7 +10,7 @@ use function App\Helper\encodeUuid;
 /**
  * Trait Helper
  *
- * @package Simples\Persistence\Model
+ * @package DeviTools\Persistence\Model
  */
 trait Helper
 {

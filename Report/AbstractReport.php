@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Simples\Report;
+namespace DeviTools\Report;
 
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Php\JSON;
-use Simples\Report\Fragments\Getter;
-use Simples\Report\Fragments\Where;
+use DeviTools\Report\Fragments\Getter;
+use DeviTools\Report\Fragments\Where;
 
 /**
  * Class AbstractReport

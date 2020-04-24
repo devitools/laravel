@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Simples\Persistence\Repository;
+namespace DeviTools\Persistence\Repository;
 
 use Exception;
 use Ramsey\Uuid\Uuid;
-use Simples\Persistence\AbstractModel;
+use DeviTools\Persistence\AbstractModel;
 
 /**
  * Trait Create
  *
- * @package Simples\Persistence\Repository
+ * @package DeviTools\Persistence\Repository
  * @property AbstractModel model
  */
 trait Create

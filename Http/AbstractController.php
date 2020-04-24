@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Simples\Http;
+namespace DeviTools\Http;
 
 use App\Http\Controllers\Controller;
-use Simples\Http\Response\AnswerTrait;
+use DeviTools\Http\Response\AnswerTrait;
 
 /**
  * Class Controller
