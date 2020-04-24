@@ -40,7 +40,6 @@ class Router extends Facade
      */
     public static function restricted(): RouteRegistrar
     {
-        // return static::middleware(['jwt.auth', 'jwt.refresh']);
-        return static::middleware(['authenticate', 'integration']);
+        return static::middleware(config('app.restricted'));
     }
 }
