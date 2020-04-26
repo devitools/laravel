@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DeviTools\Exceptions;
 
 use DeviTools\Http\Status;
@@ -13,10 +15,10 @@ class ErrorInvalidIntegration extends ErrorGeneral
     /**
      * @var int
      */
-    protected $statusCode = Status::CODE_400;
+    protected int $statusCode = Status::CODE_400;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $defaultMessage = 'Invalid values to integration';
+    protected string $defaultMessage = 'Invalid values to integration';
 }

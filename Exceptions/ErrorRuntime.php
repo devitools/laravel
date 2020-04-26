@@ -1,8 +1,8 @@
 <?php
 
-namespace DeviTools\Exceptions;
+declare(strict_types=1);
 
-use DeviTools\Http\Status;
+namespace DeviTools\Exceptions;
 
 /**
  * Class ErrorRuntime
@@ -11,12 +11,7 @@ use DeviTools\Http\Status;
 class ErrorRuntime extends ErrorGeneral
 {
     /**
-     * @var int
+     * @var string
      */
-    protected $statusCode = Status::CODE_500;
-
-    /**
-     * @var int
-     */
-    protected $defaultMessage = 'Unknown error';
+    protected string $defaultMessage = 'Unknown error';
 }

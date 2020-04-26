@@ -1,8 +1,8 @@
 <?php
 
-namespace DeviTools\Exceptions;
+declare(strict_types=1);
 
-use DeviTools\Http\Status;
+namespace DeviTools\Exceptions;
 
 /**
  * Class ErrorInvalidArgument
@@ -11,12 +11,7 @@ use DeviTools\Http\Status;
 class ErrorInvalidArgument extends ErrorGeneral
 {
     /**
-     * @var int
+     * @var string
      */
-    protected $statusCode = Status::CODE_500;
-
-    /**
-     * @var int
-     */
-    protected $defaultMessage = 'The argument is not valid';
+    protected string $defaultMessage = 'The argument is not valid';
 }

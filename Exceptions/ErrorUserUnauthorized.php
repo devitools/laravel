@@ -13,10 +13,10 @@ class ErrorUserUnauthorized extends ErrorGeneral
     /**
      * @var int
      */
-    protected $statusCode = Status::CODE_401;
+    protected int $statusCode = Status::CODE_401;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $defaultMessage = 'Invalid credentials';
+    protected string $defaultMessage = 'Invalid credentials';
 }

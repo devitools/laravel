@@ -20,17 +20,17 @@ abstract class ErrorGeneral extends Exception implements ErrorInterface
     /**
      * @var int
      */
-    protected $statusCode = Status::CODE_500;
+    protected int $statusCode = Status::CODE_500;
 
     /**
      * @var array
      */
-    protected $details = [];
+    protected array $details = [];
 
     /**
-     * @var int
+     * @var string
      */
-    protected $defaultMessage = 'Server error';
+    protected string $defaultMessage = 'Server error';
 
     /**
      * ErrorValidation constructor.

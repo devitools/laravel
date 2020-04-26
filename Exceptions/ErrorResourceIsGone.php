@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DeviTools\Exceptions;
 
 use DeviTools\Http\Status;
@@ -13,10 +15,10 @@ class ErrorResourceIsGone extends ErrorGeneral
     /**
      * @var int
      */
-    protected $statusCode = Status::CODE_410;
+    protected int $statusCode = Status::CODE_410;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $defaultMessage = 'Gone';
+    protected string $defaultMessage = 'Gone';
 }

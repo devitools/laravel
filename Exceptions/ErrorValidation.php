@@ -16,10 +16,10 @@ class ErrorValidation extends ErrorGeneral
     /**
      * @var int
      */
-    protected $statusCode = Status::CODE_400;
+    protected int $statusCode = Status::CODE_400;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $defaultMessage = 'Invalid input';
+    protected string $defaultMessage = 'Invalid input';
 }

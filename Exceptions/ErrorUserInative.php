@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DeviTools\Exceptions;
 
 use DeviTools\Http\Status;
@@ -13,10 +15,10 @@ class ErrorUserInative extends ErrorGeneral
     /**
      * @var int
      */
-    protected $statusCode = Status::CODE_402;
+    protected int $statusCode = Status::CODE_402;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $defaultMessage = 'Invalid credentials';
+    protected string $defaultMessage = 'Invalid credentials';
 }
