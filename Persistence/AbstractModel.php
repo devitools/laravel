@@ -21,7 +21,7 @@ use DeviTools\Persistence\Model\Replaceable;
 use DeviTools\Persistence\Model\Validation;
 use DeviTools\Persistence\Model\Value;
 
-use function App\Helper\is_binary;
+use function DeviTools\Helper\is_binary;
 use function in_array;
 
 /**
@@ -139,8 +139,7 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
      */
     public static function bootGeneratesUuid(): void
     {
-        static::creating(
-            static function (AbstractModel $model) {
+        static::creating(static function (AbstractModel $model) {
                 /* @var Eloquent|static $model */
                 $uuid = $model->resolveUuid();
                 $uuidColumn = $model->uuidColumn();

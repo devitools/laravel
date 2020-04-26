@@ -6,8 +6,8 @@ namespace DeviTools\Persistence\Repository;
 
 use DeviTools\Persistence\AbstractModel;
 
-use function App\Helper\encodeUuid;
-use function App\Helper\is_binary;
+use function DeviTools\Helper\encodeUuid;
+use function DeviTools\Helper\is_binary;
 
 /**
  * Trait Helper

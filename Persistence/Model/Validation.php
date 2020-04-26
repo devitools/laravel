@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace DeviTools\Persistence\Model;
 
-use App\Exceptions\ErrorValidation;
+use DeviTools\Exceptions\ErrorValidation;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Support\Facades\Validator;
 
-use function App\Helper\decodeUuid;
-use function App\Helper\error;
+use function DeviTools\Helper\decodeUuid;
+use function DeviTools\Helper\error;
 
 /**
  * Trait Validation

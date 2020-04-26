@@ -44,7 +44,7 @@ abstract class TableCreate extends Migration
         Schema::create($this->table(), function (Blueprint $blueprint) {
             $table = Table::make($blueprint);
 
-            $table->uuid('uuid')->primary();
+            $table->efficientUuid('uuid')->primary();
             $table->string('id')->unique();
 
             if (config('app.counter')) {

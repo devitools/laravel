@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DeviTools\Persistence\Model;
 
-use function App\Helper\decodeUuid;
-use function App\Helper\encodeUuid;
+use function DeviTools\Helper\decodeUuid;
+use function DeviTools\Helper\encodeUuid;
 
 /**
  * Trait Helper

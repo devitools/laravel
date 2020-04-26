@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DeviTools\Http\File;
 
-use App\Exceptions\ErrorValidation;
+use DeviTools\Exceptions\ErrorValidation;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use DeviTools\Http\AbstractController;
 
-use function App\Helper\uuid;
+use function Devitools\Helper\uuid;
 
 /**
  * Class Upload

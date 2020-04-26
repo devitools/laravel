@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DeviTools\Http\Rest;
 
 
-use App\Exceptions\ErrorResourceIsGone;
+use DeviTools\Exceptions\ErrorResourceIsGone;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use DeviTools\Persistence\RepositoryInterface;

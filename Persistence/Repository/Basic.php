@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace DeviTools\Persistence\Repository;
 
-use App\Exceptions\ErrorInvalidArgument;
+use DeviTools\Exceptions\ErrorInvalidArgument;
 use Illuminate\Database\Eloquent\Builder;
 use DeviTools\Persistence\AbstractModel;
 use DeviTools\Persistence\Filter\Connectors;
 use DeviTools\Persistence\Filter\Operators;
 
-use function App\Helper\numberToCurrency;
+use function DeviTools\Helper\numberToCurrency;
 use function in_array;
 use function is_array;
 

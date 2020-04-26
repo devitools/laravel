@@ -1,10 +1,10 @@
-<?php /** @noinspection PhpUnused */
+<?php
 
 declare(strict_types=1);
 
 namespace DeviTools\Persistence\Model;
 
-use function App\Helper\currencyToNumber;
+use function DeviTools\Helper\currencyToNumber;
 use function count;
 use function in_array;
 use function is_array;

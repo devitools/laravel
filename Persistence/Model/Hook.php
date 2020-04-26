@@ -1,14 +1,14 @@
-<?php /** @noinspection PhpUnused */
+<?php
 
 declare(strict_types=1);
 
 namespace DeviTools\Persistence\Model;
 
-use App\Exceptions\ErrorInvalidArgument;
+use DeviTools\Exceptions\ErrorInvalidArgument;
 use Ramsey\Uuid\Uuid;
 use DeviTools\Persistence\AbstractModel;
 
-use function App\Helper\numberToCurrency;
+use function DeviTools\Helper\numberToCurrency;
 use function is_array;
 
 /**
@@ -27,17 +27,15 @@ trait Hook
 
         static::configure();
 
-        static::saving(
-            static function (AbstractModel $model) {
-                $model->counter();
-                // parse many to one relationship
-                $model->parseManyToOne();
-                // parse currencies
-                $model->parseCurrencies();
-                // validate the values
-                $model->validate();
-            }
-        );
+        static::saving(static function (AbstractModel $model) {
+            $model->counter();
+            // parse many to one relationship
+            $model->parseManyToOne();
+            // parse currencies
+            $model->parseCurrencies();
+            // validate the values
+            $model->validate();
+        });
     }
 
     /**

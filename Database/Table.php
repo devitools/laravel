@@ -115,6 +115,7 @@ use Illuminate\Database\Schema\Blueprint;
  * @method Table unsignedTinyInteger(string $column)
  * @method Table withUnsignedTinyInteger(string $column)
  * @method Table uuid(string $column)
+ * @method Table efficientUuid(string $column)
  * @method Table withUuid(string $column)
  * @method Table year(string $column)
  * @method Table withYear(string $column)
