@@ -93,4 +93,9 @@ interface RepositoryInterface
      * @return string
      */
     public function prefix(): string;
+
+    /**
+     * @return array|string[]
+     */
+    public function getDefaults(): array;
 }

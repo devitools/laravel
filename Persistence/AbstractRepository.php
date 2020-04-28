@@ -94,4 +94,12 @@ abstract class AbstractRepository implements RepositoryInterface
     {
         return $this->model->newQuery();
     }
+
+    /**
+     * @return array|string[]
+     */
+    public function getDefaults(): array
+    {
+        return $this->model->getDefaults();
+    }
 }

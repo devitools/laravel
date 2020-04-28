@@ -302,4 +302,12 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
         $haystack[] = $this->primaryKey;
         return in_array($property, $haystack, true);
     }
+
+    /**
+     * @return array|string[]
+     */
+    public function getDefaults(): array
+    {
+        return [];
+    }
 }

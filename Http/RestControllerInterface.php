@@ -59,4 +59,12 @@ interface RestControllerInterface
      * @return JsonResponse
      */
     public function restore(Request $request, string $id): JsonResponse;
+
+    /**
+     * @param string $id
+     * @param array $data
+     *
+     * @return array
+     */
+    public function prepareRecord(string $id, array $data): array;
 }
