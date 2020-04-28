@@ -87,8 +87,8 @@ trait Search
         $filters = [];
         foreach ($where as $field => $properties) {
             $operator = Operators::EQUAL;
-            $pieces = explode(Operators::SEPARATION_OPERATOR, $properties);
-            $value = $pieces[0];
+            $pieces = (array)explode(Operators::SEPARATION_OPERATOR, $properties);
+            $value = $pieces[0] ?? null;
             if (count($pieces) > 1) {
                 [$operator, $value] = $pieces;
             }

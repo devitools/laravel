@@ -7,6 +7,7 @@ namespace DeviTools\Persistence\Model;
 use DeviTools\Persistence\AbstractModel;
 
 use function count;
+use function in_array;
 
 /**
  * Trait Fill
@@ -32,22 +33,24 @@ trait Fill
             return $this;
         }
 
+        $fillable = $this->getFillable();
+        $keys = array_keys($attributes);
         $data = [];
-        foreach ($this->getFillable() as $fillable) {
-            if (!isset($attributes[$fillable])) {
+        foreach ($fillable as $field) {
+            if (!in_array($field, $keys, true)) {
                 continue;
             }
-            $data[$fillable] = $attributes[$fillable];
+            $data[$field] = $attributes[$field];
         }
 
         /** @var AbstractModel $fill */
         $fill = parent::fill($data);
-        $notFillable = array_diff(array_keys($attributes), $this->getFillable());
-        foreach ($notFillable as $key) {
-            if (!isset($attributes[$key])) {
+        $notFillable = array_diff($keys, $fillable);
+        foreach ($notFillable as $field) {
+            if (!in_array($field, $keys, true)) {
                 continue;
             }
-            $this->setFilled($key, $attributes[$key]);
+            $this->setFilled($field, $attributes[$field]);
         }
         return $fill;
     }
@@ -60,7 +63,11 @@ trait Fill
      */
     public function getFilled(string $key, $fallback = null)
     {
-        return $this->filled[$key] ?? $fallback ?? __UNDEFINED__;
+        $keys = array_keys($this->filled);
+        if (in_array($key, $keys, true)) {
+            return $this->filled[$key];
+        }
+        return $fallback ?? __UNDEFINED__;
     }
 
     /**

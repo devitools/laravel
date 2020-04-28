@@ -7,6 +7,7 @@ namespace DeviTools\Http\Rest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use DeviTools\Persistence\RepositoryInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Trait Create
@@ -23,12 +24,16 @@ trait Create
      */
     public function create(Request $request): JsonResponse
     {
-        $data = $request->post();
+        $data = $request->all();
         if (!$data) {
             return $this->answerFail(['payload' => 'empty']);
         }
 
-        $created = $this->repository()->create($data);
+        if (!isset($data['id'])) {
+            $data['id'] = Uuid::uuid1()->toString();
+        }
+        $id = $data['id'];
+        $created = $this->repository()->create($this->prepareRecord($id, $data));
 
         return $this->answerSuccess(['ticket' => $created]);
     }

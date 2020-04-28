@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace DeviTools\Http\Rest;
 
 use DeviTools\Exceptions\ErrorResourceIsGone;
+use DeviTools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use DeviTools\Persistence\RepositoryInterface;
+
+use function count;
+use function preg_match_all;
+use function explode;
+use function array_diff;
 
 /**
  * Trait Delete
@@ -27,15 +32,24 @@ trait Destroy
     public function destroy(Request $request, string $id): JsonResponse
     {
         $erase = $request->get('erase');
+        $ids = [$id];
+        preg_match_all("/^\[(?<uuid>.*)]$/", $id, $matches);
+        if (isset($matches['uuid'][0])) {
+            $ids = explode(',', $matches['uuid'][0]);
+        }
 
-        $details = ['id' => $id];
-        $deleted = $this->repository()->destroy($id, $erase);
-        if ($deleted) {
-            return $this->answerSuccess(['ticket' => $deleted]);
+        $executed = [];
+        foreach ($ids as $detail) {
+            $deleted = $this->repository()->destroy($detail, $erase);
+            if ($deleted === null) {
+                continue;
+            }
+            $executed[] = $detail;
         }
-        if ($deleted === null) {
-            throw new ErrorResourceIsGone($details);
+
+        if (count($ids) !== count($executed)) {
+            throw new ErrorResourceIsGone(['id' => array_diff($ids, $executed)]);
         }
-        return $this->answerFail($details);
+        return $this->answerSuccess(['ticket' => $ids]);
     }
 }

@@ -30,7 +30,7 @@ trait Read
     {
         $trash = $request->get('trash') === 'true';
         $data = $this->repository()->read($id, $trash);
-        if (is_null($data)) {
+        if ($data === null) {
             throw new ErrorResourceIsGone(['id' => $id]);
         }
         return $this->answerSuccess($data);

@@ -65,12 +65,4 @@ trait Replaceable
     {
         return [];
     }
-
-    /**
-     * @return array|string[]
-     */
-    public function getDefaults(): array
-    {
-        return [];
-    }
 }

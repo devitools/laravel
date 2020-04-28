@@ -14,7 +14,7 @@ use DeviTools\Http\Rest\Update;
 /**
  * Class AbstractRestController
  *
- * @package App\Http\Controllers\Api
+ * @package DeviTools\Http
  */
 abstract class AbstractRestController extends AbstractPersistenceController implements RestControllerInterface
 {

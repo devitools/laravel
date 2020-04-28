@@ -24,6 +24,7 @@ trait Create
      */
     public function create(array $data): ?string
     {
+        $data = array_merge($this->getDefaults(), $data);
         $model = clone $this->model;
 
         $primaryKey = $model->exposedKey();

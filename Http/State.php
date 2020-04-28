@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 /**
  * Class State
  *
- * @package App\Http\Controllers\Api\Genetic
+ * @package DeviTools\Http
  */
 class State extends AbstractController
 {

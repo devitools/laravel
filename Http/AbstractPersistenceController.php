@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * Class AbstractPersistenceController
  *
- * @package App\Http\Controllers\Api
+ * @package DeviTools\Http
  */
 class AbstractPersistenceController extends AbstractController
 {
@@ -50,7 +50,6 @@ class AbstractPersistenceController extends AbstractController
      */
     public function prepareRecord(string $id, array $data): array
     {
-        $data = array_merge($this->repository()->getDefaults(), $data);
         foreach ($data as $field => &$value) {
             if ($value instanceof UploadedFile) {
                 $value = $this->parseFile($id, $field, $value);

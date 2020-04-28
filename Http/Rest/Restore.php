@@ -10,7 +10,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use DeviTools\Persistence\RepositoryInterface;
 
-use function is_null;
+use function count;
+use function preg_match_all;
+use function explode;
+use function array_diff;
 
 /**
  * Trait Restore
@@ -29,14 +32,25 @@ trait Restore
      */
     public function restore(Request $request, string $id): JsonResponse
     {
-        $details = ['id' => $id];
-        $deleted = $this->repository()->restore($id);
-        if ($deleted) {
-            return $this->answerSuccess(['ticket' => $deleted]);
+        $ids = [$id];
+        preg_match_all("/^\[(?<uuid>.*)]$/", $id, $matches);
+        if (isset($matches['uuid'][0])) {
+            $ids = explode(',', $matches['uuid'][0]);
         }
-        if (is_null($deleted)) {
-            throw new ErrorResourceIsGone($details);
+
+        $executed = [];
+        foreach ($ids as $detail) {
+            $restored = $this->repository()->restore($detail);
+            if ($restored === null) {
+                continue;
+            }
+            $executed[] = $detail;
         }
-        return $this->answerFail($details);
+
+        if (count($ids) !== count($executed)) {
+            throw new ErrorResourceIsGone(['id' => array_diff($ids, $executed)]);
+        }
+        return $this->answerSuccess(['ticket' => $ids]);
+
     }
 }

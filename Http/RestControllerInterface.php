@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 /**
  * Interface RestControllerInterface
  *
- * @package App\Http\Controllers\Api
+ * @package DeviTools\Http
  */
 interface RestControllerInterface
 {

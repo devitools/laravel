@@ -8,9 +8,9 @@ use App\Http\Controllers\Controller;
 use DeviTools\Http\Response\AnswerTrait;
 
 /**
- * Class Controller
+ * Class AbstractController
  *
- * @package App\Http\Controllers
+ * @package DeviTools\Http
  */
 abstract class AbstractController extends Controller
 {
