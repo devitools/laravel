@@ -14,7 +14,7 @@ final class Operators
     /**
      * @var string
      */
-    public const SEPARATION_OPERATOR = '.~.';
+    public const SEPARATION_OPERATOR = '~.~';
 
     /**
      * @var string
@@ -50,6 +50,6 @@ final class Operators
             static::LIKE => 'like',
             static::CURRENCY => 'currency',
         ];
-        return $signs[$operator] ?? null;
+        return $signs[$operator] ?? $operator;
     }
 }

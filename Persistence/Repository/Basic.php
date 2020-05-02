@@ -103,19 +103,18 @@ trait Basic
         $operator = strtolower($value['operator'] ?? Operators::EQUAL);
         $filter = $value['value'] ?? null;
 
+        $operator = Operators::sign($operator);
         if ($operator === Operators::LIKE) {
             $filter = "%{$filter}%";
         }
 
-        $sign = Operators::sign($operator);
-        if (!$sign) {
-            return $model;
-        }
-
-        switch ($sign) {
+        switch ($operator) {
             case Operators::CURRENCY:
                 $sign = '=';
                 $filter = numberToCurrency($filter);
+                break;
+            case 'nin':
+                return $model->whereNotIn($column, explode(',', $filter));
         }
 
         if ($connector === Connectors::OR_CONNECTOR) {
