@@ -104,13 +104,13 @@ trait Basic
         $filter = $value['value'] ?? null;
 
         $operator = Operators::sign($operator);
-        if ($operator === Operators::LIKE) {
-            $filter = "%{$filter}%";
-        }
 
         switch ($operator) {
+            case Operators::LIKE:
+                $filter = "%{$filter}%";
+                break;
             case Operators::CURRENCY:
-                $sign = '=';
+                $operator = '=';
                 $filter = numberToCurrency($filter);
                 break;
             case 'nin':
@@ -118,9 +118,9 @@ trait Basic
         }
 
         if ($connector === Connectors::OR_CONNECTOR) {
-            return $model->orWhere($column, $sign, $filter);
+            return $model->orWhere($column, $operator, $filter);
         }
-        return $model->where($column, $sign, $filter);
+        return $model->where($column, $operator, $filter);
     }
 
     /**
