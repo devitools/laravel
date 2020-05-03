@@ -132,7 +132,7 @@ abstract class AbstractReport
      */
     final protected function render(string $template, array $parameters = [])
     {
-        require __DIR__ . '/../../../helper/report.php';
+        require __DIR__ . '/../Helper/report.php';
 
         $base = [
             'layout' => $this->layout,
@@ -143,7 +143,7 @@ abstract class AbstractReport
             'user' => $this->user,
         ];
         $data = array_merge($base, $parameters);
-        return view($template, $data);
+        return view($template, $data)->toHtml();
     }
 
     /**

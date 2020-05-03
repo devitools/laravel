@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace DeviTools\Http\Report;
 
 use App\Http\Controllers\Controller;
+use DeviTools\Exceptions\ErrorRuntime;
+use DeviTools\Exceptions\ErrorValidation;
+use DeviTools\Report\AbstractReport;
 use Exception;
 use Illuminate\Http\Request;
-use RuntimeException;
-use DeviTools\Report\AbstractReport;
 
 /**
  * Class ReportProcess
@@ -29,19 +30,28 @@ class ReportProcess extends Controller
      */
     public function __invoke(Request $request, string $report)
     {
+        $auth = auth();
+        if ($auth->guest()) {
+            throw new ErrorValidation(['session' => 'required']);
+        }
+
+        $user = $auth->user();
+        if (!$user) {
+            throw new ErrorValidation(['user' => 'required']);
+        }
+
         $name = ucfirst($report);
         $fullQualifiedName = "\\App\\Report\\{$name}";
         if (!class_exists($fullQualifiedName)) {
-            throw new RuntimeException("Invalid report '{$report}'");
+            throw new ErrorRuntime(['report' => $report]);
         }
 
-        $user = auth()->user()->name;
         $printing = $request->get('p') === 'true';
         $filters = $request->post();
 
         /** @var AbstractReport $fullQualifiedName */
         return $fullQualifiedName
-            ::build($user, $printing)
+            ::build($user->name, $printing)
             ->execute($filters);
     }
 }
