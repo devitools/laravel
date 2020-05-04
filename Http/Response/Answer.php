@@ -10,6 +10,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 use Throwable;
 
+use function array_walk_recursive;
+use function is_string;
+use function mb_detect_encoding;
+
 /**
  * Class Answer
  *
@@ -62,7 +66,7 @@ abstract class Answer
      */
     public static function error(
         $message,
-        $code = Status::CODE_500,
+        $code = null,
         $meta = null,
         $commit = null,
         $debug = null
@@ -73,15 +77,13 @@ abstract class Answer
             'message' => $message,
         ];
 
-        if (!is_null($code)) {
-            $response['code'] = $code;
-        }
+        $response['code'] = $code ?? Status::CODE_500;
 
-        if (!is_null($meta)) {
+        if ($meta !== null) {
             $response['meta'] = $meta;
         }
 
-        if (!is_null($debug)) {
+        if ($debug !== null) {
             $response['$debug'] = $debug;
         }
 
@@ -98,10 +100,10 @@ abstract class Answer
     {
         try {
             return Response::json($data, $code);
-        } catch (Throwable $throwable) {
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (Throwable $throwable) {
         }
         array_walk_recursive($data, static function (&$item) {
-            if (!mb_detect_encoding((string)$item, 'utf-8', true)) {
+            if (is_string($item) && !mb_detect_encoding($item, 'utf-8', true)) {
                 $item = Encoding::fixUTF8($item);
             }
         });

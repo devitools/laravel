@@ -140,23 +140,23 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     public static function bootGeneratesUuid(): void
     {
         static::creating(static function (AbstractModel $model) {
-                /* @var Eloquent|static $model */
-                $uuid = $model->resolveUuid();
-                $uuidColumn = $model->uuidColumn();
+            /* @var Eloquent|static $model */
+            $uuid = $model->resolveUuid();
+            $uuidColumn = $model->uuidColumn();
 
-                if (isset($model->attributes[$uuidColumn]) && $model->attributes[$uuidColumn] !== null) {
-                    /* @var Uuid $uuid */
-                    $uuid = $uuid::fromString(strtolower($model->attributes[$uuidColumn]));
-                }
-
-                $id = $model->getFilled($model->exposedKey());
-                if ($id && $id !== __UNDEFINED__) {
-                    $uuid = $uuid::fromString($id);
-                }
-
-                $model->attributes[$uuidColumn] = $uuid->getBytes();
-                $model->attributes[$model->exposedKey()] = $uuid->toString();
+            if (isset($model->attributes[$uuidColumn]) && $model->attributes[$uuidColumn] !== null) {
+                /* @var Uuid $uuid */
+                $uuid = $uuid::fromString(strtolower($model->attributes[$uuidColumn]));
             }
+
+            $id = $model->getFilled($model->exposedKey());
+            if ($id && $id !== __UNDEFINED__) {
+                $uuid = $uuid::fromString($id);
+            }
+
+            $model->attributes[$uuidColumn] = $uuid->getBytes();
+            $model->attributes[$model->exposedKey()] = $uuid->toString();
+        }
         );
     }
 
@@ -298,8 +298,9 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
      */
     protected function isEncoded($property): bool
     {
-        $haystack = array_values($this->manyToOne());
-        $haystack[] = $this->primaryKey;
+        $haystack = [$this->primaryKey];
+        $haystack = array_merge($haystack, array_values($this->manyToOne()));
+        $haystack = array_merge($haystack, $this->getEncoded());
         return in_array($property, $haystack, true);
     }
 
