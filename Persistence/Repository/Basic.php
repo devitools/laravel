@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace DeviTools\Persistence\Repository;
 
 use DeviTools\Exceptions\ErrorInvalidArgument;
-use Illuminate\Database\Eloquent\Builder;
 use DeviTools\Persistence\AbstractModel;
 use DeviTools\Persistence\Filter\Connectors;
 use DeviTools\Persistence\Filter\Operators;
+use Illuminate\Database\Eloquent\Builder;
 
+use function call_user_func_array;
 use function DeviTools\Helper\numberToCurrency;
 use function in_array;
 use function is_array;
@@ -93,34 +94,44 @@ trait Basic
     /**
      * @param AbstractModel|Builder $model
      * @param string $column
-     * @param array $value
+     * @param array $entry
      *
      * @return AbstractModel|Builder
      */
-    protected function whereParseOperator($model, string $column, array $value)
+    protected function whereParseOperator($model, string $column, array $entry)
     {
-        $connector = $value['connector'] ?? Connectors::AND_CONNECTOR;
-        $operator = strtolower($value['operator'] ?? Operators::EQUAL);
-        $filter = $value['value'] ?? null;
+        $connector = $entry['connector'] ?? Connectors::AND_CONNECTOR;
+        $operator = strtolower($entry['operator'] ?? Operators::EQUAL);
+        $value = $entry['value'] ?? null;
 
         $operator = Operators::sign($operator);
 
+        $method = 'filter' . ucfirst($operator);
+        if (method_exists($this, $method)) {
+            /** @noinspection VariableFunctionsUsageInspection */
+            return call_user_func_array([$this, $method], [$model, $column, $connector, $value]);
+        }
+
         switch ($operator) {
             case Operators::LIKE:
-                $filter = "%{$filter}%";
+                $value = "%{$value}%";
                 break;
             case Operators::CURRENCY:
                 $operator = '=';
-                $filter = numberToCurrency($filter);
+                $value = numberToCurrency($value);
                 break;
             case 'nin':
-                return $model->whereNotIn($column, explode(',', $filter));
+                $value = explode(',', $value);
+                if ($connector === Connectors::OR_CONNECTOR) {
+                    return $model->orWhereNotIn($column, $value);
+                }
+                return $model->whereNotIn($column, $value);
         }
 
         if ($connector === Connectors::OR_CONNECTOR) {
-            return $model->orWhere($column, $operator, $filter);
+            return $model->orWhere($column, $operator, $value);
         }
-        return $model->where($column, $operator, $filter);
+        return $model->where($column, $operator, $value);
     }
 
     /**
