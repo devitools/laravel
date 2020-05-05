@@ -102,7 +102,8 @@ abstract class AbstractReport
             return (bool)($info->value ?? false);
         };
         $filters = array_filter($filters, $callback);
-        $this->collection = $this->fetch($filters);
+        $collection = $this->fetch($filters);
+        $this->collection = $this->parseCollection($collection);
 
         return $this->render($this->template());
     }
@@ -115,6 +116,16 @@ abstract class AbstractReport
     protected function fetch(array $filters): array
     {
         return DB::select((string)DB::raw($this->instruction($filters)), $filters);
+    }
+
+    /**
+     * @param array $collection
+     *
+     * @return array
+     */
+    protected function parseCollection(array $collection): array
+    {
+        return $collection;
     }
 
     /**
