@@ -61,6 +61,14 @@ interface RestControllerInterface
     public function restore(Request $request, string $id): JsonResponse;
 
     /**
+     * @param Request $request
+     * @param string $id
+     *
+     * @return JsonResponse
+     */
+    public function erase(Request $request, string $id): JsonResponse;
+
+    /**
      * @param string $id
      * @param array $data
      *

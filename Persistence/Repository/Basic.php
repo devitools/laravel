@@ -33,12 +33,16 @@ trait Basic
 
     /**
      * @param string $id
+     * @param bool $trash
      *
      * @return AbstractModel
      */
-    protected function pull(string $id): ?AbstractModel
+    protected function pull(string $id, bool $trash = false): ?AbstractModel
     {
-        return $this->where($this->filterById($id))->withTrashed()->get($this->model->columns())->first();
+        if ($trash) {
+            return $this->where($this->filterById($id))->withTrashed()->get($this->model->columns())->first();
+        }
+        return $this->where($this->filterById($id))->get($this->model->columns())->first();
     }
 
     /**

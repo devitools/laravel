@@ -80,6 +80,14 @@ interface RepositoryInterface
     public function find(array $filters, $sorter = [], $offset = 0, $limit = 25, $trash = false);
 
     /**
+     * @param string $id
+     * @param bool $trash
+     *
+     * @return AbstractModel
+     */
+    public function pull(string $id, bool $trash = false): ?AbstractModel;
+
+    /**
      * @return array
      */
     public function getFilterable(): array;

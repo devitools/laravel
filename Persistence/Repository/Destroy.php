@@ -24,7 +24,7 @@ trait Destroy
     public function destroy(string $id, $erase = false): ?string
     {
         /** @var AbstractModel $instance */
-        $instance = $this->pull($id);
+        $instance = $this->pull($id, (bool)$erase);
         if ($instance === null) {
             return null;
         }
