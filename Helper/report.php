@@ -107,3 +107,18 @@ function responsible($row, string $property)
 
     return $matches[0][1] ?? $value;
 }
+
+/**
+ * @param mixed $row
+ * @param string $property
+ *
+ * @return string
+ */
+function valueCurrency($row, string $property): string
+{
+    $precision = 2;
+    $decimals = ',';
+    $thousands = '.';
+    $value = valueNumber($row, $property, $precision, $decimals, $thousands);
+    return env('APP_CURRENCY', '$') . ' ' . $value;
+}
