@@ -37,7 +37,7 @@ trait Basic
      *
      * @return AbstractModel
      */
-    protected function pull(string $id, bool $trash = false): ?AbstractModel
+    public function pull(string $id, bool $trash = false): ?AbstractModel
     {
         if ($trash) {
             return $this->where($this->filterById($id))->withTrashed()->get($this->model->columns())->first();

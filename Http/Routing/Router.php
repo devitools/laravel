@@ -31,8 +31,8 @@ class Router extends Facade
         static::post("{$uri}/{id}", "{$controller}@update");
         // destroy
         static::delete("{$uri}/{id}", "{$controller}@destroy");
-        // destroy
-        static::patch("{$uri}/{id}/restore", "{$controller}@restore");
+        // restore
+        static::put("{$uri}/{id}/restore", "{$controller}@restore");
         // erase
         static::delete("{$uri}/{id}/erase", "{$controller}@erase");
     }

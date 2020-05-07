@@ -21,7 +21,7 @@ trait Restore
     public function restore(string $id): ?string
     {
         /** @var AbstractModel $instance */
-        $instance = $this->pull($id);
+        $instance = $this->pull($id, true);
         if ($instance === null) {
             return null;
         }
