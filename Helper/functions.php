@@ -139,3 +139,13 @@ function currencyToNumber(int $currency): float
     $value = ($currency / (10 ** $precision));
     return (float)$value;
 }
+
+/**
+ * @param string $text
+ *
+ * @return bool
+ */
+function is_dot(string $text): bool
+{
+    return ((int)strpos($text, '.')) > 1;
+}

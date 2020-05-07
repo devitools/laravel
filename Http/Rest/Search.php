@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DeviTools\Http\Rest;
 
+use DeviTools\Persistence\Filter\FilterValue;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Php\JSON;
@@ -92,14 +93,12 @@ trait Search
             if (count($pieces) > 1) {
                 [$operator, $value] = $pieces;
             }
+
             if (!isset($manyToOne[$field])) {
-                $filters[$field] = [
-                    'connector' => Connectors::AND_CONNECTOR,
-                    'value' => $value,
-                    'operator' => $operator
-                ];
+                $filters[$field] = FilterValue::build($value, $operator, Connectors::AND);
                 continue;
             }
+
             $target = $manyToOne[$field];
             $reference = JSON::decode($value, true);
             $value = $reference['id'] ?? null;
@@ -109,7 +108,7 @@ trait Search
 
             $operator = Operators::EQUAL;
             $value = Uuid::fromString($value)->getBytes();
-            $filters[$target] = ['connector' => Connectors::AND_CONNECTOR, 'value' => $value, 'operator' => $operator];
+            $filters[$target] = FilterValue::build($value, $operator, Connectors::AND);
         }
         return $filters;
     }
@@ -131,11 +130,7 @@ trait Search
                 $field = $operator;
                 $operator = Operators::LIKE;
             }
-            $filters[$field] = [
-                'connector' => Connectors::OR_CONNECTOR,
-                'value' => $filter,
-                'operator' => $operator,
-            ];
+            $filters[$field] = FilterValue::build($filter, $operator, Connectors::OR);
         }
         return $filters;
     }
@@ -151,7 +146,7 @@ trait Search
             return null;
         }
         $pieces = (array)explode('.', $sort);
-        if (!isset($pieces[0], $pieces[0])) {
+        if (!isset($pieces[0], $pieces[1])) {
             return null;
         }
         [$key, $value] = $pieces;

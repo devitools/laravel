@@ -7,6 +7,8 @@ namespace DeviTools\Persistence\Repository;
 use DeviTools\Exceptions\ErrorInvalidArgument;
 use DeviTools\Persistence\AbstractModel;
 use DeviTools\Persistence\Filter\Connectors;
+use DeviTools\Persistence\Filter\FilterInterface;
+use DeviTools\Persistence\Filter\FilterValue;
 use DeviTools\Persistence\Filter\Operators;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -23,6 +25,11 @@ use function is_array;
  */
 trait Basic
 {
+    /**
+     * @var array
+     */
+    protected array $filters = [];
+
     /**
      * @return string
      */
@@ -63,8 +70,8 @@ trait Basic
         $where = function (Builder $query) use ($filters, $encoded) {
             $model = $query;
             foreach ($filters as $column => $value) {
-                if (is_array($value)) {
-                    $model = $this->whereParse($model, $column, $value);
+                if ($value instanceof FilterValue) {
+                    $model = $this->whereFilterValue($model, $column, $value);
                     continue;
                 }
                 if (in_array($column, $encoded, true)) {
@@ -77,65 +84,33 @@ trait Basic
     }
 
     /**
-     * @param AbstractModel|Builder $model
+     * @param Builder $model
      * @param string $column
-     * @param array $value
-     *
-     * @return AbstractModel|Builder
-     * @throws ErrorInvalidArgument
-     */
-    protected function whereParse($model, string $column, array $value)
-    {
-        if (isset($value['operator'], $value['value'])) {
-            return $this->whereParseOperator($model, $column, $value);
-        }
-        if (isset($value['in'])) {
-            return $model->whereIn($column, $value['in']);
-        }
-        throw new ErrorInvalidArgument($value, "Invalid where to '{$column}'");
-    }
-
-    /**
-     * @param AbstractModel|Builder $model
-     * @param string $column
-     * @param array $entry
+     * @param FilterValue $filterValue
      *
      * @return AbstractModel|Builder
      */
-    protected function whereParseOperator($model, string $column, array $entry)
+    protected function whereFilterValue(Builder $model, string $column, FilterValue $filterValue)
     {
-        $connector = $entry['connector'] ?? Connectors::AND_CONNECTOR;
-        $operator = strtolower($entry['operator'] ?? Operators::EQUAL);
-        $value = $entry['value'] ?? null;
+        $connector = $filterValue->getConnector();
+        $operator = $filterValue->getOperator();
+        $value = $filterValue->getValue();
 
-        $operator = Operators::sign($operator);
-
-        $method = 'filter' . ucfirst($operator);
-        if (method_exists($this, $method)) {
-            /** @noinspection VariableFunctionsUsageInspection */
-            return call_user_func_array([$this, $method], [$model, $column, $connector, $value]);
+        if (isset($this->filters[$operator])) {
+            /** @var FilterInterface $filter */
+            $filter = $this->filters[$operator]::build();
+            return $filter->query($model, $connector, $value, $column);
         }
 
-        switch ($operator) {
-            case Operators::LIKE:
-                $value = "%{$value}%";
-                break;
-            case Operators::CURRENCY:
-                $operator = '=';
-                $value = numberToCurrency($value);
-                break;
-            case 'nin':
-                $value = explode(',', $value);
-                if ($connector === Connectors::OR_CONNECTOR) {
-                    return $model->orWhereNotIn($column, $value);
-                }
-                return $model->whereNotIn($column, $value);
+        $filter = Operators::filter($operator);
+        if ($filter) {
+            return $filter->query($model, $connector, $value, $column);
         }
 
-        if ($connector === Connectors::OR_CONNECTOR) {
-            return $model->orWhere($column, $operator, $value);
+        if ($connector === Connectors::OR) {
+            return $model->orWhere($column, $value);
         }
-        return $model->where($column, $operator, $value);
+        return $model->where($column, $value);
     }
 
     /**

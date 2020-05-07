@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace DeviTools\Persistence\Model;
 
 use DeviTools\Exceptions\ErrorInvalidArgument;
-use Ramsey\Uuid\Uuid;
 use DeviTools\Persistence\AbstractModel;
+use Ramsey\Uuid\Uuid;
 
 use function DeviTools\Helper\numberToCurrency;
 use function is_array;
@@ -27,8 +27,12 @@ trait Hook
 
         static::configure();
 
-        static::saving(static function (AbstractModel $model) {
+        static::creating(static function (AbstractModel $model) {
+            // generate counter
             $model->counter();
+        });
+
+        static::saving(static function (AbstractModel $model) {
             // parse many to one relationship
             $model->parseManyToOne();
             // parse currencies

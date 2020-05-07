@@ -14,12 +14,12 @@ final class Connectors
     /**
      * @var string
      */
-    public const AND_CONNECTOR = 'AND';
+    public const AND = 'AND';
 
     /**
      * @var string
      */
-    public const OR_CONNECTOR = 'OR';
+    public const OR = 'OR';
 
     /**
      * Connectors constructor.
