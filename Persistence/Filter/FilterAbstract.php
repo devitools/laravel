@@ -34,20 +34,15 @@ abstract class FilterAbstract implements FilterInterface
      */
     final public function query(Builder $query, string $connector, string $value, string $column): Builder
     {
-        if (!is_dot($column)) {
-            return $this->performFilter($query, $connector, $value, $column);
+        if (is_dot($column)) {
+            return $this->queryBelongsTo($query, $connector, $value, $column);
         }
-
-        [$relation, $field] = (array)explode('.', $column);
-
-        $callback = function (Builder $query) use ($connector, $value, $field) {
-            $this->where($query, $connector, $value, $field);
-        };
 
         if ($connector === Connectors::OR) {
-            return $query->orWhereHas($relation, $callback);
+            return $this->orWhere($query, $connector, $value, $column);
         }
-        return $query->whereHas($relation, $callback);
+
+        return $this->where($query, $connector, $value, $column);
     }
 
     /**
@@ -58,11 +53,17 @@ abstract class FilterAbstract implements FilterInterface
      *
      * @return Builder
      */
-    private function performFilter(Builder $query, string $connector, string $value, string $column): Builder
+    private function queryBelongsTo(Builder $query, string $connector, string $value, string $column): Builder
     {
+        [$relation, $field] = (array)explode('.', $column);
+
+        $callback = function (Builder $query) use ($connector, $value, $field) {
+            $this->where($query, $connector, $value, $field);
+        };
+
         if ($connector === Connectors::OR) {
-            return $this->orWhere($query, $connector, $value, $column);
+            return $query->orWhereHas($relation, $callback);
         }
-        return $this->where($query, $connector, $value, $column);
+        return $query->whereHas($relation, $callback);
     }
 }
