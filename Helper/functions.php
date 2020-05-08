@@ -7,6 +7,8 @@ namespace Devitools\Helper;
 use Exception;
 use Ramsey\Uuid\Uuid;
 
+use function request;
+
 /**
  * @return string
  * @throws Exception
@@ -148,4 +150,12 @@ function currencyToNumber(int $currency): float
 function is_dot(string $text): bool
 {
     return ((int)strpos($text, '.')) > 1;
+}
+
+/**
+ * @return string|null
+ */
+function ip()
+{
+    return request()->ip();
 }

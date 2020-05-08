@@ -6,6 +6,7 @@ namespace DeviTools\Persistence\Filter;
 
 use DeviTools\Persistence\Filter\Operators\FilterCurrency;
 use DeviTools\Persistence\Filter\Operators\FilterEqual;
+use DeviTools\Persistence\Filter\Operators\FilterIn;
 use DeviTools\Persistence\Filter\Operators\FilterLike;
 use DeviTools\Persistence\Filter\Operators\FilterNotIn;
 
@@ -49,7 +50,7 @@ final class Operators
     /**
      * @var array
      */
-    private static $filters = [];
+    private static array $filters = [];
 
     /**
      * Operators constructor.
