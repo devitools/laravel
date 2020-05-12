@@ -128,7 +128,7 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     /**
      * @var array
      */
-    protected $readable = [];
+    protected array $readable = [];
 
     /**
      * Boot the trait, adding a creating observer.
