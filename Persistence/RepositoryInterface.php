@@ -103,6 +103,11 @@ interface RepositoryInterface
     public function prefix(): string;
 
     /**
+     * @return array
+     */
+    public function currencies(): array;
+
+    /**
      * @return array|string[]
      */
     public function getDefaults(): array;

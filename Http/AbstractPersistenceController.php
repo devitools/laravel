@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace DeviTools\Http;
 
+use DeviTools\Persistence\Value\Currency;
 use DeviTools\Exceptions\ErrorExternalIntegration;
 use DeviTools\Persistence\AbstractRepository;
 use DeviTools\Persistence\RepositoryInterface;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+use function in_array;
 
 /**
  * Class AbstractPersistenceController
@@ -53,6 +56,10 @@ class AbstractPersistenceController extends AbstractController
         foreach ($data as $field => &$value) {
             if ($value instanceof UploadedFile) {
                 $value = $this->parseFile($id, $field, $value);
+                continue;
+            }
+            if (in_array($field, $this->repository()->currencies(), true)) {
+                 $value = Currency::fromNumber($value);
             }
         }
         return $data;

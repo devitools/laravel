@@ -39,6 +39,14 @@ trait Basic
     }
 
     /**
+     * @return array
+     */
+    public function currencies(): array
+    {
+        return $this->model->currencies();
+    }
+
+    /**
      * @param string $id
      * @param bool $trash
      *

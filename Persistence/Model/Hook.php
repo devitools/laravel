@@ -35,8 +35,6 @@ trait Hook
         static::saving(static function (AbstractModel $model) {
             // parse many to one relationship
             $model->parseManyToOne();
-            // parse currencies
-            $model->parseCurrencies();
             // validate the values
             $model->validate();
         });
@@ -80,16 +78,5 @@ trait Hook
         $id = $filled[$this->exposedKey()];
         $value = Uuid::fromString($id)->getBytes();
         $this->setValue($column, $value);
-    }
-
-    /**
-     * @return void
-     */
-    protected function parseCurrencies(): void
-    {
-        $currencies = $this->currencies();
-        foreach ($currencies as $field) {
-            $this->setValue($field, numberToCurrency($this->getValue($field)));
-        }
     }
 }

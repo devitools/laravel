@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devitools\Helper;
 
+use DeviTools\Persistence\Value\Currency;
 use Exception;
 use Ramsey\Uuid\Uuid;
 
@@ -125,9 +126,7 @@ function error(string $property, string $message, $value, $parameters = [], $cod
  */
 function numberToCurrency($number): int
 {
-    $precision = env('APP_PRECISION', 2);
-    $value = number_format((float)$number, $precision, '', '');
-    return (int)$value;
+    return Currency::fromNumber($number)->toInteger();
 }
 
 /**
@@ -135,11 +134,9 @@ function numberToCurrency($number): int
  *
  * @return float
  */
-function currencyToNumber(int $currency): float
+function currencyToNumber(?int $currency): float
 {
-    $precision = env('APP_PRECISION', 2);
-    $value = ($currency / (10 ** $precision));
-    return (float)$value;
+    return Currency::fromInteger($currency)->toNumber();
 }
 
 /**

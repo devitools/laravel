@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace DeviTools\Persistence;
 
+use DeviTools\Persistence\Model\Fill;
+use DeviTools\Persistence\Model\Helper;
+use DeviTools\Persistence\Model\Hook;
+use DeviTools\Persistence\Model\Replaceable;
+use DeviTools\Persistence\Model\Validation;
+use DeviTools\Persistence\Model\Value;
 use Dyrynda\Database\Support\GeneratesUuid as HasBinaryUuid;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,12 +20,6 @@ use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as Auditing;
 use OwenIt\Auditing\Exceptions\AuditingException;
 use Ramsey\Uuid\Uuid;
-use DeviTools\Persistence\Model\Fill;
-use DeviTools\Persistence\Model\Helper;
-use DeviTools\Persistence\Model\Hook;
-use DeviTools\Persistence\Model\Replaceable;
-use DeviTools\Persistence\Model\Validation;
-use DeviTools\Persistence\Model\Value;
 
 use function DeviTools\Helper\is_binary;
 use function in_array;
@@ -287,7 +287,10 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
         } catch (Exception $e) {
             $random = 99;
         }
-        $this->counter = str_pad(((microtime(true) * 1000) . $random), 18, '0');
+        $micro = (int)(microtime(true) * 10000);
+        $counter = $micro . $random;
+        $base = str_pad($counter, 18, '0');
+        $this->counter = (int)$base;
         return $this;
     }
 
