@@ -51,7 +51,7 @@ class Currency
             return new static((string)$value, '0', $precision);
         }
 
-        $string = number_format((float)$value, $precision, '.', ',');
+        $string = number_format((float)$value, $precision, '.', '');
         [$amount, $cents] = (array)explode('.', $string);
         return new static((string)$amount, (string)$cents, $precision);
     }
