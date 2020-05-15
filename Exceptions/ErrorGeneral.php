@@ -64,7 +64,7 @@ abstract class ErrorGeneral extends Exception implements ErrorInterface
             }
             $value = error($field, $value, null);
         }
-        return $details;
+        return array_values($details);
     }
 
     /**

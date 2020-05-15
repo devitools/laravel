@@ -95,6 +95,13 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     public $incrementing = false;
 
     /**
+     * Indicates whether attributes are snake cased on arrays.
+     *
+     * @var bool
+     */
+    public static $snakeAttributes = false;
+
+    /**
      * @var string
      */
     protected $primaryKey = 'uuid';
@@ -126,7 +133,9 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     protected $keyType = 'binary';
 
     /**
-     * @var array
+     * Fields that will be added on select
+     *
+     * @var string[]
      */
     protected array $readable = [];
 
