@@ -8,6 +8,10 @@ use DeviTools\Persistence\Value\Currency;
 use Exception;
 use Ramsey\Uuid\Uuid;
 
+use TypeError;
+
+use function is_int;
+use function PhpBrasil\Collection\Helper\stringify;
 use function request;
 
 /**
@@ -120,7 +124,7 @@ function error(string $property, string $message, $value, $parameters = [], $cod
 }
 
 /**
- * @param float|int $number
+ * @param float|int|null $number
  *
  * @return int
  */
@@ -130,13 +134,34 @@ function numberToCurrency($number): int
 }
 
 /**
- * @param int $currency
+ * @param int|Currency|null $currency
  *
  * @return float
  */
-function currencyToNumber(?int $currency): float
+function currencyToNumber($currency): float
 {
+    if ($currency instanceof Currency) {
+        return $currency->toNumber();
+    }
+    if ($currency === null) {
+        $currency = 0;
+    }
+    if (!is_int($currency)) {
+        $string = stringify($currency);
+        throw new TypeError("Currency must be int or Currency, '{$string}' given");
+    }
     return Currency::fromInteger($currency)->toNumber();
+}
+
+/**
+ * @param int|Currency|null $currency
+ *
+ * @return string
+ */
+function currencyFormat($currency): string
+{
+    $number = currencyToNumber($currency);
+    return number_format($number, env('APP_PRECISION', 2), ',', '.');
 }
 
 /**
