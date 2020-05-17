@@ -24,7 +24,11 @@ trait Create
      */
     public function create(array $data): ?string
     {
-        $data = array_merge($this->getDefaults(), $data);
+        if (!isset($data['id'])) {
+            $data['id'] = Uuid::uuid1()->toString();
+        }
+
+        $data = $this->prepare($data['id'], $data, true);
         $model = clone $this->model;
 
         $primaryKey = $model->exposedKey();

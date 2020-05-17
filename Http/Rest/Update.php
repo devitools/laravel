@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace DeviTools\Http\Rest;
 
 use DeviTools\Exceptions\ErrorResourceIsGone;
+use DeviTools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use DeviTools\Persistence\RepositoryInterface;
 
 /**
  * Trait Update
@@ -32,7 +32,7 @@ trait Update
         }
         $details = ['id' => $id];
 
-        $updated = $this->repository()->update($id, $this->prepareRecord($id, $data));
+        $updated = $this->repository()->update($id, $data);
         if ($updated) {
             return $this->answerSuccess(['ticket' => $updated]);
         }

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace DeviTools\Http\Rest;
 
+use DeviTools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use DeviTools\Persistence\RepositoryInterface;
-use Ramsey\Uuid\Uuid;
 
 /**
  * Trait Create
@@ -29,11 +28,7 @@ trait Create
             return $this->answerFail(['payload' => 'empty']);
         }
 
-        if (!isset($data['id'])) {
-            $data['id'] = Uuid::uuid1()->toString();
-        }
-        $id = $data['id'];
-        $created = $this->repository()->create($this->prepareRecord($id, $data));
+        $created = $this->repository()->create($data);
 
         return $this->answerSuccess(['ticket' => $created]);
     }

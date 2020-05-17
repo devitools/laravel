@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace DeviTools\Persistence\Value;
 
+use JsonSerializable;
+
 /**
  * Class Currency
  *
  * @package App\Units\Common
  */
-class Currency
+class Currency implements JsonSerializable
 {
     /**
      * @var string
@@ -91,8 +93,29 @@ class Currency
     /**
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         return (string)$this->toInteger();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->toString();
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     *
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4
+     */
+    public function jsonSerialize()
+    {
+        return $this->toNumber();
     }
 }

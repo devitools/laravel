@@ -111,4 +111,12 @@ interface RepositoryInterface
      * @return array|string[]
      */
     public function getDefaults(): array;
+
+    /**
+     * @param string $id
+     * @param array $data
+     *
+     * @return array
+     */
+    public function prepare(string $id, array $data): array;
 }

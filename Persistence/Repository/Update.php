@@ -26,7 +26,7 @@ trait Update
         if ($instance === null) {
             return null;
         }
-        $data = array_merge($this->getDefaults(), $data);
+        $data = $this->prepare($data['id'], $data, false);
         $instance->fill($data);
         $instance->save();
         return $instance->getPrimaryKeyValue();

@@ -8,6 +8,7 @@ use DeviTools\Persistence\Filter\Operators\FilterCurrency;
 use DeviTools\Persistence\Filter\Operators\FilterEqual;
 use DeviTools\Persistence\Filter\Operators\FilterIn;
 use DeviTools\Persistence\Filter\Operators\FilterLike;
+use DeviTools\Persistence\Filter\Operators\FilterNotEqual;
 use DeviTools\Persistence\Filter\Operators\FilterNotIn;
 
 /**
@@ -26,6 +27,11 @@ final class Operators
      * @var string
      */
     public const EQUAL = 'eq';
+
+    /**
+     * @var string
+     */
+    public const NOT_EQUAL = 'neq';
 
     /**
      * @var string
@@ -72,6 +78,7 @@ final class Operators
 
         $operators = [
             static::EQUAL => FilterEqual::class,
+            static::NOT_EQUAL => FilterNotEqual::class,
             static::LIKE => FilterLike::class,
             static::IN => FilterIn::class,
             static::NIN => FilterNotIn::class,

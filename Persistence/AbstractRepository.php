@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace DeviTools\Persistence;
 
 use App\Domains\Util\Instance;
-use Illuminate\Database\Eloquent\Builder;
 use DeviTools\Persistence\Repository\Basic;
 use DeviTools\Persistence\Repository\Count;
 use DeviTools\Persistence\Repository\Create;
 use DeviTools\Persistence\Repository\Destroy;
 use DeviTools\Persistence\Repository\Helper;
+use DeviTools\Persistence\Repository\Prepare;
 use DeviTools\Persistence\Repository\Read;
 use DeviTools\Persistence\Repository\Restore;
 use DeviTools\Persistence\Repository\Search;
 use DeviTools\Persistence\Repository\Update;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class AbstractRepository
@@ -24,22 +25,31 @@ use DeviTools\Persistence\Repository\Update;
 abstract class AbstractRepository implements RepositoryInterface
 {
     /**
-     * @trait
+     * Helpers
      */
     use Helper;
     use Instance;
 
     /**
-     * Basic operations
+     * Support
      */
     use Basic;
+    use Prepare;
     use Count;
+
+    /**
+     * Basic operations
+     */
     use Create;
-    use Destroy;
     use Read;
+    use Update;
+    use Destroy;
+
+    /**
+     * Extra operations
+     */
     use Restore;
     use Search;
-    use Update;
 
     /**
      * @var ModelInterface
@@ -66,6 +76,7 @@ abstract class AbstractRepository implements RepositoryInterface
     public function __construct(ModelInterface $model = null)
     {
         if (!$model) {
+            /** @noinspection CallableParameterUseCaseInTypeContextInspection */
             $model = app($this->prototype);
         }
         $this->model = $model;
