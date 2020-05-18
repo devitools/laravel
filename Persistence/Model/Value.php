@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace DeviTools\Persistence\Model;
 
+use DateTime;
+
 use function DeviTools\Helper\currencyToNumber;
 use function count;
 use function in_array;
@@ -168,6 +170,11 @@ trait Value
             }
 
             if (in_array($field, $except, true)) {
+                continue;
+            }
+
+            if ($value && in_array($field, [static::CREATED_AT, static::UPDATED_AT, static::UPDATED_AT], true)) {
+                $value = DateTime::createFromFormat('Y-m-d\TH:i:s.u+', $value)->format('Y-m-d H:i:s');
                 continue;
             }
 

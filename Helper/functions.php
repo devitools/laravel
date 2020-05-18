@@ -7,7 +7,6 @@ namespace Devitools\Helper;
 use DeviTools\Persistence\Value\Currency;
 use Exception;
 use Ramsey\Uuid\Uuid;
-
 use TypeError;
 
 use function is_int;
@@ -154,14 +153,17 @@ function currencyToNumber($currency): float
 }
 
 /**
- * @param int|Currency|null $currency
+ * @param int $currency
  *
  * @return string
  */
-function currencyFormat($currency): string
+function currencyFormat(int $currency): string
 {
     $number = currencyToNumber($currency);
-    return number_format($number, env('APP_PRECISION', 2), ',', '.');
+    $decimals = env('APP_PRECISION', 2);
+    $decimalSeparator = env('APP_DECIMAL_SEPARATOR', '.');
+    $thousandSeparator = env('APP_DECIMAL_SEPARATOR', '');
+    return number_format($number, $decimals, $decimalSeparator, $thousandSeparator);
 }
 
 /**
@@ -179,7 +181,13 @@ function is_dot(string $text): bool
  */
 function ip()
 {
-    return request()->ip();
+    return $_SERVER['HTTP_CLIENT_IP']
+        ?? $_SERVER['HTTP_X_FORWARDED_FOR']
+        ?? $_SERVER['HTTP_X_FORWARDED']
+        ?? $_SERVER['HTTP_FORWARDED_FOR']
+        ?? $_SERVER['HTTP_FORWARDED']
+        ?? $_SERVER['REMOTE_ADDR']
+        ?? request()->ip();
 }
 
 /**

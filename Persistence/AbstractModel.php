@@ -8,6 +8,7 @@ use DeviTools\Persistence\Model\Fill;
 use DeviTools\Persistence\Model\Helper;
 use DeviTools\Persistence\Model\Hook;
 use DeviTools\Persistence\Model\Replaceable;
+use DeviTools\Persistence\Model\Responsible;
 use DeviTools\Persistence\Model\Validation;
 use DeviTools\Persistence\Model\Value;
 use Dyrynda\Database\Support\GeneratesUuid as HasBinaryUuid;
@@ -44,27 +45,15 @@ use function in_array;
 abstract class AbstractModel extends Eloquent implements ModelInterface, Auditing
 {
     /**
-     * @see SoftDeletes
+     * Basic resources
      */
     use SoftDeletes;
-
-    /**
-     * @see HasBinaryUuid
-     */
     use HasBinaryUuid;
-
-    /**
-     * @see Auditable
-     */
     use Auditable;
+    use Responsible;
 
     /**
-     * @see Fill
-     * @see Hook
-     * @see Replaceable
-     * @see Validation
-     * @see Value
-     * @see Helper
+     * Data manipulation
      */
     use Fill;
     use Helper;
@@ -89,6 +78,21 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     public const DELETED_AT = 'deletedAt';
 
     /**
+     * @var string
+     */
+    public const UPDATED_BY = 'updatedBy';
+
+    /**
+     * @var string
+     */
+    public const CREATED_BY = 'createdBy';
+
+    /**
+     * @var string
+     */
+    public const DELETED_BY = 'deletedBy';
+
+    /**
      * Indicates if the IDs are auto-incrementing.
      *
      * @var bool
@@ -111,13 +115,6 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
      * @var string
      */
     protected $uuidVersion = 'uuid1';
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -166,8 +163,7 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
 
             $model->attributes[$uuidColumn] = $uuid->getBytes();
             $model->attributes[$model->exposedKey()] = $uuid->toString();
-        }
-        );
+        });
     }
 
     /**
@@ -195,10 +191,12 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
      */
     public function columns(): array
     {
-        $available = array_diff($this->getFillable(), $this->hidden);
+        $visible = array_diff($this->getFillable(), $this->hidden);
         $keys = [$this->exposedKey(), $this->getKeyName()];
-        $timestamps = ['createdAt', 'updatedAt', 'deletedAt'];
-        return array_merge($keys, $available, $this->readable, $timestamps);
+        $timestamps = [static::CREATED_AT, static::UPDATED_AT, static::UPDATED_AT];
+        $responsible = [static::CREATED_BY, static::UPDATED_BY, static::DELETED_BY];
+
+        return array_merge($keys, $visible, $this->readable, $timestamps, $responsible);
     }
 
     /**

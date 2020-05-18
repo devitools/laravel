@@ -33,6 +33,18 @@ trait Hook
         static::creating(static function (AbstractModel $model) {
             // generate counter
             $model->counter();
+            // generate responsible info to create operation
+            $model->responsibleCreate();
+        });
+
+        static::updating(static function (AbstractModel $model) {
+            // generate responsible info to update operation
+            $model->responsibleUpdate();
+        });
+
+        static::deleting(static function (AbstractModel $model) {
+            // generate responsible info to delete operation
+            $model->responsibleDelete();
         });
 
         static::saving(static function (AbstractModel $model) {

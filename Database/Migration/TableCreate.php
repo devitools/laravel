@@ -18,17 +18,17 @@ abstract class TableCreate extends Migration
     /**
      * @var bool
      */
-    protected bool $modifiable = true;
-
-    /**
-     * @var bool
-     */
     protected bool $withUuid = true;
 
     /**
      * @var bool
      */
     protected bool $withTimestamps = true;
+
+    /**
+     * @var bool
+     */
+    protected bool $withResponsible = true;
 
     /**
      * @return string
@@ -68,6 +68,10 @@ abstract class TableCreate extends Migration
             if ($this->withTimestamps) {
                 $this->timestamps($table);
             }
+
+            if ($this->withResponsible) {
+                $this->responsible($table);
+            }
         });
     }
 
@@ -76,11 +80,19 @@ abstract class TableCreate extends Migration
      */
     private function timestamps(Table $table)
     {
-        if ($this->modifiable) {
-            $table->timestamp('updatedAt')->nullable();
-        }
+        $table->timestamp('updatedAt')->nullable();
         $table->timestamp('createdAt')->nullable();
         $table->timestamp('deletedAt')->nullable();
+    }
+
+    /**
+     * @param Table $table
+     */
+    private function responsible(Table $table)
+    {
+        $table->string('updatedBy')->nullable();
+        $table->string('createdBy')->nullable();
+        $table->string('deletedBy')->nullable();
     }
 
     /**
