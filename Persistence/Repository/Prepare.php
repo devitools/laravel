@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DeviTools\Persistence\Repository;
 
 use DeviTools\Exceptions\ErrorExternalIntegration;
+use DeviTools\Exceptions\ErrorInvalidArgument;
 use DeviTools\Persistence\Value\Currency;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -26,6 +27,7 @@ trait Prepare
      *
      * @return array
      * @throws ErrorExternalIntegration
+     * @throws ErrorInvalidArgument
      */
     public function prepare(string $identifier, array $data, bool $defaults = false): array
     {
@@ -38,7 +40,7 @@ trait Prepare
                 continue;
             }
             if (in_array($field, $currencies, true)) {
-                $value = Currency::fromNumber($value);
+                $value = Currency::fromValue($value);
             }
         }
 

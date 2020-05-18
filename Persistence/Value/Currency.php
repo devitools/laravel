@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace DeviTools\Persistence\Value;
 
+use DeviTools\Exceptions\ErrorInvalidArgument;
 use JsonSerializable;
+
+use function PhpBrasil\Collection\Helper\stringify;
 
 /**
  * Class Currency
@@ -37,16 +40,39 @@ class Currency implements JsonSerializable
     }
 
     /**
-     * @param float|int $value
+     * @param float|int|Currency|null $value
      * @param int $precision
      *
      * @return Currency
+     * @throws ErrorInvalidArgument
+     */
+    public static function fromValue($value, ?int $precision = null): Currency
+    {
+        if ($value instanceof self) {
+            return $value;
+        }
+        return static::fromNumber($value);
+    }
+
+    /**
+     * @param float|int|null $value
+     * @param int|null $precision
+     *
+     * @return Currency
+     * @throws ErrorInvalidArgument
      */
     public static function fromNumber($value, ?int $precision = null): Currency
     {
         $precision ??= env('APP_PRECISION', 2);
         if ($value === null) {
             return new static('0', '0', $precision);
+        }
+
+        if (!is_numeric($value)) {
+            $details = ['number' => 'invalid'];
+            $string = stringify($value);
+            $message = "Int or float expected, '{$string}' given";
+            throw new ErrorInvalidArgument($details, $message);
         }
 
         if (strpos((string)$value, '.') === false) {
@@ -59,8 +85,8 @@ class Currency implements JsonSerializable
     }
 
     /**
-     * @param int $value
-     * @param int $precision
+     * @param int|null $value
+     * @param int|null $precision
      *
      * @return Currency
      */
