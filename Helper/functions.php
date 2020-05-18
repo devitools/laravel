@@ -188,13 +188,18 @@ function ip()
 function counter(): int
 {
     try {
-        $random = random_int(1, 99);
+        $a = random_int(1, 99);
     } catch (Exception $e) {
-        $random = 99;
+        $a = 99;
+    }
+    try {
+        $b = random_int(1, 99);
+    } catch (Exception $e) {
+        $b = 98;
     }
     $micro = (int)(microtime(true) * 10000);
-    $counter = $micro . $random;
-    $base = str_pad($counter, 18, '0');
+    $counter = $micro . $a . $b;
+    $base = substr(str_pad($counter, 18, '0'), 0, 18);
     return (int)$base;
 }
 
