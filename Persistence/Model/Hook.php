@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace DeviTools\Persistence\Model;
 
+use App\Domains\Admin\Profile;
 use DeviTools\Exceptions\ErrorInvalidArgument;
 use DeviTools\Persistence\AbstractModel;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
 
-use function DeviTools\Helper\numberToCurrency;
+use function Devitools\Helper\counter;
 use function is_array;
+use function PhpBrasil\Collection\pack;
 
 /**
  * Trait Configure
@@ -38,6 +41,68 @@ trait Hook
             // validate the values
             $model->validate();
         });
+
+        static::saved(static function (AbstractModel $model) {
+            // parse many to many relationship
+            $model->parseManyToMany();
+            // parse one to many relationship
+            $model->parseOneToMany();
+        });
+    }
+
+    /**
+     * @return void
+     */
+    protected function parseManyToMany(): void
+    {
+        $manyToMany = $this->manyToMany();
+        foreach ($manyToMany as $alias => $column) {
+            $items = $this->getFilled($alias);
+            if (!is_array($items)) {
+                return;
+            }
+
+            $ids = pack($items)
+                ->map(function ($action) {
+                    return static::encodeUuid($action[$this->exposedKey()]);
+                })
+                ->records();
+            $this->{$alias}()->sync($ids);
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function parseOneToMany(): void
+    {
+        $oneToMany = $this->oneToMany();
+        foreach ($oneToMany as $alias => $parser) {
+            $items = $this->getFilled($alias);
+            if (!is_array($items)) {
+                return;
+            }
+
+            /** @var HasMany $hasMany */
+            $hasMany = $this->{$alias}();
+
+            $localKey = $hasMany->getLocalKeyName();
+            $foreignKey = $hasMany->getForeignKeyName();
+
+            $hasMany->where($foreignKey, $this->getValue($localKey))->forceDelete();
+
+            $values = pack($items)->map(function ($data) use ($parser, $foreignKey, $localKey) {
+                $uuid = Uuid::uuid4();
+                $value = [
+                    'uuid' => $uuid->getBytes(),
+                    'id' => $uuid->toString(),
+                    'counter' => counter(),
+                    $foreignKey => $this->getValue($localKey),
+                ];
+                return array_merge($value, $parser($data, $foreignKey, $localKey));
+            });
+            $hasMany->insert($values->records());
+        }
     }
 
     /**

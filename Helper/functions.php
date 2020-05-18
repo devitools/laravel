@@ -181,3 +181,34 @@ function ip()
 {
     return request()->ip();
 }
+
+/**
+ * @return int
+ */
+function counter(): int
+{
+    try {
+        $random = random_int(1, 99);
+    } catch (Exception $e) {
+        $random = 99;
+    }
+    $micro = (int)(microtime(true) * 10000);
+    $counter = $micro . $random;
+    $base = str_pad($counter, 18, '0');
+    return (int)$base;
+}
+
+/**
+ * @param string $id
+ *
+ * @return array|string[]
+ */
+function idToArray(string $id): array
+{
+    $ids = [$id];
+    preg_match_all("/^\[(?<uuid>.*)]$/", $id, $matches);
+    if (isset($matches['uuid'][0])) {
+        $ids = explode(',', $matches['uuid'][0]);
+    }
+    return $ids;
+}

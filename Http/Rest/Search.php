@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace DeviTools\Http\Rest;
 
+use DeviTools\Http\Support\Scopes;
+use DeviTools\Persistence\Filter\Connectors;
 use DeviTools\Persistence\Filter\FilterValue;
+use DeviTools\Persistence\Filter\Operators;
+use DeviTools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Php\JSON;
 use Ramsey\Uuid\Uuid;
-use DeviTools\Persistence\Filter\Connectors;
-use DeviTools\Persistence\Filter\Operators;
-use DeviTools\Persistence\RepositoryInterface;
 
 use function count;
 use function explode;
@@ -33,6 +34,8 @@ trait Search
      */
     public function search(Request $request): JsonResponse
     {
+        $this->grant($this->repository()->prefix(), Scopes::SCOPE_INDEX);
+
         // page=1&size=10
         $page = $request->get('page', 1);
         $limit = $request->get('size', 25);
@@ -95,7 +98,7 @@ trait Search
             }
 
             if (!isset($manyToOne[$field])) {
-                $filters[$field] = FilterValue::build($value, $operator, Connectors::AND);
+                $filters[$field] = FilterValue::build($value, $operator, Connectors:: AND);
                 continue;
             }
 
@@ -108,7 +111,7 @@ trait Search
 
             $operator = Operators::EQUAL;
             $value = Uuid::fromString($value)->getBytes();
-            $filters[$target] = FilterValue::build($value, $operator, Connectors::AND);
+            $filters[$target] = FilterValue::build($value, $operator, Connectors:: AND);
         }
         return $filters;
     }
@@ -130,7 +133,7 @@ trait Search
                 $field = $operator;
                 $operator = Operators::LIKE;
             }
-            $filters[$field] = FilterValue::build($filter, $operator, Connectors::OR);
+            $filters[$field] = FilterValue::build($filter, $operator, Connectors:: OR);
         }
         return $filters;
     }

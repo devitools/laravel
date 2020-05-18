@@ -60,6 +60,16 @@ interface ModelInterface
     public function manyToOne(): array;
 
     /**
+     * @return array
+     */
+    public function oneToMany(): array;
+
+    /**
+     * @return array
+     */
+    public function manyToMany(): array;
+
+    /**
      * @return string
      */
     public function prefix(): string;

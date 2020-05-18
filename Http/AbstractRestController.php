@@ -10,6 +10,7 @@ use DeviTools\Http\Rest\Read;
 use DeviTools\Http\Rest\Restore;
 use DeviTools\Http\Rest\Search;
 use DeviTools\Http\Rest\Update;
+use DeviTools\Http\Support\Permission;
 
 /**
  * Class AbstractRestController
@@ -18,6 +19,11 @@ use DeviTools\Http\Rest\Update;
  */
 abstract class AbstractRestController extends AbstractPersistenceController implements RestControllerInterface
 {
+    /**
+     * Support
+     */
+    use Permission;
+
     /**
      * Basic operations
      */

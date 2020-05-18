@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace DeviTools\Http\Rest;
 
-
 use DeviTools\Exceptions\ErrorResourceIsGone;
+use DeviTools\Http\Support\Scopes;
+use DeviTools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use DeviTools\Persistence\RepositoryInterface;
 
-use function count;
-use function preg_match_all;
-use function explode;
 use function array_diff;
+use function count;
+use function Devitools\Helper\idToArray;
 
 /**
  * Trait Restore
@@ -32,11 +31,9 @@ trait Restore
      */
     public function restore(Request $request, string $id): JsonResponse
     {
-        $ids = [$id];
-        preg_match_all("/^\[(?<uuid>.*)]$/", $id, $matches);
-        if (isset($matches['uuid'][0])) {
-            $ids = explode(',', $matches['uuid'][0]);
-        }
+        $this->grant($this->repository()->prefix(), Scopes::SCOPE_TRASH);
+
+        $ids = idToArray($id);
 
         $executed = [];
         foreach ($ids as $detail) {
@@ -51,6 +48,5 @@ trait Restore
             throw new ErrorResourceIsGone(['id' => array_diff($ids, $executed)]);
         }
         return $this->answerSuccess(['ticket' => $ids]);
-
     }
 }

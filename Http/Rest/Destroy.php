@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace DeviTools\Http\Rest;
 
 use DeviTools\Exceptions\ErrorResourceIsGone;
+use DeviTools\Exceptions\ErrorUserForbidden;
+use DeviTools\Http\Support\Scopes;
 use DeviTools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-use function count;
-use function preg_match_all;
-use function explode;
 use function array_diff;
+use function count;
+use function Devitools\Helper\idToArray;
 
 /**
  * Trait Delete
@@ -32,11 +33,9 @@ trait Destroy
      */
     public function destroy(Request $request, string $id, $erase = false): JsonResponse
     {
-        $ids = [$id];
-        preg_match_all("/^\[(?<uuid>.*)]$/", $id, $matches);
-        if (isset($matches['uuid'][0])) {
-            $ids = explode(',', $matches['uuid'][0]);
-        }
+        $this->grant($this->repository()->prefix(), Scopes::SCOPE_REMOVE);
+
+        $ids = idToArray($id);
 
         $executed = [];
         foreach ($ids as $detail) {
@@ -59,6 +58,7 @@ trait Destroy
      *
      * @return JsonResponse
      * @throws ErrorResourceIsGone
+     * @throws ErrorUserForbidden
      */
     public function erase(Request $request, string $id): JsonResponse
     {

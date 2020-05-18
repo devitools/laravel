@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DeviTools\Http\Rest;
 
 use DeviTools\Exceptions\ErrorResourceIsGone;
+use DeviTools\Http\Support\Scopes;
 use DeviTools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,6 +27,8 @@ trait Update
      */
     public function update(Request $request, string $id): JsonResponse
     {
+        $this->grant($this->repository()->prefix(), Scopes::SCOPE_EDIT);
+
         $data = $request->all();
         if (!$data) {
             return $this->answerFail(['payload' => 'empty']);

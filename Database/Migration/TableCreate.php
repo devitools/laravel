@@ -21,6 +21,16 @@ abstract class TableCreate extends Migration
     protected bool $modifiable = true;
 
     /**
+     * @var bool
+     */
+    protected bool $withUuid = true;
+
+    /**
+     * @var bool
+     */
+    protected bool $withTimestamps = true;
+
+    /**
      * @return string
      */
     abstract protected function table(): string;
@@ -44,16 +54,20 @@ abstract class TableCreate extends Migration
         Schema::create($this->table(), function (Blueprint $blueprint) {
             $table = Table::make($blueprint);
 
-            $table->efficientUuid('uuid')->primary();
-            $table->string('id')->unique();
+            if ($this->withUuid) {
+                $table->efficientUuid('uuid')->primary();
+                $table->string('id')->unique();
 
-            if (config('app.counter')) {
-                $table->bigInteger('counter')->unique();
+                if (config('app.counter')) {
+                    $table->bigInteger('counter')->unique();
+                }
             }
 
             $this->withStatements($table);
 
-            $this->timestamps($table);
+            if ($this->withTimestamps) {
+                $this->timestamps($table);
+            }
         });
     }
 

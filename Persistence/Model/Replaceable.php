@@ -53,6 +53,14 @@ trait Replaceable
     /**
      * @return array
      */
+    public function oneToMany(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array
+     */
     public function manyToMany(): array
     {
         return [];

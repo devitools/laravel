@@ -42,6 +42,12 @@ trait Read
             $query = $query->with($related);
         }
 
+        $oneToMany = $this->model->oneToMany();
+        foreach (array_keys($oneToMany) as $related) {
+            /** @var Builder $query */
+            $query = $query->with($related);
+        }
+
         /** @var Collection $collection */
         return $query
             ->get($this->model->columns())

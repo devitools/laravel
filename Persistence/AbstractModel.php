@@ -21,6 +21,7 @@ use OwenIt\Auditing\Contracts\Auditable as Auditing;
 use OwenIt\Auditing\Exceptions\AuditingException;
 use Ramsey\Uuid\Uuid;
 
+use function Devitools\Helper\counter;
 use function DeviTools\Helper\is_binary;
 use function in_array;
 
@@ -291,15 +292,7 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
             return $this;
         }
 
-        try {
-            $random = random_int(1, 99);
-        } catch (Exception $e) {
-            $random = 99;
-        }
-        $micro = (int)(microtime(true) * 10000);
-        $counter = $micro . $random;
-        $base = str_pad($counter, 18, '0');
-        $this->counter = (int)$base;
+        $this->counter = counter();
         return $this;
     }
 
