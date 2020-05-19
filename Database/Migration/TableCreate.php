@@ -59,7 +59,7 @@ abstract class TableCreate extends Migration
                 $table->string('id')->unique();
 
                 if (config('app.counter')) {
-                    $table->bigInteger('counter')->unique();
+                    $table->bigInteger('counter');
                 }
             }
 

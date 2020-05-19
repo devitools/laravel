@@ -191,24 +191,18 @@ function ip()
 }
 
 /**
+ * @param int|null $seconds
+ *
  * @return int
  */
-function counter(): int
+function counter(?int $seconds = null): int
 {
-    try {
-        $a = random_int(1, 99);
-    } catch (Exception $e) {
-        $a = 99;
-    }
-    try {
-        $b = random_int(1, 99);
-    } catch (Exception $e) {
-        $b = 98;
+    if ($seconds) {
+        sleep($seconds);
     }
     $micro = (int)(microtime(true) * 10000);
-    $counter = $micro . $a . $b;
-    $base = substr(str_pad($counter, 18, '0'), 0, 18);
-    return (int)$base;
+    $counter = substr(str_pad($micro, 14, '0'), 0, 14);
+    return (int)$counter;
 }
 
 /**
