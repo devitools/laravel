@@ -191,17 +191,15 @@ function ip()
 }
 
 /**
- * @param int|null $seconds
+ * @param int $size
  *
  * @return int
  */
-function counter(?int $seconds = null): int
+function counter(int $size = 18): int
 {
-    if ($seconds) {
-        sleep($seconds);
-    }
-    $micro = (int)(microtime(true) * 10000);
-    $counter = substr(str_pad($micro, 18, '0'), 0, 18);
+    sleep(0);
+    $micro = (string)(microtime(true) * 10000);
+    $counter = substr(str_pad($micro, $size, '0'), 0, $size);
     return (int)$counter;
 }
 
