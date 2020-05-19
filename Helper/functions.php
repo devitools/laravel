@@ -201,7 +201,7 @@ function counter(?int $seconds = null): int
         sleep($seconds);
     }
     $micro = (int)(microtime(true) * 10000);
-    $counter = substr(str_pad($micro, 14, '0'), 0, 14);
+    $counter = substr(str_pad($micro, 18, '0'), 0, 18);
     return (int)$counter;
 }
 
