@@ -68,13 +68,36 @@ trait Basic
      */
     protected function where(array $filters, bool $trash = false)
     {
+        $query = $this->buildQuery($trash);
+        $encoded = $this->model->getEncoded();
+
+        return $this->buildWhere($query, $filters, $encoded);
+    }
+
+    /**
+     * @param bool $trash
+     *
+     * @return AbstractModel|Builder|\Illuminate\Database\Query\Builder
+     */
+    protected function buildQuery(bool $trash = false)
+    {
         $model = clone $this->model;
-        $encoded = $model->getEncoded();
 
         if ($trash) {
             $model = $model::onlyTrashed();
         }
+        return $model;
+    }
 
+    /**
+     * @param AbstractModel|Builder $query
+     * @param array $filters
+     * @param array $encoded
+     *
+     * @return AbstractModel|Builder
+     */
+    protected function buildWhere($query, array $filters, array $encoded = [])
+    {
         $where = function (Builder $query) use ($filters, $encoded) {
             $model = $query;
             foreach ($filters as $column => $value) {
@@ -88,7 +111,7 @@ trait Basic
                 $model = $model->where($column, $value);
             }
         };
-        return $model->where($where);
+        return $query->where($where);
     }
 
     /**

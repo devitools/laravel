@@ -52,6 +52,19 @@ trait Search
         /** @var AbstractModel $query */
         $query = $this->where($filters, $trash);
 
+        return $this->queryFind($query, $sorter, $offset, $limit);
+    }
+
+    /**
+     * @param AbstractModel|Builder $query
+     * @param array $sorter
+     * @param int $offset
+     * @param int $limit
+     *
+     * @return Builder[]|Collection
+     */
+    protected function queryFind($query, $sorter = [], $offset = 0, $limit = 0)
+    {
         $manyToOne = $this->model->manyToOne();
         foreach (array_keys($manyToOne) as $related) {
             /** @var Builder $query */
@@ -59,6 +72,7 @@ trait Search
         }
 
         foreach ($sorter as $column => $direction) {
+            /** @noinspection CallableParameterUseCaseInTypeContextInspection */
             $query = $query->orderBy($column, $direction);
         }
 
