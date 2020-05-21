@@ -24,7 +24,7 @@ trait Create
      */
     public function create(Request $request): JsonResponse
     {
-        $this->validate($this->repository()->domain(), Scopes::SCOPE_ADD);
+        $this->grant($this->repository()->domain(), Scopes::SCOPE_ADD);
 
         $data = $request->all();
         if (!$data) {

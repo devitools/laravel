@@ -27,7 +27,7 @@ trait Read
      */
     public function read(Request $request, string $id): JsonResponse
     {
-        $this->validate($this->repository()->domain(), Scopes::SCOPE_VIEW);
+        $this->grant($this->repository()->domain(), Scopes::SCOPE_VIEW);
 
         $trash = $request->get('trash') === 'true';
         $data = $this->repository()->read($id, $trash);

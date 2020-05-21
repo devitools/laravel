@@ -29,7 +29,7 @@ trait Permission
      *
      * @throws ErrorUserForbidden
      */
-    protected function validate(string $domain, string $scope): void
+    public function grant(string $domain, string $scope): void
     {
         /** @var Login $user */
         $user = auth()->user();

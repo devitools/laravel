@@ -27,7 +27,7 @@ trait Update
      */
     public function update(Request $request, string $id): JsonResponse
     {
-        $this->validate($this->repository()->domain(), Scopes::SCOPE_EDIT);
+        $this->grant($this->repository()->domain(), Scopes::SCOPE_EDIT);
 
         $data = $request->all();
         if (!$data) {

@@ -34,7 +34,7 @@ trait Search
      */
     public function search(Request $request): JsonResponse
     {
-        $this->validate($this->repository()->domain(), Scopes::SCOPE_INDEX);
+        $this->grant($this->repository()->domain(), Scopes::SCOPE_INDEX);
 
         // page=1&size=10
         $page = $request->get('page', 1);
