@@ -72,7 +72,7 @@ interface ModelInterface
     /**
      * @return string
      */
-    public function prefix(): string;
+    public function domain(): string;
 
     /**
      * @return array|string[]

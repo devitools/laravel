@@ -31,7 +31,7 @@ trait Restore
      */
     public function restore(Request $request, string $id): JsonResponse
     {
-        $this->grant($this->repository()->prefix(), Scopes::SCOPE_TRASH);
+        $this->validate($this->repository()->domain(), Scopes::SCOPE_TRASH);
 
         $ids = idToArray($id);
 

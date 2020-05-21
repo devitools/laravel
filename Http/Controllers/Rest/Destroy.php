@@ -33,7 +33,7 @@ trait Destroy
      */
     public function destroy(Request $request, string $id, $erase = false): JsonResponse
     {
-        $this->grant($this->repository()->prefix(), Scopes::SCOPE_REMOVE);
+        $this->validate($this->repository()->domain(), Scopes::SCOPE_REMOVE);
 
         $ids = idToArray($id);
 

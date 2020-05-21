@@ -24,12 +24,12 @@ trait Permission
     protected $allowGuest = false;
 
     /**
-     * @param string $prefix
+     * @param string $domain
      * @param string $scope
      *
      * @throws ErrorUserForbidden
      */
-    protected function grant(string $prefix, string $scope): void
+    protected function validate(string $domain, string $scope): void
     {
         /** @var Login $user */
         $user = auth()->user();
@@ -37,8 +37,11 @@ trait Permission
             return;
         }
 
-        $namespace = "{$prefix}.{$scope}";
-        $permissions = $user->getPermissions()->pluck('namespace')->toArray();
+        $namespace = "{$domain}.{$scope}";
+        $permissions = $user
+            ->getPermissions()
+            ->pluck('namespace')
+            ->toArray();
         if (in_array($namespace, $permissions, true)) {
             return;
         }

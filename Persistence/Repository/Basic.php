@@ -33,9 +33,9 @@ trait Basic
     /**
      * @return string
      */
-    public function prefix(): string
+    public function domain(): string
     {
-        return $this->model->prefix();
+        return $this->model->domain();
     }
 
     /**

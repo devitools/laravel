@@ -100,7 +100,7 @@ interface RepositoryInterface
     /**
      * @return string
      */
-    public function prefix(): string;
+    public function domain(): string;
 
     /**
      * @return array

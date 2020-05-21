@@ -31,7 +31,7 @@ trait Prepare
      */
     public function prepare(string $identifier, array $data, bool $defaults = false): array
     {
-        $domain = $this->prefix();
+        $domain = $this->domain();
         $currencies = $this->currencies();
 
         foreach ($data as $field => &$value) {
