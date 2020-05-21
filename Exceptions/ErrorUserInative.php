@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Exceptions;
+namespace App\Exceptions;
 
-use DeviTools\Http\Status;
+use App\Http\Status;
 
 /**
  * Class ErrorUserInative
- * @package DeviTools\Exceptions
+ * @package App\Exceptions
  */
 class ErrorUserInative extends ErrorGeneral
 {

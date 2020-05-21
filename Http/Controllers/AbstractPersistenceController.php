@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Http;
+namespace App\Http\Controllers;
 
-use DeviTools\Http\Support\Prepare;
-use DeviTools\Persistence\RepositoryInterface;
+use App\Persistence\RepositoryInterface;
 
 /**
  * Class AbstractPersistenceController
  *
- * @package DeviTools\Http
+ * @package App\Http
  */
 class AbstractPersistenceController extends AbstractController
 {

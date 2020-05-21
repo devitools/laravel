@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Persistence\Filter\Operators;
+namespace App\Persistence\Filter\Operators;
 
-use DeviTools\Persistence\Filter\FilterAbstract;
+use App\Persistence\Filter\FilterAbstract;
 use Illuminate\Database\Eloquent\Builder;
 
-use function Devitools\Helper\numberToCurrency;
+use function App\Helper\numberToCurrency;
 
 /**
  * Class FilterCurrency
  *
- * @package DeviTools\Persistence\Filter\Operators
+ * @package App\Persistence\Filter\Operators
  */
 class FilterCurrency extends FilterAbstract
 {

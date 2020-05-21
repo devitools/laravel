@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Http\Support;
+namespace App\Http\Support;
 
-use App\Domains\Auth\Login;
+use App\Auth\Login;
 
-use DeviTools\Exceptions\ErrorUserForbidden;
+use App\Exceptions\ErrorUserForbidden;
 
-use function Devitools\Helper\error;
+use function App\Helper\error;
 use function in_array;
 
 /**
  * Trait Permission
  *
- * @package DeviTools\Http\Support
+ * @package App\Http\Support
  */
 trait Permission
 {
@@ -38,7 +38,7 @@ trait Permission
         }
 
         $namespace = "{$prefix}.{$scope}";
-        $permissions = $user->profile->permissions->pluck('namespace')->toArray();
+        $permissions = $user->getPermissions()->pluck('namespace')->toArray();
         if (in_array($namespace, $permissions, true)) {
             return;
         }

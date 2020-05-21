@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Http;
+namespace App\Http\Controllers;
 
-use DeviTools\Http\Rest\Create;
-use DeviTools\Http\Rest\Destroy;
-use DeviTools\Http\Rest\Read;
-use DeviTools\Http\Rest\Restore;
-use DeviTools\Http\Rest\Search;
-use DeviTools\Http\Rest\Update;
-use DeviTools\Http\Support\Permission;
+use App\Http\Controllers\Rest\Create;
+use App\Http\Controllers\Rest\Destroy;
+use App\Http\Controllers\Rest\Read;
+use App\Http\Controllers\Rest\Restore;
+use App\Http\Controllers\Rest\Search;
+use App\Http\Controllers\Rest\Update;
+use App\Http\Support\Permission;
 
 /**
  * Class AbstractRestController
  *
- * @package DeviTools\Http
+ * @package App\Http
  */
 abstract class AbstractRestController extends AbstractPersistenceController implements RestControllerInterface
 {

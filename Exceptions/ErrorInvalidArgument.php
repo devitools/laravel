@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Exceptions;
+namespace App\Exceptions;
 
 /**
  * Class ErrorInvalidArgument
- * @package DeviTools\Exceptions
+ * @package App\Exceptions
  */
 class ErrorInvalidArgument extends ErrorGeneral
 {

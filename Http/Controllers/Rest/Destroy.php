@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Http\Rest;
+namespace App\Http\Controllers\Rest;
 
-use DeviTools\Exceptions\ErrorResourceIsGone;
-use DeviTools\Exceptions\ErrorUserForbidden;
-use DeviTools\Http\Support\Scopes;
-use DeviTools\Persistence\RepositoryInterface;
+use App\Exceptions\ErrorResourceIsGone;
+use App\Exceptions\ErrorUserForbidden;
+use App\Http\Support\Scopes;
+use App\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 use function array_diff;
 use function count;
-use function Devitools\Helper\idToArray;
+use function App\Helper\idToArray;
 
 /**
  * Trait Delete
  *
- * @package DeviTools\Http\Rest
+ * @package App\Http\Controllers\Rest
  * @method RepositoryInterface repository()
  */
 trait Destroy

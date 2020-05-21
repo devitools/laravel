@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Persistence\Value;
+namespace App\Persistence\Value;
 
-use DeviTools\Exceptions\ErrorInvalidArgument;
+use App\Exceptions\ErrorInvalidArgument;
 use JsonSerializable;
 
 use function PhpBrasil\Collection\Helper\stringify;

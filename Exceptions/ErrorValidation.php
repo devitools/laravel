@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Exceptions;
+namespace App\Exceptions;
 
-use DeviTools\Http\Status;
+use App\Http\Status;
 
 /**
  * Class ErrorValidation
  *
- * @package DeviTools\Exceptions
+ * @package App\Exceptions
  */
 class ErrorValidation extends ErrorGeneral
 {

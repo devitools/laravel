@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Http;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 /**
  * Interface RestControllerInterface
  *
- * @package DeviTools\Http
+ * @package App\Http
  */
 interface RestControllerInterface
 {

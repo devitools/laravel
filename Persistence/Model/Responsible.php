@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Persistence\Model;
+namespace App\Persistence\Model;
 
 use App\Units\Common\UserSession;
 use Throwable;
@@ -10,7 +10,7 @@ use Throwable;
 /**
  * Trait Responsible
  *
- * @package DeviTools\Persistence\Model
+ * @package App\Persistence\Model
  */
 trait Responsible
 {

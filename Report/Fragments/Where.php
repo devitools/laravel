@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Report\Fragments;
+namespace App\Report\Fragments;
 
 use function count;
 
 /**
  * Trait Where
  *
- * @package DeviTools\Report\Fragments
+ * @package App\Report\Fragments
  */
 trait Where
 {

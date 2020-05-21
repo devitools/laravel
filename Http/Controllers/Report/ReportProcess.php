@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Http\Report;
+namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
-use DeviTools\Exceptions\ErrorRuntime;
-use DeviTools\Exceptions\ErrorValidation;
-use DeviTools\Report\AbstractReport;
+use App\Exceptions\ErrorRuntime;
+use App\Exceptions\ErrorValidation;
+use App\Report\AbstractReport;
 use Exception;
 use Illuminate\Http\Request;
 

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Persistence\Model;
+namespace App\Persistence\Model;
 
 /**
  * Trait Replaceable
  *
- * @package DeviTools\Persistence\Model
+ * @package App\Persistence\Model
  */
 trait Replaceable
 {

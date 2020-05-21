@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Devitools\Helper;
+namespace App\Helper;
 
-use DeviTools\Persistence\Value\Currency;
+use App\Persistence\Value\Currency;
 use Exception;
 use Ramsey\Uuid\Uuid;
 use TypeError;

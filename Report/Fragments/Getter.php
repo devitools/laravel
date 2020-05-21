@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Report\Fragments;
+namespace App\Report\Fragments;
 
 /**
  * Trait Getters
  *
- * @package DeviTools\Report\Fragments
+ * @package App\Report\Fragments
  */
 trait Getter
 {

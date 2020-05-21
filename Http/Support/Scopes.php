@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Http\Support;
+namespace App\Http\Support;
 
 /**
  * Class Scopes
  *
- * @package DeviTools\Http\Support
+ * @package App\Http\Support
  */
 abstract class Scopes
 {

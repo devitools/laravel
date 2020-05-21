@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Report\Where;
+namespace App\Report\Where;
 
 /**
  * Trait WhereEqual
  *
- * @package DeviTools\Report\Where
+ * @package App\Report\Where
  */
 trait WhereEqual
 {

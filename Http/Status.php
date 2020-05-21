@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Http;
+namespace App\Http;
 
 /**
  * Class Status
  *
- * @package DeviTools\Http
+ * @package App\Http
  */
 class Status
 {

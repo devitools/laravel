@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Persistence\Repository;
+namespace App\Persistence\Repository;
 
-use DeviTools\Persistence\AbstractModel;
+use App\Persistence\AbstractModel;
 
-use function DeviTools\Helper\encodeUuid;
-use function DeviTools\Helper\is_binary;
+use function App\Helper\encodeUuid;
+use function App\Helper\is_binary;
 
 /**
  * Trait Helper
  *
- * @package DeviTools\Persistence\Repository
+ * @package App\Persistence\Repository
  * @property AbstractModel model
  */
 trait Helper

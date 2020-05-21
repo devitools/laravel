@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Http\File;
+namespace App\Http\Controllers\File;
 
-use DeviTools\Exceptions\ErrorValidation;
+use App\Exceptions\ErrorValidation;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use DeviTools\Http\AbstractController;
+use App\Http\Controllers\AbstractController;
 
-use function Devitools\Helper\uuid;
+use function App\Helper\uuid;
 
 /**
  * Class Upload
  *
- * @package DeviTools\Http\File
+ * @package App\Http\File
  */
 class Upload extends AbstractController
 {

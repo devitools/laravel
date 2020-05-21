@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Database;
+namespace App\Database;
 
 use Illuminate\Database\Schema\Blueprint;
 
@@ -154,7 +154,7 @@ use Illuminate\Database\Schema\Blueprint;
  * @method void dropRememberToken()
  * @method void dropMorphs(string $name, $indexName = null)
  *
- * @package DeviTools\Database
+ * @package App\Database
  */
 class Table
 {

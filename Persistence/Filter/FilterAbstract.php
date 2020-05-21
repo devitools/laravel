@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Persistence\Filter;
+namespace App\Persistence\Filter;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use function Devitools\Helper\is_dot;
-use function Devitools\Helper\numberToCurrency;
+use function App\Helper\is_dot;
+use function App\Helper\numberToCurrency;
 
 /**
  * Class FilterAbstract
  *
- * @package DeviTools\Persistence\Filter
+ * @package App\Persistence\Filter
  */
 abstract class FilterAbstract implements FilterInterface
 {

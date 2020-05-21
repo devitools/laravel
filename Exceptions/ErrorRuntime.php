@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Exceptions;
+namespace App\Exceptions;
 
 /**
  * Class ErrorRuntime
- * @package DeviTools\Exceptions
+ * @package App\Exceptions
  */
 class ErrorRuntime extends ErrorGeneral
 {

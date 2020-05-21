@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Persistence\Repository;
+namespace App\Persistence\Repository;
 
 use Illuminate\Database\Eloquent\Builder;
-use DeviTools\Persistence\AbstractModel;
+use App\Persistence\AbstractModel;
 
 /**
  * Trait Count
  *
- * @package DeviTools\Persistence\Repository
+ * @package App\Persistence\Repository
  * @property AbstractModel model
  */
 trait Count

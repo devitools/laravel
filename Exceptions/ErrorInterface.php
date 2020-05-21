@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Exceptions;
+namespace App\Exceptions;
 
 /**
  * Interface ErrorInterface
- * @package DeviTools\Exceptions
+ * @package App\Exceptions
  */
 interface ErrorInterface
 {

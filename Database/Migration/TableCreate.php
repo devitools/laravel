@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Database\Migration;
+namespace App\Database\Migration;
 
-use DeviTools\Database\Migration;
-use DeviTools\Database\Schema;
-use DeviTools\Database\Table;
+use App\Database\Migration;
+use App\Database\Schema;
+use App\Database\Table;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
  * Class TableCreate
- * @package DeviTools\Database\Migration
+ * @package App\Database\Migration
  */
 abstract class TableCreate extends Migration
 {

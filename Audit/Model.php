@@ -1,13 +1,15 @@
 <?php
 
-namespace DeviTools\Audit;
+declare(strict_types=1);
+
+namespace App\Audit;
 
 use Illuminate\Database\Eloquent\JsonEncodingException;
 use OwenIt\Auditing\Models\Audit;
-use DeviTools\Persistence\AbstractModel as Common;
+use App\Persistence\AbstractModel as Common;
 use Throwable;
 
-use function DeviTools\Helper\is_binary;
+use function App\Helper\is_binary;
 
 /**
  * Class Model

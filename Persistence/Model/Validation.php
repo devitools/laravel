@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Persistence\Model;
+namespace App\Persistence\Model;
 
-use DeviTools\Exceptions\ErrorValidation;
+use App\Exceptions\ErrorValidation;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Support\Facades\Validator;
 
-use function DeviTools\Helper\decodeUuid;
-use function DeviTools\Helper\error;
+use function App\Helper\decodeUuid;
+use function App\Helper\error;
 
 /**
  * Trait Validation
  *
- * @package DeviTools\Persistence\Model
+ * @package App\Persistence\Model
  */
 trait Validation
 {

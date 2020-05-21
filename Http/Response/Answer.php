@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Http\Response;
+namespace App\Http\Response;
 
-use DeviTools\Http\Status;
+use App\Http\Status;
 use ForceUTF8\Encoding;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
@@ -17,7 +17,7 @@ use function mb_detect_encoding;
 /**
  * Class Answer
  *
- * @package DeviTools\Http\Response\Answer
+ * @package App\Http\Response\Answer
  */
 abstract class Answer
 {

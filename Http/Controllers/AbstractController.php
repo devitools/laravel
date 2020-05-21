@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace DeviTools\Http;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use DeviTools\Http\Response\AnswerTrait;
+use App\Http\Response\AnswerTrait;
 
 /**
  * Class AbstractController
  *
- * @package DeviTools\Http
+ * @package App\Http
  */
 abstract class AbstractController extends Controller
 {
