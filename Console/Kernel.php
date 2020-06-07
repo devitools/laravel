@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace Devitools\Console;
 
+use Devitools\LoadEnvironment;
 use Devitools\Persistence\Transaction;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Bootstrap\BootProviders;
+use Illuminate\Foundation\Bootstrap\HandleExceptions;
+use Illuminate\Foundation\Bootstrap\LoadConfiguration;
+use Illuminate\Foundation\Bootstrap\RegisterFacades;
+use Illuminate\Foundation\Bootstrap\RegisterProviders;
+use Illuminate\Foundation\Bootstrap\SetRequestForConsole;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -23,6 +30,21 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+    ];
+
+    /**
+     * The bootstrap classes for the application.
+     *
+     * @var array
+     */
+    protected $bootstrappers = [
+        LoadEnvironment::class,
+        LoadConfiguration::class,
+        HandleExceptions::class,
+        RegisterFacades::class,
+        SetRequestForConsole::class,
+        RegisterProviders::class,
+        BootProviders::class,
     ];
 
     /**
