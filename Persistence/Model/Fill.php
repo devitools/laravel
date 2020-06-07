@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Model;
+namespace Devitools\Persistence\Model;
 
-use App\Persistence\AbstractModel;
+use Devitools\Persistence\AbstractModel;
 
 use function count;
 use function in_array;
@@ -12,7 +12,7 @@ use function in_array;
 /**
  * Trait Fill
  *
- * @package App\Persistence\Model
+ * @package Devitools\Persistence\Model
  */
 trait Fill
 {

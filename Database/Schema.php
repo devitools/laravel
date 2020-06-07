@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Database;
+namespace Devitools\Database;
 
 use Closure;
 use Illuminate\Support\Facades\Schema as Base;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Schema as Base;
  * @method static boolean hasTable(string $table)
  * @method static boolean hasColumn(string $table, string $column)
  *
- * @package App\Database
+ * @package Devitools\Database
  */
 class Schema extends Base
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Console;
+namespace Devitools\Console;
 
-use App\Persistence\Transaction;
+use Devitools\Persistence\Transaction;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 /**
  * Class Kernel
  *
- * @package App\Console
+ * @package Devitools\Console
  */
 class Kernel extends ConsoleKernel
 {

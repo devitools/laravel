@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
+namespace Devitools\Providers;
 
 use Illuminate\Foundation\Application;
 use Tymon\JWTAuth\Http\Parser\AuthHeaders;
@@ -17,7 +17,7 @@ use Tymon\JWTAuth\Providers\LaravelServiceProvider;
 /**
  * Class JWTServiceProvider
  *
- * @package App\Providers
+ * @package Devitools\Providers
  */
 class JWTServiceProvider extends LaravelServiceProvider
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
+namespace Devitools\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Laravel\Horizon\Horizon;
@@ -10,7 +10,7 @@ use Laravel\Horizon\Horizon;
 /**
  * Class AppServiceProvider
  *
- * @package App\Providers
+ * @package Devitools\Providers
  */
 class AppServiceProvider extends ServiceProvider
 {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Model;
+namespace Devitools\Persistence\Model;
 
 use DateTime;
 
-use function App\Helper\currencyToNumber;
+use function Devitools\Helper\currencyToNumber;
 use function count;
 use function in_array;
 use function is_array;
@@ -15,7 +15,7 @@ use function is_callable;
 /**
  * Trait Value
  *
- * @package App\Persistence\Model
+ * @package Devitools\Persistence\Model
  */
 trait Value
 {

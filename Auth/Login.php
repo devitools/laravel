@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth;
+namespace Devitools\Auth;
 
 use Dyrynda\Database\Support\GeneratesUuid as HasBinaryUuid;
 use Illuminate\Database\Eloquent\Collection;

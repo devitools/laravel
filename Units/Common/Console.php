@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Units\Common;
+namespace Devitools\Units\Common;
 
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +16,7 @@ use function function_exists;
 /**
  * Class Logger
  *
- * @package App\Util
+ * @package Devitools\Util
  */
 class Console
 {

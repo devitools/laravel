@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Support;
+namespace Devitools\Http\Support;
 
-use App\Auth\Login;
+use Devitools\Auth\Login;
 
-use App\Exceptions\ErrorUserForbidden;
+use Devitools\Exceptions\ErrorUserForbidden;
 
-use function App\Helper\error;
+use function Devitools\Helper\error;
 use function in_array;
 
 /**
  * Trait Permission
  *
- * @package App\Http\Support
+ * @package Devitools\Http\Support
  */
 trait Permission
 {

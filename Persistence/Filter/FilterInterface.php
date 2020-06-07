@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Filter;
+namespace Devitools\Persistence\Filter;
 
 use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Interface Query
  *
- * @package App\Persistence\Filter
+ * @package Devitools\Persistence\Filter
  */
 interface FilterInterface
 {

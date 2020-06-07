@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Repository;
+namespace Devitools\Persistence\Repository;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use App\Persistence\AbstractModel;
+use Devitools\Persistence\AbstractModel;
 
 use function is_array;
 
 /**
  * Trait Search
  *
- * @package App\Persistence\Repository
+ * @package Devitools\Persistence\Repository
  * @property AbstractModel model
  */
 trait Search

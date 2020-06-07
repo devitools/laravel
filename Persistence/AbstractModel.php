@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence;
+namespace Devitools\Persistence;
 
-use App\Persistence\Model\Fill;
-use App\Persistence\Model\Helper;
-use App\Persistence\Model\Hook;
-use App\Persistence\Model\Replaceable;
-use App\Persistence\Model\Responsible;
-use App\Persistence\Model\Validation;
-use App\Persistence\Model\Value;
+use Devitools\Persistence\Model\Fill;
+use Devitools\Persistence\Model\Helper;
+use Devitools\Persistence\Model\Hook;
+use Devitools\Persistence\Model\Replaceable;
+use Devitools\Persistence\Model\Responsible;
+use Devitools\Persistence\Model\Validation;
+use Devitools\Persistence\Model\Value;
 use Dyrynda\Database\Support\GeneratesUuid as HasBinaryUuid;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,8 +22,8 @@ use OwenIt\Auditing\Contracts\Auditable as Auditing;
 use OwenIt\Auditing\Exceptions\AuditingException;
 use Ramsey\Uuid\Uuid;
 
-use function App\Helper\counter;
-use function App\Helper\is_binary;
+use function Devitools\Helper\counter;
+use function Devitools\Helper\is_binary;
 use function in_array;
 
 /**

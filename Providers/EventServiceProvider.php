@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
+namespace Devitools\Providers;
 
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Event;
 /**
  * Class EventServiceProvider
  *
- * @package App\Providers
+ * @package Devitools\Providers
  */
 class EventServiceProvider extends ServiceProvider
 {

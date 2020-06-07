@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence;
+namespace Devitools\Persistence;
 
 /**
  * Interface ModelInterface
  *
- * @package App\Domains
+ * @package Devitools\Domains
  */
 interface ModelInterface
 {

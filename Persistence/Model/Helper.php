@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Model;
+namespace Devitools\Persistence\Model;
 
-use function App\Helper\decodeUuid;
-use function App\Helper\encodeUuid;
+use function Devitools\Helper\decodeUuid;
+use function Devitools\Helper\encodeUuid;
 
 /**
  * Trait Helper
  *
- * @package App\Persistence\Model
+ * @package Devitools\Persistence\Model
  */
 trait Helper
 {

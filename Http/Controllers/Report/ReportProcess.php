@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Report;
+namespace Devitools\Http\Controllers\Report;
 
-use App\Http\Controllers\Controller;
-use App\Exceptions\ErrorRuntime;
-use App\Exceptions\ErrorValidation;
-use App\Report\AbstractReport;
+use Devitools\Http\Controllers\Controller;
+use Devitools\Exceptions\ErrorRuntime;
+use Devitools\Exceptions\ErrorValidation;
+use Devitools\Report\AbstractReport;
 use Exception;
 use Illuminate\Http\Request;
 
 /**
  * Class ReportProcess
  *
- * @package App\Http\Report
+ * @package Devitools\Http\Report
  */
 class ReportProcess extends Controller
 {
@@ -41,7 +41,7 @@ class ReportProcess extends Controller
         }
 
         $name = ucfirst($report);
-        $fullQualifiedName = "\\App\\Report\\{$name}";
+        $fullQualifiedName = "\\Devitools\\Report\\{$name}";
         if (!class_exists($fullQualifiedName)) {
             throw new ErrorRuntime(['report' => $report]);
         }

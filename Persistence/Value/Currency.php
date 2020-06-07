@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Value;
+namespace Devitools\Persistence\Value;
 
-use App\Exceptions\ErrorInvalidArgument;
+use Devitools\Exceptions\ErrorInvalidArgument;
 use JsonSerializable;
 
 use function PhpBrasil\Collection\Helper\stringify;
@@ -12,7 +12,7 @@ use function PhpBrasil\Collection\Helper\stringify;
 /**
  * Class Currency
  *
- * @package App\Units\Common
+ * @package Devitools\Units\Common
  */
 class Currency implements JsonSerializable
 {

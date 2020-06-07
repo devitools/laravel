@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Rest;
+namespace Devitools\Http\Controllers\Rest;
 
-use App\Http\Support\Scopes;
-use App\Persistence\RepositoryInterface;
+use Devitools\Http\Support\Scopes;
+use Devitools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
  * Trait Create
  *
- * @package App\Http\Controllers\Rest
+ * @package Devitools\Http\Controllers\Rest
  * @method RepositoryInterface repository()
  */
 trait Create

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\File;
+namespace Devitools\Http\Controllers\File;
 
-use App\Http\Controllers\Controller;
+use Devitools\Http\Controllers\Controller;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Response;
@@ -16,7 +16,7 @@ use function request;
 /**
  * Class Download
  *
- * @package App\Http\File
+ * @package Devitools\Http\File
  */
 class Download extends Controller
 {

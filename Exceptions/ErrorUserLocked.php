@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Exceptions;
+namespace Devitools\Exceptions;
 
-use App\Http\Status;
+use Devitools\Http\Status;
 
 /**
  * Class ErrorUserLocked
- * @package App\Exceptions
+ * @package Devitools\Exceptions
  */
 class ErrorUserLocked extends ErrorGeneral
 {

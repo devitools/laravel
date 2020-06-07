@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Model;
+namespace Devitools\Persistence\Model;
 
-use App\Units\Common\UserSession;
+use Devitools\Units\Common\UserSession;
 use Throwable;
 
 /**
  * Trait Responsible
  *
- * @package App\Persistence\Model
+ * @package Devitools\Persistence\Model
  */
 trait Responsible
 {

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Units\Mail;
+namespace Devitools\Units\Mail;
 
-use App\Units\Common\Instance;
+use Devitools\Units\Common\Instance;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Mail;
-use App\Persistence\AbstractModel;
+use Devitools\Persistence\AbstractModel;
 
 /**
  * Class Sender
- * @package App\Units\Mail
+ * @package Devitools\Units\Mail
  */
 class Sender extends Mailable
 {

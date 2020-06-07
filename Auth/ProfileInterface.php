@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Auth;
+namespace Devitools\Auth;
 
 use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Interface ProfileInterface
  *
- * @package App\Auth
+ * @package Devitools\Auth
  */
 interface ProfileInterface
 {

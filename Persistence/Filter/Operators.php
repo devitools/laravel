@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Filter;
+namespace Devitools\Persistence\Filter;
 
-use App\Persistence\Filter\Operators\FilterCurrency;
-use App\Persistence\Filter\Operators\FilterEqual;
-use App\Persistence\Filter\Operators\FilterIn;
-use App\Persistence\Filter\Operators\FilterLike;
-use App\Persistence\Filter\Operators\FilterNotEqual;
-use App\Persistence\Filter\Operators\FilterNotIn;
+use Devitools\Persistence\Filter\Operators\FilterCurrency;
+use Devitools\Persistence\Filter\Operators\FilterEqual;
+use Devitools\Persistence\Filter\Operators\FilterIn;
+use Devitools\Persistence\Filter\Operators\FilterLike;
+use Devitools\Persistence\Filter\Operators\FilterNotEqual;
+use Devitools\Persistence\Filter\Operators\FilterNotIn;
 
 /**
  * Class Operators
  *
- * @package App\Persistence\Filter
+ * @package Devitools\Persistence\Filter
  */
 final class Operators
 {

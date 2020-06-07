@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Model;
+namespace Devitools\Persistence\Model;
 
-use App\Domains\Admin\Profile;
-use App\Exceptions\ErrorInvalidArgument;
-use App\Persistence\AbstractModel;
+use Devitools\Domains\Admin\Profile;
+use Devitools\Exceptions\ErrorInvalidArgument;
+use Devitools\Persistence\AbstractModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
 
-use function App\Helper\counter;
+use function Devitools\Helper\counter;
 use function is_array;
 use function PhpBrasil\Collection\pack;
 
 /**
  * Trait Configure
  *
- * @package App\Persistence\Model
+ * @package Devitools\Persistence\Model
  */
 trait Hook
 {

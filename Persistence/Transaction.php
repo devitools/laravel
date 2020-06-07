@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence;
+namespace Devitools\Persistence;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -13,7 +13,7 @@ use function PhpBrasil\Collection\Helper\prop;
 /**
  * Class Transaction
  *
- * @package App\Persistence
+ * @package Devitools\Persistence
  */
 abstract class Transaction
 {

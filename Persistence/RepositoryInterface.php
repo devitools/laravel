@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence;
+namespace Devitools\Persistence;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 /**
  * Interface RepositoryInterface
  *
- * @package App\Domains
+ * @package Devitools\Domains
  */
 interface RepositoryInterface
 {

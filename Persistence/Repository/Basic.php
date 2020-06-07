@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Repository;
+namespace Devitools\Persistence\Repository;
 
-use App\Exceptions\ErrorInvalidArgument;
-use App\Persistence\AbstractModel;
-use App\Persistence\Filter\Connectors;
-use App\Persistence\Filter\FilterInterface;
-use App\Persistence\Filter\FilterValue;
-use App\Persistence\Filter\Operators;
+use Devitools\Exceptions\ErrorInvalidArgument;
+use Devitools\Persistence\AbstractModel;
+use Devitools\Persistence\Filter\Connectors;
+use Devitools\Persistence\Filter\FilterInterface;
+use Devitools\Persistence\Filter\FilterValue;
+use Devitools\Persistence\Filter\Operators;
 use Illuminate\Database\Eloquent\Builder;
 
 use function call_user_func_array;
-use function App\Helper\numberToCurrency;
+use function Devitools\Helper\numberToCurrency;
 use function in_array;
 use function is_array;
 
 /**
  * Trait Basic
  *
- * @package App\Persistence\Repository
+ * @package Devitools\Persistence\Repository
  * @property AbstractModel model
  */
 trait Basic

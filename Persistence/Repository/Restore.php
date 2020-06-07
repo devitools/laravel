@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Repository;
+namespace Devitools\Persistence\Repository;
 
-use App\Persistence\AbstractModel;
+use Devitools\Persistence\AbstractModel;
 
 /**
  * Trait Restore
  *
- * @package App\Persistence\Repository
+ * @package Devitools\Persistence\Repository
  */
 trait Restore
 {

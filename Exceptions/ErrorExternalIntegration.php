@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Exceptions;
+namespace Devitools\Exceptions;
 
 /**
  * Class ErrorExternalIntegration
- * @package App\Exceptions
+ * @package Devitools\Exceptions
  */
 class ErrorExternalIntegration extends ErrorGeneral
 {

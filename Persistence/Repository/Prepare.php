@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Repository;
+namespace Devitools\Persistence\Repository;
 
-use App\Exceptions\ErrorExternalIntegration;
-use App\Exceptions\ErrorInvalidArgument;
-use App\Persistence\Value\Currency;
+use Devitools\Exceptions\ErrorExternalIntegration;
+use Devitools\Exceptions\ErrorInvalidArgument;
+use Devitools\Persistence\Value\Currency;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -16,7 +16,7 @@ use function in_array;
 /**
  * Trait Prepare
  *
- * @package App\Http\Controllers\Rest
+ * @package Devitools\Http\Controllers\Rest
  */
 trait Prepare
 {

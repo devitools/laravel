@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Database;
+namespace Devitools\Database;
 
 use Illuminate\Database\Migrations\Migration as Base;
 
 /**
  * Class Migration
  *
- * @package App\Database
+ * @package Devitools\Database
  */
 class Migration extends Base
 {

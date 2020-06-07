@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Filter\Operators;
+namespace Devitools\Persistence\Filter\Operators;
 
-use App\Persistence\Filter\FilterAbstract;
+use Devitools\Persistence\Filter\FilterAbstract;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class FilterEqual
  *
- * @package App\Persistence\Filter\Operators
+ * @package Devitools\Persistence\Filter\Operators
  */
 class FilterEqual extends FilterAbstract
 {

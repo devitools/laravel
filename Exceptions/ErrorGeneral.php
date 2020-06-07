@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Exceptions;
+namespace Devitools\Exceptions;
 
 use Exception;
-use App\Http\Status;
+use Devitools\Http\Status;
 
-use function App\Helper\error;
+use function Devitools\Helper\error;
 use function is_string;
 
 /**
  * Class ErrorGeneral
  *
- * @package App\Exceptions
+ * @package Devitools\Exceptions
  */
 abstract class ErrorGeneral extends Exception implements ErrorInterface
 {

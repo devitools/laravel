@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Audit;
+namespace Devitools\Audit;
 
 use Illuminate\Database\Eloquent\JsonEncodingException;
 use OwenIt\Auditing\Models\Audit;
-use App\Persistence\AbstractModel as Common;
+use Devitools\Persistence\AbstractModel as Common;
 use Throwable;
 
-use function App\Helper\is_binary;
+use function Devitools\Helper\is_binary;
 
 /**
  * Class Model
  *
- * @package App\Audit
+ * @package Devitools\Audit
  */
 class Model extends Audit
 {

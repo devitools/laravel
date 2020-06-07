@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Devitools\Providers;
 
 use Aws\S3\S3Client;
 use Illuminate\Support\Facades\Storage;
@@ -10,7 +10,7 @@ use League\Flysystem\Filesystem;
 
 /**
  * Class MinioStorageServiceProvider
- * @package App\Providers
+ * @package Devitools\Providers
  */
 class MinioStorageServiceProvider extends ServiceProvider
 {

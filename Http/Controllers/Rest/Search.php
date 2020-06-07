@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Rest;
+namespace Devitools\Http\Controllers\Rest;
 
-use App\Http\Support\Scopes;
-use App\Persistence\Filter\Connectors;
-use App\Persistence\Filter\FilterValue;
-use App\Persistence\Filter\Operators;
-use App\Persistence\RepositoryInterface;
+use Devitools\Http\Support\Scopes;
+use Devitools\Persistence\Filter\Connectors;
+use Devitools\Persistence\Filter\FilterValue;
+use Devitools\Persistence\Filter\Operators;
+use Devitools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Php\JSON;
@@ -22,7 +22,7 @@ use function is_numeric;
 /**
  * Trait Search
  *
- * @package App\Http\Controllers\Rest
+ * @package Devitools\Http\Controllers\Rest
  * @method RepositoryInterface repository()
  */
 trait Search

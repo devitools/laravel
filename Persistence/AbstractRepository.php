@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence;
+namespace Devitools\Persistence;
 
-use App\Units\Common\Instance;
-use App\Persistence\Repository\Basic;
-use App\Persistence\Repository\Count;
-use App\Persistence\Repository\Create;
-use App\Persistence\Repository\Destroy;
-use App\Persistence\Repository\Helper;
-use App\Persistence\Repository\Prepare;
-use App\Persistence\Repository\Read;
-use App\Persistence\Repository\Restore;
-use App\Persistence\Repository\Search;
-use App\Persistence\Repository\Update;
+use Devitools\Units\Common\Instance;
+use Devitools\Persistence\Repository\Basic;
+use Devitools\Persistence\Repository\Count;
+use Devitools\Persistence\Repository\Create;
+use Devitools\Persistence\Repository\Destroy;
+use Devitools\Persistence\Repository\Helper;
+use Devitools\Persistence\Repository\Prepare;
+use Devitools\Persistence\Repository\Read;
+use Devitools\Persistence\Repository\Restore;
+use Devitools\Persistence\Repository\Search;
+use Devitools\Persistence\Repository\Update;
 use Illuminate\Database\Eloquent\Builder;
 
 /**

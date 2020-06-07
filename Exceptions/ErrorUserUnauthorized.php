@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Exceptions;
+namespace Devitools\Exceptions;
 
-use App\Http\Status;
+use Devitools\Http\Status;
 
 /**
  * Class ErrorUserUnauthorized
- * @package App\Exceptions
+ * @package Devitools\Exceptions
  */
 class ErrorUserUnauthorized extends ErrorGeneral
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
+namespace Devitools\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * Class RouteServiceProvider
  *
- * @package App\Providers
+ * @package Devitools\Providers
  */
 class RouteServiceProvider extends ServiceProvider
 {

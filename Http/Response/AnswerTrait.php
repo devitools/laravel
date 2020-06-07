@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Response;
+namespace Devitools\Http\Response;
 
-use App\Http\Status;
+use Devitools\Http\Status;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -23,7 +23,7 @@ use Illuminate\Http\JsonResponse;
  * | error    | An error occurred in processing the request, i.e. an    | status, message        | code, data         |
  * |          | exception was thrown                                    |                        |                    |
  * |------------------------------------------------------------------------------------------------------------------|
- * @package App\Http\Response\Answer
+ * @package Devitools\Http\Response\Answer
  */
 trait AnswerTrait
 {

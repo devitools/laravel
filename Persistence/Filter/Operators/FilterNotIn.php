@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Filter\Operators;
+namespace Devitools\Persistence\Filter\Operators;
 
-use App\Persistence\Filter\Connectors;
-use App\Persistence\Filter\FilterAbstract;
+use Devitools\Persistence\Filter\Connectors;
+use Devitools\Persistence\Filter\FilterAbstract;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class FilterNotIn
  *
- * @package App\Persistence\Filter\Operators
+ * @package Devitools\Persistence\Filter\Operators
  */
 class FilterNotIn extends FilterAbstract
 {

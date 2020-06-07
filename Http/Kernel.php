@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Http;
+namespace Devitools\Http;
 
-use App\Http\Middleware\AppAuthenticate;
-use App\Http\Middleware\AppIntegration;
-use App\Http\Middleware\Authenticate;
-use App\Http\Middleware\CheckForMaintenanceMode;
-use App\Http\Middleware\EncryptCookies;
-use App\Http\Middleware\RedirectIfAuthenticated;
-use App\Http\Middleware\TrimStrings;
-use App\Http\Middleware\TrustProxies;
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Persistence\Transaction;
+use Devitools\Http\Middleware\AppAuthenticate;
+use Devitools\Http\Middleware\AppIntegration;
+use Devitools\Http\Middleware\Authenticate;
+use Devitools\Http\Middleware\CheckForMaintenanceMode;
+use Devitools\Http\Middleware\EncryptCookies;
+use Devitools\Http\Middleware\RedirectIfAuthenticated;
+use Devitools\Http\Middleware\TrimStrings;
+use Devitools\Http\Middleware\TrustProxies;
+use Devitools\Http\Middleware\VerifyCsrfToken;
+use Devitools\Persistence\Transaction;
 use Fruitcake\Cors\HandleCors;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
@@ -35,7 +35,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 /**
  * Class Kernel
  *
- * @package App\Http
+ * @package Devitools\Http
  */
 class Kernel extends HttpKernel
 {
@@ -98,9 +98,6 @@ class Kernel extends HttpKernel
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
-
-        'authenticate' => AppAuthenticate::class,
-        'integration' => AppIntegration::class,
     ];
 
     /**

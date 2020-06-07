@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Exceptions;
+namespace Devitools\Exceptions;
 
-use App\Auth\Login;
-use App\Http\Response\AnswerTrait;
-use App\Http\Status;
+use Devitools\Auth\Login;
+use Devitools\Http\Response\AnswerTrait;
+use Devitools\Http\Status;
 use Exception;
 use ForceUTF8\Encoding;
 use Illuminate\Database\QueryException;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
 
-use function App\Helper\url;
+use function Devitools\Helper\url;
 use function in_array;
 use function is_array;
 use function Sentry\configureScope;
@@ -26,7 +26,7 @@ use function Sentry\configureScope;
 /**
  * Class Handler
  *
- * @package App\Exceptions
+ * @package Devitools\Exceptions
  */
 class Handler extends ExceptionHandler
 {

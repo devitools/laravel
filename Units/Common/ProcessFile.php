@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Units\Common;
+namespace Devitools\Units\Common;
 
-use App\Exceptions\ErrorExternalIntegration;
+use Devitools\Exceptions\ErrorExternalIntegration;
 
 /**
  * Trait ProcessFile

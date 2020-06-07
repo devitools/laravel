@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Auth;
+namespace Devitools\Auth;
 
-use App\Exceptions\ErrorUserInative;
-use App\Exceptions\ErrorUserUnauthorized;
-use App\Units\Common\Instance;
+use Devitools\Exceptions\ErrorUserInative;
+use Devitools\Exceptions\ErrorUserUnauthorized;
+use Devitools\Units\Common\Instance;
 use Exception;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-use function App\Helper\uuid;
+use function Devitools\Helper\uuid;
 
 /**
  * Class Session

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
+namespace Devitools\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Laravel\Horizon\Horizon;
@@ -11,7 +11,7 @@ use Laravel\Horizon\HorizonApplicationServiceProvider;
 /**
  * Class HorizonServiceProvider
  *
- * @package App\Providers
+ * @package Devitools\Providers
  */
 class HorizonServiceProvider extends HorizonApplicationServiceProvider
 {

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Units\Common;
+namespace Devitools\Units\Common;
 
-use App\Auth\Login;
-use App\Exceptions\ErrorUserForbidden;
+use Devitools\Auth\Login;
+use Devitools\Exceptions\ErrorUserForbidden;
 
 /**
  * Trait UserSession
  *
- * @package App\Units\Common
+ * @package Devitools\Units\Common
  */
 trait UserSession
 {

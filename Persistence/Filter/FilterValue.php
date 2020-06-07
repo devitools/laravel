@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Filter;
+namespace Devitools\Persistence\Filter;
 
 /**
  * Class FilterValue
  *
- * @package App\Persistence\Filter
+ * @package Devitools\Persistence\Filter
  */
 class FilterValue
 {

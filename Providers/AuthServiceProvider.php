@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
+namespace Devitools\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Gate;
 /**
  * Class AuthServiceProvider
  *
- * @package App\Providers
+ * @package Devitools\Providers
  */
 class AuthServiceProvider extends ServiceProvider
 {
@@ -20,7 +20,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        'Devitools\Model' => 'Devitools\Policies\ModelPolicy',
     ];
 
     /**

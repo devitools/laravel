@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Persistence\Repository;
+namespace Devitools\Persistence\Repository;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use App\Persistence\AbstractModel;
-use App\Persistence\ModelInterface;
+use Devitools\Persistence\AbstractModel;
+use Devitools\Persistence\ModelInterface;
 
 /**
  * Trait Read
  *
- * @package App\Persistence\Repository
+ * @package Devitools\Persistence\Repository
  * @property AbstractModel model
  */
 trait Read

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Report;
+namespace Devitools\Http\Controllers\Report;
 
-use App\Http\Controllers\Controller;
+use Devitools\Http\Controllers\Controller;
 
 /**
  * Class ReportLoading
  *
- * @package App\Http\Report
+ * @package Devitools\Http\Report
  */
 class ReportLoading extends Controller
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Devitools\Http\Middleware;
 
-use App\Providers\RouteServiceProvider;
+use Devitools\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
