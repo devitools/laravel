@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Devitools\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 /**
  * Class AuthServiceProvider

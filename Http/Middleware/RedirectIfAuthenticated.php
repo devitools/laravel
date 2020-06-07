@@ -2,8 +2,8 @@
 
 namespace Devitools\Http\Middleware;
 
-use Devitools\Providers\RouteServiceProvider;
 use Closure;
+use Devitools\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated

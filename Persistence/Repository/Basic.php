@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence\Repository;
 
-use Devitools\Exceptions\ErrorInvalidArgument;
 use Devitools\Persistence\AbstractModel;
 use Devitools\Persistence\Filter\Connectors;
 use Devitools\Persistence\Filter\FilterInterface;
@@ -12,10 +11,7 @@ use Devitools\Persistence\Filter\FilterValue;
 use Devitools\Persistence\Filter\Operators;
 use Illuminate\Database\Eloquent\Builder;
 
-use function call_user_func_array;
-use function Devitools\Helper\numberToCurrency;
 use function in_array;
-use function is_array;
 
 /**
  * Trait Basic

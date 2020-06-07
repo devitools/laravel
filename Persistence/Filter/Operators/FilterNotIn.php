@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence\Filter\Operators;
 
-use Devitools\Persistence\Filter\Connectors;
 use Devitools\Persistence\Filter\FilterAbstract;
 use Illuminate\Database\Eloquent\Builder;
 

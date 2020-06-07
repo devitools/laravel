@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Devitools\Exceptions;
 
-use Exception;
 use Devitools\Http\Status;
+use Exception;
 
 use function Devitools\Helper\error;
 use function is_string;

@@ -7,7 +7,6 @@ namespace Devitools\Persistence\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 use function Devitools\Helper\is_dot;
-use function Devitools\Helper\numberToCurrency;
 
 /**
  * Class FilterAbstract

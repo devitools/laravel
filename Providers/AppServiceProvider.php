@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Devitools\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Laravel\Horizon\Horizon;
 
 /**
  * Class AppServiceProvider

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Devitools\Http\Support;
 
 use Devitools\Auth\Login;
-
 use Devitools\Exceptions\ErrorUserForbidden;
 
 use function Devitools\Helper\error;

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Devitools\Units\Mail;
 
+use Devitools\Persistence\AbstractModel;
 use Devitools\Units\Common\Instance;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Mail;
-use Devitools\Persistence\AbstractModel;
 
 /**
  * Class Sender

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Devitools\Audit;
 
+use Devitools\Persistence\AbstractModel as Common;
 use Illuminate\Database\Eloquent\JsonEncodingException;
 use OwenIt\Auditing\Models\Audit;
-use Devitools\Persistence\AbstractModel as Common;
 use Throwable;
 
 use function Devitools\Helper\is_binary;

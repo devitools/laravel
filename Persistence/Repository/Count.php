@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence\Repository;
 
-use Illuminate\Database\Eloquent\Builder;
 use Devitools\Persistence\AbstractModel;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Trait Count

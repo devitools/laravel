@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence\Repository;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Devitools\Persistence\AbstractModel;
 use Devitools\Persistence\ModelInterface;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Trait Read

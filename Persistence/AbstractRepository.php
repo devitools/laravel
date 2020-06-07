@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence;
 
-use Devitools\Units\Common\Instance;
 use Devitools\Persistence\Repository\Basic;
 use Devitools\Persistence\Repository\Count;
 use Devitools\Persistence\Repository\Create;
@@ -15,6 +14,7 @@ use Devitools\Persistence\Repository\Read;
 use Devitools\Persistence\Repository\Restore;
 use Devitools\Persistence\Repository\Search;
 use Devitools\Persistence\Repository\Update;
+use Devitools\Units\Common\Instance;
 use Illuminate\Database\Eloquent\Builder;
 
 /**

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Devitools\Http\Controllers\Report;
 
-use Devitools\Http\Controllers\Controller;
 use Devitools\Exceptions\ErrorRuntime;
 use Devitools\Exceptions\ErrorValidation;
+use Devitools\Http\Controllers\Controller;
 use Devitools\Report\AbstractReport;
 use Exception;
 use Illuminate\Http\Request;

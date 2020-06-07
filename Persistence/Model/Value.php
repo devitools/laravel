@@ -6,8 +6,8 @@ namespace Devitools\Persistence\Model;
 
 use DateTime;
 
-use function Devitools\Helper\currencyToNumber;
 use function count;
+use function Devitools\Helper\currencyToNumber;
 use function in_array;
 use function is_array;
 use function is_callable;

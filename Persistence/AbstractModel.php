@@ -12,7 +12,6 @@ use Devitools\Persistence\Model\Responsible;
 use Devitools\Persistence\Model\Validation;
 use Devitools\Persistence\Model\Value;
 use Dyrynda\Database\Support\GeneratesUuid as HasBinaryUuid;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;

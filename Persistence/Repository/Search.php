@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence\Repository;
 
+use Devitools\Persistence\AbstractModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Devitools\Persistence\AbstractModel;
 
 use function is_array;
 

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Devitools\Report;
 
+use Devitools\Report\Fragments\Getter;
+use Devitools\Report\Fragments\Where;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Php\JSON;
-use Devitools\Report\Fragments\Getter;
-use Devitools\Report\Fragments\Where;
 
 /**
  * Class AbstractReport

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Devitools\Http\Controllers\File;
 
 use Devitools\Exceptions\ErrorValidation;
+use Devitools\Http\Controllers\AbstractController;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Devitools\Http\Controllers\AbstractController;
 
 use function Devitools\Helper\uuid;
 

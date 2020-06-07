@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence\Repository;
 
-use Exception;
 use Devitools\Persistence\AbstractModel;
+use Exception;
 
 /**
  * Trait Destroy

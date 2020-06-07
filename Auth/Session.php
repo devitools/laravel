@@ -8,7 +8,6 @@ use Devitools\Exceptions\ErrorUserInative;
 use Devitools\Exceptions\ErrorUserUnauthorized;
 use Devitools\Units\Common\Instance;
 use Exception;
-use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
