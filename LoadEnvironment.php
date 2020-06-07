@@ -9,6 +9,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 use Illuminate\Support\Env;
 use Php\File;
+use Throwable;
 
 /**
  * Class LoadEnvironment
@@ -27,9 +28,13 @@ class LoadEnvironment extends LoadEnvironmentVariables
     protected function createDotenv($app)
     {
         $names = ['.env.defaults', $app->environmentFile()];
-        $filename = __DIR__ . '/../.env.' . $app->environment();
-        if (File::exists($filename)) {
-            $names[] = '.env.' . $app->environment();
+        try {
+            $filename = __DIR__ . '/../.env.' . $app->environment();
+            if (File::exists($filename)) {
+                $names[] = '.env.' . $app->environment();
+            }
+        } catch (Throwable $exception) {
+            // silent is gold
         }
 
         return Dotenv::create(
