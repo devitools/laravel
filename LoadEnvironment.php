@@ -18,7 +18,6 @@ use Throwable;
  */
 class LoadEnvironment extends LoadEnvironmentVariables
 {
-
     /**
      * Create a Dotenv instance.
      *
@@ -40,7 +39,8 @@ class LoadEnvironment extends LoadEnvironmentVariables
         return Dotenv::create(
             Env::getRepository(),
             $app->environmentPath(),
-            $names
+            $names,
+            false
         );
     }
 }
