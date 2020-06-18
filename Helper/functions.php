@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devitools\Helper;
 
+use Devitools\Exceptions\ErrorInvalidArgument;
 use Devitools\Persistence\Value\Currency;
 use Exception;
 use Ramsey\Uuid\Uuid;
@@ -129,7 +130,11 @@ function error(string $property, string $message, $value, $parameters = [], $cod
  */
 function numberToCurrency($number): int
 {
-    return Currency::fromNumber($number)->toInteger();
+    try {
+        return Currency::fromNumber($number)->toInteger();
+    } catch (ErrorInvalidArgument $e) {
+        return 0;
+    }
 }
 
 /**
