@@ -108,9 +108,11 @@ trait Hook
                 $value = [
                     'uuid' => $uuid->getBytes(),
                     'id' => $uuid->toString(),
-                    'counter' => counter(),
                     $foreignKey => $this->getValue($localKey),
                 ];
+                if (config('app.counter')) {
+                    $value['counter'] = counter();
+                }
                 return array_merge($value, $parser($data, $foreignKey, $localKey));
             });
             $hasMany->insert($values->records());

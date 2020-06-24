@@ -37,17 +37,18 @@ class Session extends Login
      */
     public function login(string $username, string $password, string $device = ''): array
     {
-        $login = static::where('username', $username)->first();
+        $login = static::where(config('auth.fields.username', 'username'), $username)->first();
 
         if ($login === null) {
             throw new ErrorUserUnauthorized(['credentials' => 'unknown']);
         }
 
-        if (!Hash::check($password, $login->getAttribute('password'))) {
+        if (!Hash::check($password, $login->getAttribute(config('auth.fields.password', 'password')))) {
             throw new ErrorUserUnauthorized(['credentials' => 'invalid']);
         }
 
-        if (!$login->getAttribute('active')) {
+        $active = config('auth.fields.active', 'active');
+        if ($active && !$login->getAttribute($active)) {
             throw new ErrorUserInative(['user' => 'inactive']);
         }
 

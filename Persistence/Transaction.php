@@ -35,6 +35,9 @@ abstract class Transaction
      */
     public static function start(): void
     {
+        if (env('APP_ENV') === 'testing') {
+            return;
+        }
         DB::beginTransaction();
     }
 
@@ -55,6 +58,10 @@ abstract class Transaction
      */
     public static function finish($context): void
     {
+        if (env('APP_ENV') === 'testing') {
+            return;
+        }
+
         if (!DB::transactionLevel()) {
             return;
         }
@@ -81,6 +88,7 @@ abstract class Transaction
         if (static::$force) {
             return true;
         }
+
         if ($context instanceof JsonResponse) {
             return (bool)prop($context->getData(), 'commit');
         }

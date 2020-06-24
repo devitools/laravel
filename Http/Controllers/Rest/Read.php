@@ -34,6 +34,7 @@ trait Read
         if ($data === null) {
             throw new ErrorResourceIsGone(['id' => $id]);
         }
+
         return $this->answerSuccess($data);
     }
 }
