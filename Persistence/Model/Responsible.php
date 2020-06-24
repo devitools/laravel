@@ -34,8 +34,11 @@ trait Responsible
     /**
      * @return void
      */
-    public function responsibleCreate()
+    public function responsibleCreate(): void
     {
+        if (config('app.no-responsible')) {
+            return;
+        }
         $name = $this->getResponsibleName();
         $this->setValue(static::CREATED_BY, $name);
         $this->setValue(static::UPDATED_BY, $name);
@@ -44,16 +47,22 @@ trait Responsible
     /**
      * @return void
      */
-    public function responsibleUpdate()
+    public function responsibleUpdate(): void
     {
+        if (config('app.no-responsible')) {
+            return;
+        }
         $this->setValue(static::UPDATED_BY, $this->getResponsibleName());
     }
 
     /**
      * @return void
      */
-    public function responsibleDelete()
+    public function responsibleDelete(): void
     {
+        if (config('app.no-responsible')) {
+            return;
+        }
         $this->setValue(static::DELETED_BY, $this->getResponsibleName());
     }
 }

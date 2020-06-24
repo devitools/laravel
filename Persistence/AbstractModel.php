@@ -193,7 +193,9 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
         $visible = array_diff($this->getFillable(), $this->hidden);
         $keys = [$this->exposedKey(), $this->getKeyName()];
         $timestamps = [static::CREATED_AT, static::UPDATED_AT, static::DELETED_AT];
-        $responsible = [static::CREATED_BY, static::UPDATED_BY, static::DELETED_BY];
+        $responsible = config('app.no-responsible')
+            ? []
+            : [static::CREATED_BY, static::UPDATED_BY, static::DELETED_BY];
 
         return array_merge($keys, $visible, $this->readable, $timestamps, $responsible);
     }
