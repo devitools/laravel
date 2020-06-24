@@ -69,6 +69,10 @@ abstract class TableCreate extends Migration
                 $this->timestamps($table);
             }
 
+            if (config('app.no-responsible')) {
+                return;
+            }
+
             if ($this->withResponsible) {
                 $this->responsible($table);
             }
