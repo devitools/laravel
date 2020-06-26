@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Devitools\Http\Controllers\Rest;
 
-use Devitools\Http\Support\Scopes;
+use Devitools\Http\Support\Levels;
 use Devitools\Persistence\Filter\Connectors;
 use Devitools\Persistence\Filter\FilterValue;
 use Devitools\Persistence\Filter\Operators;
@@ -34,7 +34,7 @@ trait Search
      */
     public function search(Request $request): JsonResponse
     {
-        $this->grant($this->repository()->domain(), Scopes::SCOPE_INDEX);
+        $this->grant($this->repository()->domain(), Levels::LEVEL_INDEX);
 
         // page=1&size=10
         $page = $request->get('page', 1);

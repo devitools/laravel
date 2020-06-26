@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Devitools\Http\Controllers\Rest;
 
 use Devitools\Exceptions\ErrorResourceIsGone;
-use Devitools\Http\Support\Scopes;
+use Devitools\Http\Support\Levels;
 use Devitools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -27,7 +27,7 @@ trait Update
      */
     public function update(Request $request, string $id): JsonResponse
     {
-        $this->grant($this->repository()->domain(), Scopes::SCOPE_EDIT);
+        $this->grant($this->repository()->domain(), Levels::LEVEL_EDIT);
 
         $data = $request->all();
         if (!$data) {

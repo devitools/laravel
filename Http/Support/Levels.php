@@ -9,35 +9,35 @@ namespace Devitools\Http\Support;
  *
  * @package Devitools\Http\Support
  */
-abstract class Scopes
+abstract class Levels
 {
     /**
      * @var string
      */
-    public const SCOPE_INDEX = 'index';
+    public const LEVEL_INDEX = 'index';
 
     /**
      * @var string
      */
-    public const SCOPE_ADD = 'add';
+    public const LEVEL_ADD = 'add';
 
     /**
      * @var string
      */
-    public const SCOPE_VIEW = 'view';
+    public const LEVEL_VIEW = 'view';
 
     /**
      * @var string
      */
-    public const SCOPE_EDIT = 'edit';
+    public const LEVEL_EDIT = 'edit';
 
     /**
      * @var string
      */
-    public const SCOPE_REMOVE = 'destroy';
+    public const LEVEL_REMOVE = 'destroy';
 
     /**
      * @var string
      */
-    public const SCOPE_TRASH = 'trash';
+    public const LEVEL_TRASH = 'trash';
 }

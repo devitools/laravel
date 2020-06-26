@@ -20,7 +20,7 @@ trait Permission
     /**
      * @var bool
      */
-    protected $allowGuest = false;
+    protected bool $allowGuest = false;
 
     /**
      * @param string $domain

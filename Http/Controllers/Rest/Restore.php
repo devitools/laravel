@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Devitools\Http\Controllers\Rest;
 
 use Devitools\Exceptions\ErrorResourceIsGone;
-use Devitools\Http\Support\Scopes;
+use Devitools\Http\Support\Levels;
 use Devitools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,7 +31,7 @@ trait Restore
      */
     public function restore(Request $request, string $id): JsonResponse
     {
-        $this->grant($this->repository()->domain(), Scopes::SCOPE_TRASH);
+        $this->grant($this->repository()->domain(), Levels::LEVEL_TRASH);
 
         $ids = idToArray($id);
 

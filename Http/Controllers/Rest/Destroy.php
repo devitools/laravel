@@ -6,7 +6,7 @@ namespace Devitools\Http\Controllers\Rest;
 
 use Devitools\Exceptions\ErrorResourceIsGone;
 use Devitools\Exceptions\ErrorUserForbidden;
-use Devitools\Http\Support\Scopes;
+use Devitools\Http\Support\Levels;
 use Devitools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -33,7 +33,7 @@ trait Destroy
      */
     public function destroy(Request $request, string $id, $erase = false): JsonResponse
     {
-        $this->grant($this->repository()->domain(), Scopes::SCOPE_REMOVE);
+        $this->grant($this->repository()->domain(), Levels::LEVEL_REMOVE);
 
         $ids = idToArray($id);
 

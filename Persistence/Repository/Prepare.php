@@ -34,6 +34,7 @@ trait Prepare
         $domain = $this->domain();
         $currencies = $this->currencies();
 
+        /** @noinspection AlterInForeachInspection */
         foreach ($data as $field => &$value) {
             if ($value instanceof UploadedFile) {
                 $value = $this->parseFile($domain, $identifier, $field, $value);
@@ -63,7 +64,6 @@ trait Prepare
     {
         $extension = $file->getClientOriginalExtension();
         $path = "{$domain}/$identifier/{$field}";
-        /** @noinspection SpellCheckingInspection */
         if (!Storage::disk('minio')->put($path, File::get($file->getRealPath()))) {
             throw new ErrorExternalIntegration('Cloud storage not available');
         }

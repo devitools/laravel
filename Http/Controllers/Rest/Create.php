@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Devitools\Http\Controllers\Rest;
 
-use Devitools\Http\Support\Scopes;
+use Devitools\Http\Support\Levels;
 use Devitools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,7 +24,7 @@ trait Create
      */
     public function create(Request $request): JsonResponse
     {
-        $this->grant($this->repository()->domain(), Scopes::SCOPE_ADD);
+        $this->grant($this->repository()->domain(), Levels::LEVEL_ADD);
 
         $data = $request->all();
         if (!$data) {
