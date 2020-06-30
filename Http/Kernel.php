@@ -10,7 +10,7 @@ use Devitools\Http\Middleware\EncryptCookies;
 use Devitools\Http\Middleware\RedirectIfAuthenticated;
 use Devitools\Http\Middleware\TrimStrings;
 use Devitools\Http\Middleware\TrustProxies;
-use Devitools\Http\Middleware\VerifyCsrfToken;
+// use Devitools\Http\Middleware\VerifyCsrfToken;
 use Devitools\LoadEnvironment;
 use Devitools\Persistence\Transaction;
 use Fruitcake\Cors\HandleCors;
@@ -89,7 +89,7 @@ class Kernel extends HttpKernel
             StartSession::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             ShareErrorsFromSession::class,
-            VerifyCsrfToken::class,
+            // VerifyCsrfToken::class,
             SubstituteBindings::class,
         ],
 
