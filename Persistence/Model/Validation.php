@@ -34,6 +34,11 @@ trait Validation
     private array $errors = [];
 
     /**
+     * @var string
+     */
+    protected string $validationPath = '';
+
+    /**
      * @return bool
      * @throws ErrorValidation
      */
@@ -96,6 +101,9 @@ trait Validation
         }
         foreach ($errors as $error => $parameters) {
             $message = strtolower($error);
+            if ($this->validationPath) {
+                $property = "{$this->validationPath}.{$property}";
+            }
             $this->addError($property, $message, $value, $parameters);
         }
     }
@@ -109,7 +117,7 @@ trait Validation
      *
      * @return $this
      */
-    final protected function addError(string $property, string $message, $value, $parameters = [], $code = null)
+    final protected function addError(string $property, string $message, $value, $parameters = [], $code = null): self
     {
         $this->errors[] = error($property, $message, $value, $parameters, $code);
         return $this;

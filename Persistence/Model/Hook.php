@@ -7,6 +7,8 @@ namespace Devitools\Persistence\Model;
 use Devitools\Domains\Admin\Profile;
 use Devitools\Exceptions\ErrorInvalidArgument;
 use Devitools\Persistence\AbstractModel;
+use Devitools\Persistence\AbstractRepository;
+use Devitools\Persistence\RepositoryInterface;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
 
@@ -103,19 +105,30 @@ trait Hook
 
             $hasMany->where($foreignKey, $this->getValue($localKey))->forceDelete();
 
-            $values = pack($items)->map(function ($data) use ($parser, $foreignKey, $localKey) {
-                $uuid = Uuid::uuid4();
-                $value = [
-                    'uuid' => $uuid->getBytes(),
-                    'id' => $uuid->toString(),
-                    $foreignKey => $this->getValue($localKey),
-                ];
-                if (config('app.counter')) {
-                    $value['counter'] = counter();
-                }
-                return array_merge($value, $parser($data, $foreignKey, $localKey));
-            });
-            $hasMany->insert($values->records());
+            if (is_callable($parser)) {
+                $values = pack($items)->map(function ($data) use ($parser, $foreignKey, $localKey) {
+                    $uuid = Uuid::uuid4();
+                    $value = [
+                        'uuid' => $uuid->getBytes(),
+                        'id' => $uuid->toString(),
+                        $foreignKey => $this->getValue($localKey),
+                    ];
+                    if (config('app.counter')) {
+                        $value['counter'] = counter();
+                    }
+                    return array_merge($value, $parser($data, $foreignKey, $localKey));
+                });
+                $hasMany->insert($values->records());
+                return;
+            }
+
+            /** @var AbstractRepository $parser */
+            /** @var RepositoryInterface $repository */
+            $repository = $parser::instance();
+            foreach ($items as $item) {
+                $item[$foreignKey] =  $this->getValue($localKey);
+                $repository->create($item);
+            }
         }
     }
 
