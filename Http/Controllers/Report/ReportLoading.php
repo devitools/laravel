@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Devitools\Http\Controllers\Report;
 
 use Devitools\Http\Controllers\Controller;
@@ -9,7 +7,7 @@ use Devitools\Http\Controllers\Controller;
 /**
  * Class ReportLoading
  *
- * @package Devitools\Http\Report
+ * @package App\Http\Report
  */
 class ReportLoading extends Controller
 {

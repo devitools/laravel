@@ -7,11 +7,11 @@ use Exception;
 use Illuminate\Http\Request;
 
 /**
- * Class ReportProcess
+ * Class ReportProcessCsv
  *
- * @package App\Http\Report
+ * @package Devitools\Http\Controllers\Report
  */
-class ReportProcess extends Report
+class ReportProcessCsv extends Report
 {
     /**
      * The __invoke method is called when a script tries to call an object as a function.
@@ -28,12 +28,11 @@ class ReportProcess extends Report
         $fullQualifiedName = $this->getFullQualifiedName($report);
         $user = $this->getUser();
 
-        $printing = $request->get('p') === 'true';
         $filters = $request->post();
 
         /** @var AbstractReport $fullQualifiedName */
         return $fullQualifiedName
-            ::build($user, $printing)
-            ->execute($filters);
+            ::build($user, false)
+            ->execute($filters, 'csv');
     }
 }

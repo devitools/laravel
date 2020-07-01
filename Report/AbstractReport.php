@@ -6,11 +6,12 @@ namespace Devitools\Report;
 
 use Devitools\Report\Fragments\Getter;
 use Devitools\Report\Fragments\Where;
-use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 use Illuminate\View\View;
 use Php\JSON;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Class AbstractReport
@@ -65,12 +66,55 @@ abstract class AbstractReport
     /**
      * @param array $filters
      *
-     * @return string
-     * @throws Exception
+     * @return array
      */
-    final public function execute(array $filters): string
+    protected function normalizeInfo(array &$filters): array
     {
-        return $this->run($filters);
+        if (!isset($filters['__@info'])) {
+            return [];
+        }
+
+        $map = static function ($info) {
+            return JSON::decode($info, false);
+        };
+        $decoded = array_map($map, $filters['__@info']);
+        $info = array_filter($decoded, static function ($info) {
+            return isset($info->value);
+        });
+        unset($filters['__@info']);
+        return $info;
+    }
+
+    /**
+     * @param array $filters
+     *
+     * @return array
+     */
+    protected function normalizeFilters(array $filters): array
+    {
+        $callback = static function ($info) {
+            if (is_scalar($info)) {
+                return (string)$info !== '';
+            }
+            return (bool)($info->value ?? false);
+        };
+        return array_filter($filters, $callback);
+    }
+
+    /**
+     * @param array $filters
+     * @param string $type
+     *
+     * @return mixed
+     */
+    final public function execute(array $filters, string $type = 'html')
+    {
+        require __DIR__ . '/../Helper/report.php';
+
+        if ($type === 'csv') {
+            return $this->csv($filters);
+        }
+        return $this->html($filters);
     }
 
     /**
@@ -78,34 +122,27 @@ abstract class AbstractReport
      *
      * @return string
      */
-    private function run(array $filters): string
+    private function html(array $filters): string
     {
-        $this->filters = $filters;
-        $this->info = [];
-        if (isset($filters['__@info'])) {
-            $map = static function ($info) {
-                return JSON::decode($info, false);
-            };
-            $decoded = array_map($map, $filters['__@info']);
-            $this->info = array_filter(
-                $decoded,
-                static function ($info) {
-                    return isset($info->value);
-                }
-            );
-            unset($filters['__@info']);
-        }
-        $callback = static function ($info) {
-            if (is_scalar($info)) {
-                return (string)$info !== '';
-            }
-            return (bool)($info->value ?? false);
-        };
-        $filters = array_filter($filters, $callback);
-        $collection = $this->fetch($filters);
-        $this->collection = $this->parseCollection($collection);
+        $this->info = $this->normalizeInfo($filters);
+        $this->filters = $this->normalizeFilters($filters);
+        $this->collection = $this->parseCollection($this->fetch($this->filters));
 
-        return $this->render($this->template());
+        return $this->renderHTML($this->template());
+    }
+
+    /**
+     * @param array $filters
+     *
+     * @return StreamedResponse
+     */
+    protected function csv(array $filters): StreamedResponse
+    {
+        $this->info = $this->normalizeInfo($filters);
+        $this->filters = $this->normalizeFilters($filters);
+        $this->collection = $this->parseCollection($this->fetch($this->filters), 'csv');
+
+        return $this->renderCSV();
     }
 
     /**
@@ -120,12 +157,31 @@ abstract class AbstractReport
 
     /**
      * @param array $collection
+     * @param string $type
      *
      * @return array
      */
-    protected function parseCollection(array $collection): array
+    protected function parseCollection(array $collection, string $type = 'html'): array
     {
         return $collection;
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function parseHeader(): ?array
+    {
+        return null;
+    }
+
+    /**
+     * @param $row
+     *
+     * @return array
+     */
+    protected function parseRow($row): array
+    {
+        return (array)$row;
     }
 
     /**
@@ -136,15 +192,18 @@ abstract class AbstractReport
     abstract protected function instruction(array &$filters): string;
 
     /**
+     * @return string
+     */
+    abstract protected function template(): string;
+
+    /**
      * @param string $template
      * @param array $parameters
      *
      * @return false|Factory|View|string
      */
-    final protected function render(string $template, array $parameters = [])
+    final protected function renderHTML(string $template, array $parameters = [])
     {
-        require __DIR__ . '/../Helper/report.php';
-
         $base = [
             'layout' => $this->layout,
             'printing' => $this->printing,
@@ -154,11 +213,44 @@ abstract class AbstractReport
             'user' => $this->user,
         ];
         $data = array_merge($base, $parameters);
-        return view($template, $data)->toHtml();
+        return (string)view($template, $data);
     }
 
     /**
-     * @return string
+     * @param array $options
+     *
+     * @return StreamedResponse
      */
-    abstract protected function template(): string;
+    final protected function renderCSV(array $options = []): StreamedResponse
+    {
+        $delimiter = $options['delimiter'] ?? ';';
+        $enclosure = $options['enclosure'] ?? '"';
+        $filename = $options['filename'] ?? '';
+
+        $callback = function () use ($delimiter, $enclosure) {
+            $header = $this->parseHeader();
+            $file = fopen('php://output', 'wb');
+            if ($header) {
+                fputcsv($file, $header, $delimiter, $enclosure);
+            }
+
+            foreach ($this->collection as $record) {
+                fputcsv($file, $this->parseRow($record), $delimiter, $enclosure);
+            }
+            fclose($file);
+        };
+
+        $headers = [
+            'content-type' => 'text/csv',
+            'content-disposition' => "attachment; filename={$filename}",
+            'pragma' => 'no-cache',
+            'cache-control' => 'must-revalidate, post-check=0, pre-check=0',
+            'expires' => '0'
+        ];
+        if ($filename) {
+            $headers['x-suggested-filename'] = $filename;
+        }
+
+        return Response::stream($callback, 200, $headers);
+    }
 }

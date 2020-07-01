@@ -21,7 +21,7 @@ trait WhereBetween
      * @return $this
      */
     protected function addWhereBetween(
-        array $filters,
+        array &$filters,
         string $column,
         string $begin = 'begin',
         string $end = 'end'
@@ -29,18 +29,26 @@ trait WhereBetween
         $start = $filters[$begin] ?? null;
         $finish = $filters[$end] ?? null;
 
+        if (!$start && !$finish) {
+            return $this;
+        }
+
         if ($start && $finish) {
+            $filters[$begin] = "{$start} 00:00:00";
+            $filters[$end] = "{$finish} 23:59:59";
             $this->where[] = "{$column} BETWEEN :{$begin} AND :{$end}";
             return $this;
         }
 
         if ($start) {
+            $filters[$begin] = "{$start} 00:00:00";
             $this->where[] = "{$column} >= :{$begin}";
             return $this;
         }
 
         if ($finish) {
-            $this->where[] = "{$column} >= :{$end}";
+            $filters[$end] = "{$finish} 23:59:59";
+            $this->where[] = "{$column} <= :{$end}";
         }
         return $this;
     }

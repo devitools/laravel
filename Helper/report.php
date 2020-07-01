@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Report;
 
 use DateTime;
+use Throwable;
 
+use function Devitools\Helper\currencyFormat;
 use function Php\prop;
 
 /**
@@ -54,7 +56,7 @@ function valueNumber($row, string $property, int $precision = 2, $decimals = ','
  *
  * @return string
  */
-function valueSelect($row, string $property, array $options, $fallback = '&nbsp;'): string
+function valueSelect($row, string $property, array $options, $fallback = ' - '): string
 {
     $value = $row->$property ?? null;
     return $options[$value] ?? $fallback;
@@ -69,12 +71,19 @@ function valueSelect($row, string $property, array $options, $fallback = '&nbsp;
  */
 function valueDate($row, string $property, string $fallback = ' - '): string
 {
-    $value = $row->$property ?? null;
-    $date = DateTime::createFromFormat('Y-m-d', $value);
-    if (!$date) {
-        return $fallback;
+    try {
+        $value = $row->$property ?? null;
+        if ($value === null) {
+            return '';
+        }
+        $date = DateTime::createFromFormat('Y-m-d', $value);
+        if (!$date) {
+            return $fallback;
+        }
+        return $date->format('d/m/Y');
+    } catch (Throwable $exception) {
+        return '';
     }
-    return $date->format('d/m/Y');
 }
 
 /**
@@ -86,12 +95,20 @@ function valueDate($row, string $property, string $fallback = ' - '): string
  */
 function valueDatetime($row, string $property, string $fallback = ' - '): string
 {
-    $value = $row->$property ?? null;
-    $date = DateTime::createFromFormat('Y-m-d H:i:s', $value);
-    if (!$date) {
-        return $fallback;
+    try {
+        $value = $row->$property ?? null;
+        if ($value === null) {
+            return '';
+        }
+        $value = $row->$property ?? null;
+        $date = DateTime::createFromFormat('Y-m-d H:i:s', $value);
+        if (!$date) {
+            return $fallback;
+        }
+        return $date->format('d/m/Y H:i:s');
+    } catch (Throwable $exception) {
+        return '';
     }
-    return $date->format('d/m/Y H:i:s');
 }
 
 /**
@@ -113,14 +130,20 @@ function responsible($row, string $property)
 /**
  * @param mixed $row
  * @param string $property
+ * @param bool $currency
  *
  * @return string
  */
-function valueCurrency($row, string $property): string
+function valueCurrency($row, string $property, bool $currency = false): string
 {
-    $precision = 2;
-    $decimals = ',';
-    $thousands = '.';
-    $value = valueNumber($row, $property, $precision, $decimals, $thousands);
+    if ($currency) {
+        $value = currencyFormat(value($row, $property));
+    } else {
+        $precision = 2;
+        $decimals = ',';
+        $thousands = '.';
+        $value = valueNumber($row, $property, $precision, $decimals, $thousands);
+    }
+
     return env('APP_CURRENCY', '$') . ' ' . $value;
 }
