@@ -99,10 +99,14 @@ trait Validation
             $property = $alias;
             break;
         }
-        foreach ($errors as $error => $parameters) {
+        foreach ($errors as $error => $datum) {
             $message = strtolower($error);
             if ($this->validationPath) {
                 $property = "{$this->validationPath}.{$property}";
+            }
+            $parameters = $datum;
+            if (count($datum) === 1) {
+                $parameters = [strtolower($error) => $datum[0]];
             }
             $this->addError($property, $message, $value, $parameters);
         }
