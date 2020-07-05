@@ -48,7 +48,6 @@ trait Read
             $query = $query->with($related);
         }
 
-        /** @var Collection $collection */
         return $query
             ->get($this->model->columns())
             ->first();

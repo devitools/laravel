@@ -9,6 +9,7 @@ use Devitools\Persistence\Filter\Connectors;
 use Devitools\Persistence\Filter\FilterInterface;
 use Devitools\Persistence\Filter\FilterValue;
 use Devitools\Persistence\Filter\Operators;
+use Devitools\Persistence\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 use function in_array;
@@ -134,7 +135,7 @@ trait Basic
             return $filter->query($model, $connector, $value, $column);
         }
 
-        if ($connector === Connectors::OR) {
+        if ($connector === Connectors:: OR) {
             return $model->orWhere($column, $value);
         }
         return $model->where($column, $value);

@@ -15,6 +15,7 @@ use Devitools\Persistence\Repository\Restore;
 use Devitools\Persistence\Repository\Search;
 use Devitools\Persistence\Repository\Update;
 use Devitools\Units\Common\Instance;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -52,9 +53,9 @@ abstract class AbstractRepository implements RepositoryInterface
     use Search;
 
     /**
-     * @var ModelInterface
+     * @var AbstractModel|ModelInterface|Application|mixed
      */
-    protected $model;
+    protected ModelInterface $model;
 
     /**
      * @var string
@@ -75,11 +76,14 @@ abstract class AbstractRepository implements RepositoryInterface
      */
     public function __construct(ModelInterface $model = null)
     {
-        if (!$model) {
-            /** @noinspection CallableParameterUseCaseInTypeContextInspection */
-            $model = app($this->prototype);
+        if ($model) {
+            $this->model = $model;
+            return;
         }
-        $this->model = $model;
+        if (!isset($this->prototype)) {
+            return;
+        }
+        $this->model = app($this->prototype);
     }
 
     /**
