@@ -18,26 +18,26 @@ class FilterCurrency extends FilterAbstract
 {
     /**
      * @param Builder $query
-     * @param string $connector
      * @param string $value
      * @param string $column
+     * @param string $connector
      *
      * @return Builder
      */
-    public function where(Builder $query, string $connector, string $value, string $column): Builder
+    public function where(Builder $query, string $value, string $column, string $connector): Builder
     {
         return $query->where($column, '=', numberToCurrency($value));
     }
 
     /**
      * @param Builder $query
-     * @param string $connector
      * @param string $value
      * @param string $column
+     * @param string $connector
      *
      * @return Builder
      */
-    public function orWhere(Builder $query, string $connector, string $value, string $column): Builder
+    public function orWhere(Builder $query, string $value, string $column, string $connector): Builder
     {
         return $query->orWhere($column, '=', numberToCurrency($value));
     }

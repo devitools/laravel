@@ -43,9 +43,18 @@ trait Read
         }
 
         $oneToMany = $this->model->oneToMany();
-        foreach (array_keys($oneToMany) as $related) {
+        foreach ($oneToMany as $with => $related) {
             /** @var Builder $query */
-            $query = $query->with($related);
+            $query = $query->with($with);
+            if (is_callable($related)) {
+                continue;
+            }
+            if (!isset($related['with'])) {
+                continue;
+            }
+            if (is_string($related['with'])) {
+                $query = $query->with($related['with']);
+            }
         }
 
         return $query

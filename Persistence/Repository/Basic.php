@@ -23,6 +23,8 @@ use function in_array;
 trait Basic
 {
     /**
+     * Custom filters of the entity
+     *
      * @var array
      */
     protected array $filters = [];
@@ -125,14 +127,15 @@ trait Basic
         $value = $filterValue->getValue();
 
         if (isset($this->filters[$operator])) {
-            /** @var FilterInterface $filter */
-            $filter = $this->filters[$operator]::build();
-            return $filter->query($model, $connector, $value, $column);
+            /** @var FilterInterface $reference */
+            $reference = $this->filters[$operator];
+            $filter = $reference::get();
+            return $filter->query($model, $value, $column, $connector);
         }
 
         $filter = Operators::filter($operator);
         if ($filter) {
-            return $filter->query($model, $connector, $value, $column);
+            return $filter->query($model, $value, $column, $connector);
         }
 
         if ($connector === Connectors:: OR) {

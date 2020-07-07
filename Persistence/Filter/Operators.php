@@ -89,8 +89,9 @@ final class Operators
             return null;
         }
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        static::$filters[$operator] = $operators[$operator]::build();
+        /** @var FilterInterface $reference */
+        $reference = $operators[$operator];
+        static::$filters[$operator] = $reference::get();
 
         return static::$filters[$operator];
     }

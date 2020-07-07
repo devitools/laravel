@@ -14,14 +14,9 @@ use Illuminate\Database\Eloquent\Builder;
 interface FilterInterface
 {
     /**
-     * @param Builder $query
-     * @param string $connector
-     * @param string $value
-     * @param string $column
-     *
-     * @return Builder
+     * @return FilterInterface
      */
-    public function orWhere(Builder $query, string $connector, string $value, string $column): Builder;
+    public static function get(): self;
 
     /**
      * @param Builder $query
@@ -31,7 +26,7 @@ interface FilterInterface
      *
      * @return Builder
      */
-    public function where(Builder $query, string $connector, string $value, string $column): Builder;
+    public function orWhere(Builder $query, string $value, string $column, string $connector): Builder;
 
     /**
      * @param Builder $query
@@ -41,5 +36,15 @@ interface FilterInterface
      *
      * @return Builder
      */
-    public function query(Builder $query, string $connector, string $value, string $column): Builder;
+    public function where(Builder $query, string $value, string $column, string $connector): Builder;
+
+    /**
+     * @param Builder $query
+     * @param string $connector
+     * @param string $value
+     * @param string $column
+     *
+     * @return Builder
+     */
+    public function query(Builder $query, string $value, string $column, string $connector): Builder;
 }

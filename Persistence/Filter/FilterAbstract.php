@@ -18,7 +18,7 @@ abstract class FilterAbstract implements FilterInterface
     /**
      * @return self
      */
-    final public static function build(): self
+    final public static function get(): self
     {
         return new static();
     }
@@ -31,17 +31,17 @@ abstract class FilterAbstract implements FilterInterface
      *
      * @return Builder
      */
-    final public function query(Builder $query, string $connector, string $value, string $column): Builder
+    final public function query(Builder $query, string $value, string $column, string $connector): Builder
     {
         if (is_dot($column)) {
             return $this->queryBelongsTo($query, $connector, $value, $column);
         }
 
         if ($connector === Connectors::OR) {
-            return $this->orWhere($query, $connector, $value, $column);
+            return $this->orWhere($query, $value, $column, $connector);
         }
 
-        return $this->where($query, $connector, $value, $column);
+        return $this->where($query, $value, $column, $connector);
     }
 
     /**
@@ -57,7 +57,7 @@ abstract class FilterAbstract implements FilterInterface
         [$relation, $field] = (array)explode('.', $column);
 
         $callback = function (Builder $query) use ($connector, $value, $field) {
-            $this->where($query, $connector, $value, $field);
+            $this->where($query, $value, $field, $connector);
         };
 
         if ($connector === Connectors::OR) {

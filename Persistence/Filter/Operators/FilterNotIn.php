@@ -22,7 +22,7 @@ class FilterNotIn extends FilterAbstract
      *
      * @return Builder
      */
-    public function where(Builder $query, string $connector, string $value, string $column): Builder
+    public function where(Builder $query, string $value, string $column, string $connector): Builder
     {
         $values = explode(',', $value);
         return $query->whereNotIn($column, $values);
@@ -36,7 +36,7 @@ class FilterNotIn extends FilterAbstract
      *
      * @return Builder
      */
-    public function orWhere(Builder $query, string $connector, string $value, string $column): Builder
+    public function orWhere(Builder $query, string $value, string $column, string $connector): Builder
     {
         $values = explode(',', $value);
         return $query->orWhereNotIn($column, $values);

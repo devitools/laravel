@@ -51,23 +51,23 @@ trait Hook
 
         static::saving(static function (AbstractModel $model) {
             // parse many to one relationship
-            $model->parseManyToOne();
+            $model->persistManyToOne();
             // validate the values
             $model->validate();
         });
 
         static::saved(static function (AbstractModel $model) {
             // parse many to many relationship
-            $model->parseManyToMany();
+            $model->persistManyToMany();
             // parse one to many relationship
-            $model->parseOneToMany();
+            $model->persistOneToMany();
         });
     }
 
     /**
      * @return void
      */
-    protected function parseManyToMany(): void
+    protected function persistManyToMany(): void
     {
         $manyToMany = $this->manyToMany();
         foreach ($manyToMany as $alias => $column) {
@@ -88,13 +88,17 @@ trait Hook
     /**
      * @return void
      */
-    protected function parseOneToMany(): void
+    protected function persistOneToMany(): void
     {
         $oneToMany = $this->oneToMany();
         foreach ($oneToMany as $alias => $parser) {
+            if ($parser === null) {
+                continue;
+            }
+
             $items = $this->getFilled($alias);
             if (!is_array($items)) {
-                return;
+                continue;
             }
 
             /** @var HasMany $hasMany */
@@ -119,15 +123,29 @@ trait Hook
                     return array_merge($value, $parser($data, $foreignKey, $localKey));
                 });
                 $hasMany->insert($values->records());
-                return;
+                continue;
             }
 
-            /** @var AbstractRepository $parser */
-            /** @var RepositoryInterface $repository */
-            $repository = $parser::instance();
-            foreach ($items as $item) {
-                $item[$foreignKey] =  $this->getValue($localKey);
-                $repository->create($item);
+            if (is_array($parser)) {
+                /** @var AbstractRepository $reference */
+                $reference = $parser['reference'];
+                /** @var RepositoryInterface $repository */
+                $repository = $reference::instance();
+                foreach ($items as $item) {
+                    $item[$foreignKey] =  $this->getValue($localKey);
+                    $repository->create($item);
+                }
+                continue;
+            }
+
+            if (is_string($parser)) {
+                /** @var AbstractRepository $parser */
+                /** @var RepositoryInterface $repository */
+                $repository = $parser::instance();
+                foreach ($items as $item) {
+                    $item[$foreignKey] =  $this->getValue($localKey);
+                    $repository->create($item);
+                }
             }
         }
     }
@@ -136,7 +154,7 @@ trait Hook
      * @return void
      * @throws ErrorInvalidArgument
      */
-    protected function parseManyToOne(): void
+    protected function persistManyToOne(): void
     {
         $manyToOne = $this->manyToOne();
         foreach ($manyToOne as $alias => $column) {
@@ -151,7 +169,7 @@ trait Hook
             if (!is_array($filled)) {
                 continue;
             }
-            $this->parseManyToOneArray($column, $filled);
+            $this->persistManyToOneArray($column, $filled);
         }
     }
 
@@ -162,7 +180,7 @@ trait Hook
      * @return void
      * @throws ErrorInvalidArgument
      */
-    private function parseManyToOneArray(string $column, array $filled): void
+    private function persistManyToOneArray(string $column, array $filled): void
     {
         if (!isset($filled[$this->exposedKey()])) {
             throw new ErrorInvalidArgument(["{$column}.{$this->exposedKey()}" => 'required']);
