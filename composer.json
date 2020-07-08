@@ -1,5 +1,5 @@
 {
-    "name": "devitools/laravel",
+    "name": "devitools/adapter-laravel",
     "type": "package",
     "license": "MIT",
     "description": "Devitools Laravel adapter",
