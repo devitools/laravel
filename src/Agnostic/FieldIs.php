@@ -245,4 +245,13 @@ trait FieldIs
         $this->fields[$this->currentField]->type = 'string';
         return $this;
     }
+
+    /**
+     * @return $this
+     */
+    protected function isJSON(): self
+    {
+        $this->fields[$this->currentField]->type = 'json';
+        return $this;
+    }
 }

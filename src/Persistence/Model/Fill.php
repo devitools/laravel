@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Devitools\Persistence\Model;
 
 use Devitools\Persistence\AbstractModel;
+use Php\JSON;
 
 use function count;
 use function in_array;
@@ -38,6 +39,10 @@ trait Fill
         $data = [];
         foreach ($fillable as $field) {
             if (!in_array($field, $keys, true)) {
+                continue;
+            }
+            if (!is_scalar($attributes[$field])) {
+                $data[$field] = JSON::encode($attributes[$field]);
                 continue;
             }
             $data[$field] = $attributes[$field];
