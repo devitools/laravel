@@ -123,9 +123,9 @@ abstract class Schema extends AbstractModel
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $query = parent::newQuery($excludeDeleted);
 
-        if (!$this->hasHook('fetch:record')) {
+        if (!$this->hasHook('query:default')) {
             return $query;
         }
-        return $this->triggerHook('fetch:record', [$query]);
+        return $this->triggerHook('query:default', [$query]);
     }
 }
