@@ -33,9 +33,19 @@ trait Hooks
      *
      * @return bool
      */
-    private function hasHook(string $hook): bool
+    protected function hasHook(string $hook): bool
     {
         return isset($this->hooks[$hook]);
+    }
+
+    /**
+     * @param string $hook
+     *
+     * @return string|callable|null
+     */
+    protected function getHook(string $hook)
+    {
+        return $this->hooks[$hook] ?? null;
     }
 
     /**
@@ -44,7 +54,7 @@ trait Hooks
      *
      * @return mixed
      */
-    private function triggerHook(string $hook, $parameters = [])
+    protected function triggerHook(string $hook, $parameters = [])
     {
         if (isset($this->hooks[$hook]) && is_callable($this->hooks[$hook])) {
             return call_user_func_array($this->hooks[$hook], $parameters);
