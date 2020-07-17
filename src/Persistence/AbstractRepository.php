@@ -117,4 +117,12 @@ abstract class AbstractRepository implements RepositoryInterface
     {
         return $this->model->getDefaults();
     }
+
+    /**
+     * @return string
+     */
+    public function getPrototype(): string
+    {
+        return $this->prototype;
+    }
 }

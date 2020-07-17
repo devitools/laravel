@@ -58,7 +58,7 @@ trait Relation
      * @param string $name
      * @param string $related
      * @param string $foreignKey
-     * @param string|callable $callable
+     * @param string|callable|null $callable
      * @param string|null $localKey
      *
      * @return $this

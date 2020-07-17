@@ -2,6 +2,8 @@
 
 namespace Devitools\Agnostic;
 
+use Devitools\Persistence\AbstractRepository;
+
 /**
  * Trait FieldIs
  *
@@ -162,29 +164,39 @@ trait FieldIs
     }
 
     /**
+     * @param string $remote
+     * @param string $foreignKey
+     * @param callable|string|null $callable
+     * @param string|null $localKey
+     *
      * @return $this
      */
-    protected function isArray(): self
+    protected function isArray(string $remote, string $foreignKey, $callable = null, string $localKey = null): self
     {
         $this->fields[$this->currentField]->type = 'hasMany';
+        $this->fields[$this->currentField]->hasMany = (object)[
+            'name' => $this->currentField,
+            'remote' => $remote,
+            'foreignKey' => $foreignKey,
+            'callable' => $callable,
+            'localKey' => $localKey ?? $this->primaryKey,
+        ];
+        $this->fields[$this->currentField]->fill = false;
         return $this;
     }
 
     /**
+     * @param string $foreignKey
+     * @param string $repository
+     * @param string|null $localKey
+     *
      * @return $this
      */
-    protected function isBuiltin(): self
+    protected function isBuiltin(string $repository, string $foreignKey, string $localKey = null): self
     {
-        $this->fields[$this->currentField]->type = 'hasMany';
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    protected function isCurrency(): self
-    {
-        $this->fields[$this->currentField]->type = 'currency';
+        /** @var AbstractRepository $repository */
+        $remote = $repository::instance()->getPrototype();
+        $this->isArray($remote, $foreignKey, $repository, $localKey);
         return $this;
     }
 
@@ -198,15 +210,16 @@ trait FieldIs
      */
     protected function isTree(string $remote, string $foreignKey, $callable, string $localKey = null): self
     {
-        $this->fields[$this->currentField]->type = 'hasMany';
-        $this->fields[$this->currentField]->hasMany = (object)[
-            'name' => $this->currentField,
-            'remote' => $remote,
-            'foreignKey' => $foreignKey,
-            'callable' => $callable,
-            'localKey' => $localKey ?? $this->primaryKey,
-        ];
-        $this->fields[$this->currentField]->fill = false;
+        $this->isArray($remote, $foreignKey, $callable, $localKey);
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function isCurrency(): self
+    {
+        $this->fields[$this->currentField]->type = 'currency';
         return $this;
     }
 
