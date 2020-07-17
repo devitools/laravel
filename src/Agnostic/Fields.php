@@ -84,6 +84,34 @@ trait Fields
     }
 
     /**
+     * Configure the cast
+     * Supported casts: [
+     *     'integer',
+     *     'real',
+     *     'float',
+     *     'double',
+     *     'decimal:<digits>',
+     *     'string',
+     *     'boolean',
+     *     'object',
+     *     'array',
+     *     'collection',
+     *     'date',
+     *     'datetime',
+     *     'timestamp',
+     * ]
+     *
+     * @param string $cast
+     *
+     * @return $this
+     */
+    protected function castAs(string $cast): self
+    {
+        $this->fields[$this->currentField]->cast = $cast;
+        return $this;
+    }
+
+    /**
      * Get the fields of the schema
      *
      * @return array
