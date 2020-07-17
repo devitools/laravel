@@ -41,7 +41,7 @@ trait Fill
             if (!in_array($field, $keys, true)) {
                 continue;
             }
-            if (!is_scalar($attributes[$field])) {
+            if (in_array($this->casts[$field] ?? null, ['array', 'object'], true)) {
                 $data[$field] = JSON::encode($attributes[$field]);
                 continue;
             }
