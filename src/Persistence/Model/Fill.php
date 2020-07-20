@@ -42,10 +42,10 @@ trait Fill
                 continue;
             }
             $value = $attributes[$field];
-            if (in_array($this->casts[$field] ?? __UNDEFINED__, ['array', 'object'], true)) {
-                $value = JSON::encode($value);
+            if ($value && isset($this->casts[$field])) {
+                $value = $this->castValue($this->casts[$field] ?? __UNDEFINED__, $value);
             }
-            if (is_string($attributes[$field])) {
+            if (is_string($value)) {
                 $value = str_replace(['>', '<'], ['&gt;', '&lt;'], $value);
             }
             $data[$field] = $value;
@@ -53,6 +53,7 @@ trait Fill
 
         /** @var AbstractModel $fill */
         $fill = parent::fill($data);
+
         $notFillable = array_diff($keys, $fillable);
         foreach ($notFillable as $field) {
             if (!in_array($field, $keys, true)) {
@@ -61,6 +62,29 @@ trait Fill
             $this->setFilled($field, $attributes[$field]);
         }
         return $fill;
+    }
+
+    /**
+     * @param string $cast
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    protected function castValue(string $cast, $value)
+    {
+        if ($value === null) {
+            return $value;
+        }
+
+        if (is_string($value)) {
+            return $value;
+        }
+
+        if (in_array($cast, ['array', 'object'], true)) {
+            return JSON::encode($value);
+        }
+
+        return $value;
     }
 
     /**
