@@ -41,11 +41,14 @@ trait Fill
             if (!in_array($field, $keys, true)) {
                 continue;
             }
-            if (in_array($this->casts[$field] ?? null, ['array', 'object'], true)) {
-                $data[$field] = JSON::encode($attributes[$field]);
-                continue;
+            $value = $attributes[$field];
+            if (in_array($this->casts[$field] ?? __UNDEFINED__, ['array', 'object'], true)) {
+                $value = JSON::encode($value);
             }
-            $data[$field] = $attributes[$field];
+            if (is_string($attributes[$field])) {
+                $value = str_replace(['>', '<'], ['&gt;', '&lt;'], $value);
+            }
+            $data[$field] = $value;
         }
 
         /** @var AbstractModel $fill */
