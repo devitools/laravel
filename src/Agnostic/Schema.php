@@ -27,11 +27,26 @@ abstract class Schema extends AbstractModel
     use Validation;
 
     /**
+     * @var string
+     */
+    public const PRIMARY_KEY = 'uuid';
+
+    /**
      * The resource associated with the schema.
      *
      * @return string
      */
     abstract public static function resource(): string;
+
+    /**
+     * The resource identifier of the schema
+     *
+     * @return array
+     */
+    public function identifier(): array
+    {
+        return [static::resource(), static::PRIMARY_KEY];
+    }
 
     /**
      * Build the schema fields and actions.
@@ -58,6 +73,8 @@ abstract class Schema extends AbstractModel
     {
         $this->construct();
         $this->table = $this::resource();
+
+        $this->primaryKey = static::PRIMARY_KEY;
 
         $fields = $this->getFields();
         foreach ($fields as $key => $field) {
