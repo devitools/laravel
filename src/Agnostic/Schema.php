@@ -43,7 +43,7 @@ abstract class Schema extends AbstractModel
      *
      * @return array
      */
-    public function identifier(): array
+    public static function identifier(): array
     {
         return [static::resource(), static::PRIMARY_KEY];
     }
