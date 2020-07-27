@@ -32,6 +32,11 @@ abstract class Schema extends AbstractModel
     public const PRIMARY_KEY = 'uuid';
 
     /**
+     * @var array
+     */
+    protected array $currencies = [];
+
+    /**
      * The resource associated with the schema.
      *
      * @return string
@@ -101,6 +106,10 @@ abstract class Schema extends AbstractModel
             $this->uniques[] = $key;
         }
 
+        if ($field->currency) {
+            $this->currencies[] = $key;
+        }
+
         if ($field->cast) {
             $this->casts[$key] = $field->cast;
         }
@@ -144,5 +153,13 @@ abstract class Schema extends AbstractModel
             return $query;
         }
         return $this->triggerHook('query:default', [$query]);
+    }
+
+    /**
+     * @return array
+     */
+    public function currencies(): array
+    {
+        return $this->currencies;
     }
 }

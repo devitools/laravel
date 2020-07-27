@@ -220,6 +220,7 @@ trait FieldIs
     protected function isCurrency(): self
     {
         $this->fields[$this->currentField]->type = 'currency';
+        $this->fields[$this->currentField]->currency = true;
         return $this;
     }
 

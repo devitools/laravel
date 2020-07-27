@@ -51,7 +51,7 @@ class Currency implements JsonSerializable
         if ($value instanceof self) {
             return $value;
         }
-        return static::fromNumber($value);
+        return static::fromNumber($value, $precision);
     }
 
     /**

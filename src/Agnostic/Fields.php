@@ -42,6 +42,7 @@ trait Fields
             'cast' => null,
             'fill' => true,
             'unique' => false,
+            'currency' => false,
             'hidden' => false,
         ];
         $this->fields[$key] = (object)array_merge($defaults, $properties);
