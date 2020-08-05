@@ -12,7 +12,7 @@ use function Devitools\Helper\numberToCurrency;
 /**
  * Class FilterCurrency
  *
- * @package Devitools\Persistence\Filter\Operators
+ * @package Devitools\Persistence\Filter\Filters
  */
 class FilterCurrency extends FilterAbstract
 {

@@ -6,8 +6,8 @@ namespace Devitools\Http\Controllers\Rest;
 
 use Devitools\Http\Support\Levels;
 use Devitools\Persistence\Filter\Connectors;
+use Devitools\Persistence\Filter\Filters;
 use Devitools\Persistence\Filter\FilterValue;
-use Devitools\Persistence\Filter\Operators;
 use Devitools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -90,8 +90,8 @@ trait Search
         }
         $filters = [];
         foreach ($where as $field => $properties) {
-            $operator = Operators::EQUAL;
-            $pieces = (array)explode(Operators::SEPARATION_OPERATOR, $properties);
+            $operator = Filters::EQUAL;
+            $pieces = (array)explode(Filters::SEPARATION_OPERATOR, $properties);
             $value = $pieces[0] ?? null;
             if (count($pieces) > 1) {
                 [$operator, $value] = $pieces;
@@ -109,7 +109,7 @@ trait Search
                 continue;
             }
 
-            $operator = Operators::EQUAL;
+            $operator = Filters::EQUAL;
             $value = Uuid::fromString($value)->getBytes();
             $filters[$target] = FilterValue::build($value, $operator, Connectors:: AND);
         }
@@ -131,7 +131,7 @@ trait Search
         foreach ($fields as $field => $operator) {
             if (is_numeric($field)) {
                 $field = $operator;
-                $operator = Operators::LIKE;
+                $operator = Filters::LIKE;
             }
             $filters[$field] = FilterValue::build($filter, $operator, Connectors:: OR);
         }

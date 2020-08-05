@@ -7,9 +7,8 @@ namespace Devitools\Persistence\Repository;
 use Devitools\Persistence\AbstractModel;
 use Devitools\Persistence\Filter\Connectors;
 use Devitools\Persistence\Filter\FilterInterface;
+use Devitools\Persistence\Filter\Filters;
 use Devitools\Persistence\Filter\FilterValue;
-use Devitools\Persistence\Filter\Operators;
-use Devitools\Persistence\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 use function in_array;
@@ -133,7 +132,7 @@ trait Basic
             return $filter->query($model, $value, $column, $connector);
         }
 
-        $filter = Operators::filter($operator);
+        $filter = Filters::filter($operator);
         if ($filter) {
             return $filter->query($model, $value, $column, $connector);
         }

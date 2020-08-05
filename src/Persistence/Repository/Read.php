@@ -7,7 +7,6 @@ namespace Devitools\Persistence\Repository;
 use Devitools\Persistence\AbstractModel;
 use Devitools\Persistence\ModelInterface;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Trait Read

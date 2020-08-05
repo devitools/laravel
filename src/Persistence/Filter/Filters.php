@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence\Filter;
 
+use Devitools\Persistence\Filter\Operators\FilterBetween;
 use Devitools\Persistence\Filter\Operators\FilterCurrency;
 use Devitools\Persistence\Filter\Operators\FilterEqual;
 use Devitools\Persistence\Filter\Operators\FilterIn;
@@ -12,11 +13,11 @@ use Devitools\Persistence\Filter\Operators\FilterNotEqual;
 use Devitools\Persistence\Filter\Operators\FilterNotIn;
 
 /**
- * Class Operators
+ * Class Filters
  *
  * @package Devitools\Persistence\Filter
  */
-final class Operators
+final class Filters
 {
     /**
      * @var string
@@ -54,12 +55,17 @@ final class Operators
     public const CURRENCY = 'currency';
 
     /**
+     * @var string
+     */
+    public const BETWEEN = 'between';
+
+    /**
      * @var array
      */
     private static array $filters = [];
 
     /**
-     * Operators constructor.
+     * Filters constructor.
      */
     private function __construct()
     {
@@ -83,6 +89,7 @@ final class Operators
             static::IN => FilterIn::class,
             static::NIN => FilterNotIn::class,
             static::CURRENCY => FilterCurrency::class,
+            static::BETWEEN => FilterBetween::class,
         ];
 
         if (!isset($operators[$operator])) {

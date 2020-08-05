@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * Class FilterLike
  *
- * @package Devitools\Persistence\Filter\Operators
+ * @package Devitools\Persistence\Filter\Filters
  */
 class FilterLike extends FilterAbstract
 {

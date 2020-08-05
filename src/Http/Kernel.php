@@ -10,7 +10,6 @@ use Devitools\Http\Middleware\EncryptCookies;
 use Devitools\Http\Middleware\RedirectIfAuthenticated;
 use Devitools\Http\Middleware\TrimStrings;
 use Devitools\Http\Middleware\TrustProxies;
-// use Devitools\Http\Middleware\VerifyCsrfToken;
 use Devitools\LoadEnvironment;
 use Devitools\Persistence\Transaction;
 use Fruitcake\Cors\HandleCors;
@@ -35,6 +34,8 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+
+// use Devitools\Http\Middleware\VerifyCsrfToken;
 
 /**
  * Class Kernel

@@ -8,11 +8,11 @@ use Devitools\Persistence\Filter\FilterAbstract;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Class FilterNotIn
+ * Class FilterBetween
  *
  * @package Devitools\Persistence\Filter\Filters
  */
-class FilterNotIn extends FilterAbstract
+class FilterBetween extends FilterAbstract
 {
     /**
      * @param Builder $query
@@ -24,8 +24,8 @@ class FilterNotIn extends FilterAbstract
      */
     public function where(Builder $query, string $value, string $column, string $connector): Builder
     {
-        $values = explode(',', $value);
-        return $query->whereNotIn($column, $values);
+        $values = (array)explode(',', $value);
+        return $query->whereBetween($column, $values);
     }
 
     /**
@@ -38,7 +38,7 @@ class FilterNotIn extends FilterAbstract
      */
     public function orWhere(Builder $query, string $value, string $column, string $connector): Builder
     {
-        $values = explode(',', $value);
-        return $query->orWhereNotIn($column, $values);
+        $values = (array)explode(',', $value);
+        return $query->orWhereBetween($column, $values);
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * Class FilterNotEqual
  *
- * @package Devitools\Persistence\Filter\Operators
+ * @package Devitools\Persistence\Filter\Filters
  */
 class FilterNotEqual extends FilterAbstract
 {

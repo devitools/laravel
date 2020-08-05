@@ -6,8 +6,6 @@ namespace Devitools\Persistence\Model;
 
 use DateTime;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
-
 use function count;
 use function Devitools\Helper\currencyToNumber;
 use function in_array;
