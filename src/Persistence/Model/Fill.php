@@ -46,7 +46,7 @@ trait Fill
                 $value = $this->castValue($this->casts[$field] ?? __UNDEFINED__, $value);
             }
             if (is_string($value)) {
-                $value = str_replace(['>', '<'], ['&gt;', '&lt;'], $value);
+                $value = $this->clear($value);
             }
             $data[$field] = $value;
         }
@@ -85,6 +85,18 @@ trait Fill
         }
 
         return $value;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function clear(string $value): string
+    {
+        $pattern = '/<script(.*)>(.*)<\/script>$/mi';
+        $replacement = '&gt;script$1&lt;$2&gt;/script&lt;';
+        return preg_replace($pattern, $replacement, $value);
     }
 
     /**
