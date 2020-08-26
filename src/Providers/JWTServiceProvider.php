@@ -13,7 +13,6 @@ use Tymon\JWTAuth\Http\Parser\QueryString;
 use Tymon\JWTAuth\Http\Parser\RouteParams;
 use Tymon\JWTAuth\Providers\LaravelServiceProvider;
 
-
 /**
  * Class JWTServiceProvider
  *

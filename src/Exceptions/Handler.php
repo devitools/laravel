@@ -52,13 +52,23 @@ class Handler extends ExceptionHandler
     protected $dontFlash = [
         'password',
         'password_confirmation',
+        'passwordConfirmation',
     ];
 
     /**
+     * Capture errors and send to error tracker with Sentry
+     *
+     * @requires sentry/sentry-laravel
+     * Use "composer require sentry/sentry-laravel" to use Sentry
+     *
      * @param Throwable $exception
      */
-    public static function capture(Throwable $exception)
+    public static function capture(Throwable $exception): void
     {
+        if (!function_exists('configureScope')) {
+            return;
+        }
+
         configureScope(static function (Scope $scope) use ($exception): void {
             # capture the user
             try {

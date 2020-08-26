@@ -10,6 +10,9 @@ use League\Flysystem\Filesystem;
 
 /**
  * Class MinioStorageServiceProvider
+ *
+ * @requires coraxster/flysystem-aws-s3-v3-minio
+ * Use composer require coraxster/flysystem-aws-s3-v3-minio
  * @package Devitools\Providers
  */
 class MinioStorageServiceProvider extends ServiceProvider
@@ -47,6 +50,5 @@ class MinioStorageServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
     }
 }

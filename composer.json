@@ -12,7 +12,7 @@
         "devitools"
     ],
     "homepage": "https://github.com/devitools/laravel",
-    "version": "2.6.0",
+    "version": "3.0.0",
     "authors": [
         {
             "name": "William",
@@ -33,11 +33,9 @@
         "php-brasil/collection": "^0.2.5",
         "phpzm/phpee": "^1.0",
         "predis/predis": "^1.1",
-        "sentry/sentry-laravel": "^1.7",
         "tymon/jwt-auth": "^1.0",
         "vlucas/phpdotenv": "4.1",
-        "laravel/framework": "^7.0",
-        "laravel/horizon": "^4.3"
+        "fruitcake/laravel-cors": "^2.0@dev"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master"

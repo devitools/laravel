@@ -11,6 +11,8 @@ use Laravel\Horizon\HorizonApplicationServiceProvider;
 /**
  * Class HorizonServiceProvider
  *
+ * @requires laravel/horizon
+ * Use composer require laravel/horizon
  * @package Devitools\Providers
  */
 class HorizonServiceProvider extends HorizonApplicationServiceProvider
