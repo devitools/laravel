@@ -2,6 +2,7 @@
 
 namespace Devitools\Agnostic;
 
+use Devitools\Persistence\AbstractModel;
 use Devitools\Persistence\AbstractRepository;
 
 /**
@@ -117,6 +118,36 @@ trait FieldIs
     {
         $this->fields[$this->currentField]->type = 'hasMany';
         return $this;
+    }
+
+    /**
+     * @param string $exposed
+     *
+     * @return AbstractModel|null
+     */
+    public function remote(string $exposed): ?AbstractModel
+    {
+        $collection = $this->$exposed();
+        if ($collection) {
+            return $collection->first();
+        }
+        return null;
+    }
+
+    /**
+     * @param string $exposed
+     * @param string $name
+     * @param mixed $fallback
+     *
+     * @return mixed|null
+     */
+    public function remoteValue(string $exposed, string $name, $fallback = null)
+    {
+        $model = $this->remote($exposed);
+        if (!$model) {
+            return $fallback;
+        }
+        return $model->getValue($name);
     }
 
     /**
