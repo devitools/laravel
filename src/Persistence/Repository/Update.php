@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Devitools\Persistence\Repository;
 
 use Devitools\Persistence\AbstractModel;
+use Devitools\Persistence\Model\AssignContexts;
 
 /**
  * Trait Update
@@ -27,7 +28,7 @@ trait Update
             return null;
         }
         $data = $this->prepare($id, $data, false);
-        $instance->fill($data);
+        $instance->assign(AssignContexts::UPDATE, $data);
         $instance->save();
         return $instance->getPrimaryKeyValue();
     }

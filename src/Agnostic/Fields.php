@@ -2,6 +2,8 @@
 
 namespace Devitools\Agnostic;
 
+use Devitools\Persistence\Model\AssignContexts;
+
 /**
  * Trait Fields
  *
@@ -44,6 +46,7 @@ trait Fields
             'unique' => false,
             'currency' => false,
             'hidden' => false,
+            'avoid' => null,
         ];
         $this->fields[$key] = (object)array_merge($defaults, $properties);
         return $this;
@@ -81,6 +84,26 @@ trait Fields
     protected function massAssignment(bool $fill = true): self
     {
         $this->fields[$this->currentField]->fill = $fill;
+        return $this;
+    }
+
+    /**
+     * Allow fill the field in mass assignment
+     *
+     * @param string|string[] $context
+     *
+     * @return $this
+     */
+    protected function avoid($context = 'all'): self
+    {
+        $avoid = $context;
+        if ($context === 'all') {
+            $avoid = [AssignContexts::CREATE, AssignContexts::UPDATE];
+        }
+        if (!is_array($avoid)) {
+            $avoid = [$avoid];
+        }
+        $this->fields[$this->currentField]->avoid = $avoid;
         return $this;
     }
 

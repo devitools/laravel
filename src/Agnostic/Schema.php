@@ -118,6 +118,10 @@ abstract class Schema extends AbstractModel
             $this->rules[$key] = $field->rules;
         }
 
+        if (is_array($field->avoid)) {
+            $this->avoids[$key] = $field->avoid;
+        }
+
         if (isset($field->manyToOne)) {
             $this->addManyToOne(
                 $field->manyToOne->name,

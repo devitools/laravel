@@ -9,6 +9,7 @@ use Php\JSON;
 
 use function count;
 use function in_array;
+use function PhpBrasil\Collection\pack as vector;
 
 /**
  * Trait Fill
@@ -21,6 +22,38 @@ trait Fill
      * @var array
      */
     protected $filled = [];
+
+    /**
+     * @var array
+     * ex.:
+     * $avoids = [
+     *      'name' => ['add']
+     * ]
+     */
+    protected array $avoids = [];
+
+    /**
+     * @param string $context
+     * @param array $attributes
+     *
+     * @return $this|AbstractModel
+     */
+    public function assign(string $context, array $attributes)
+    {
+        $reducer = static function ($accumulator, $contexts, $field) use ($context) {
+            if (in_array($context, $contexts, true)) {
+                $accumulator[] = $field;
+            }
+            return $accumulator;
+        };
+        $notAllowed = vector($this->avoids)->reduce($reducer, []);
+
+        $filter = static function ($key) use ($notAllowed) {
+            return !in_array($key, $notAllowed, true);
+        };
+        $filtered = array_filter($attributes, $filter, ARRAY_FILTER_USE_KEY);
+        return $this->fill($filtered);
+    }
 
     /**
      * @param array $attributes

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Devitools\Persistence\Repository;
 
 use Devitools\Persistence\AbstractModel;
+use Devitools\Persistence\Model\AssignContexts;
 use Exception;
 use Ramsey\Uuid\Uuid;
 
@@ -35,7 +36,7 @@ trait Create
         if (!isset($data[$primaryKey])) {
             $data[$primaryKey] = Uuid::uuid1()->toString();
         }
-        $model->fill($data);
+        $model->assign(AssignContexts::CREATE, $data);
         $model->save();
         return $model->getPrimaryKeyValue();
     }
