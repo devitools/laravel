@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Notifications\Notifiable;
+use Throwable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
@@ -117,7 +118,12 @@ class Login extends User implements JWTSubject
      */
     public function getReference(): string
     {
-        return $this->profile->getReference();
+        try {
+            return $this->profile->getReference();
+        } catch (Throwable $error) {
+            // silent is gold
+        }
+        return 'unknown';
     }
 
     /**
@@ -125,6 +131,11 @@ class Login extends User implements JWTSubject
      */
     public function getPermissions(): Collection
     {
-        return $this->profile->getPermissions();
+        try {
+            return $this->profile->getPermissions();
+        } catch (Throwable $error) {
+            // silent is gold
+        }
+        return new Collection();
     }
 }
