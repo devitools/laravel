@@ -8,6 +8,7 @@ use Devitools\Exceptions\ErrorInvalidArgument;
 use Devitools\Persistence\Value\Currency;
 use Exception;
 use Ramsey\Uuid\Uuid;
+use Throwable;
 use TypeError;
 
 use function is_int;
@@ -196,15 +197,23 @@ function ip()
 }
 
 /**
- * @param int $size
+ * @param int|null $sleep
  *
  * @return int
  */
-function counter(int $size = 18): int
+function counter(int $sleep = null): int
 {
-    sleep(0);
+    if ($sleep) {
+        sleep(0);
+    }
+    try {
+        $random = (string)random_int(100, 999);
+    } catch (Throwable $error) {
+        $random = '101';
+    }
     $micro = (string)(microtime(true) * 10000);
-    $counter = substr(str_pad($micro, $size, '0'), 0, $size);
+    $size = 18;
+    $counter = substr(str_pad($micro . $random, $size, '0'), 0, $size);
     return (int)$counter;
 }
 
