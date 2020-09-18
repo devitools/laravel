@@ -150,8 +150,8 @@ abstract class Schema extends AbstractModel
      */
     public function newQuery($excludeDeleted = true)
     {
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $query = parent::newQuery($excludeDeleted);
+        /** @noinspection PhpUndefinedMethodInspection, PhpMethodParametersCountMismatchInspection */
+        $query = parent::newQuery($excludeDeleted)->withTrashed();
 
         if (!$this->hasHook('query:default')) {
             return $query;
