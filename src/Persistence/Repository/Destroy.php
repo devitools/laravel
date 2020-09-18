@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence\Repository;
 
+use Devitools\Exceptions\ErrorValidation;
 use Devitools\Persistence\AbstractModel;
-use Exception;
+use Illuminate\Database\QueryException;
 
 /**
  * Trait Destroy
@@ -19,7 +20,7 @@ trait Destroy
      * @param bool $erase
      *
      * @return string
-     * @throws Exception
+     * @throws ErrorValidation
      */
     public function destroy(string $id, $erase = false): ?string
     {
@@ -29,8 +30,15 @@ trait Destroy
             return null;
         }
         if ($erase) {
-            $instance->forceDelete();
-            return $id;
+            try {
+                $instance->forceDelete();
+                return $id;
+            } catch (QueryException $error) {
+            }
+            if (isset($error->errorInfo[1]) && $error->errorInfo[1] === 1451) {
+                throw new ErrorValidation(['id' => 'related']);
+            }
+            throw $error;
         }
         $instance->delete();
         return $id;
