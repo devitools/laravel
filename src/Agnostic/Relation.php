@@ -106,6 +106,7 @@ trait Relation
             $belongsTo = $this->belongsTo[$name];
             return $this
                 ->belongsTo($belongsTo->related, $belongsTo->foreignKey, $belongsTo->ownerKey, $belongsTo->name)
+                ->withTrashed()
                 ->get();
         }
 
@@ -113,6 +114,7 @@ trait Relation
             $hasMany = $this->hasMany[$name];
             return $this
                 ->hasMany($hasMany->related, $hasMany->foreignKey, $hasMany->localKey)
+                ->withTrashed()
                 ->get();
         }
 
@@ -129,21 +131,20 @@ trait Relation
     {
         if (isset($this->belongsTo[$name])) {
             $belongsTo = $this->belongsTo[$name];
-            return $this->belongsTo(
-                $belongsTo->related,
-                $belongsTo->foreignKey,
-                $belongsTo->ownerKey,
-                $belongsTo->name
-            );
+            $related = $belongsTo->related;
+            $foreignKey = $belongsTo->foreignKey;
+            $ownerKey = $belongsTo->ownerKey;
+            $relation = $belongsTo->name;
+            return $this->belongsTo($related, $foreignKey, $ownerKey, $relation)
+                ->withTrashed();
         }
 
         if (isset($this->hasMany[$name])) {
             $hasMany = $this->hasMany[$name];
-            return $this->hasMany(
-                $hasMany->related,
-                $hasMany->foreignKey,
-                $hasMany->localKey
-            );
+            $related = $hasMany->related;
+            $foreignKey = $hasMany->foreignKey;
+            $localKey = $hasMany->localKey;
+            return $this->hasMany($related, $foreignKey, $localKey)->withTrashed();
         }
 
         return parent::__call($name, $arguments);
