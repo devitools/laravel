@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence;
 
+use Devitools\Persistence\AbstractModel as Common;
 use Devitools\Persistence\Model\Fill;
 use Devitools\Persistence\Model\Helper;
 use Devitools\Persistence\Model\Hook;
@@ -246,6 +247,20 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
             foreach ($new as $attribute => $value) {
                 $new[$attribute] = $this->modifyAttributeValue($attribute, $value);
             }
+        }
+
+        foreach ($old as $key => $value) {
+            if (!is_binary($value)) {
+                continue;
+            }
+            $old[$key] = Common::decodeUuid($value);
+        }
+
+        foreach ($new as $key => $value) {
+            if (!is_binary($value)) {
+                continue;
+            }
+            $new[$key] = Common::decodeUuid($value);
         }
 
         $morphPrefix = Config::get('audit.user.morph_prefix', 'user');
