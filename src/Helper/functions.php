@@ -76,7 +76,7 @@ function is_binary($content)
     if (!is_scalar($content)) {
         return false;
     }
-    return preg_match('~[^\x20-\x7E\t\r\n]~', stripAccents($content)) > 0;
+    return preg_match('~[^\x20-\x7E\t\r\n]~', stripAccents((string)$content)) > 0;
 }
 
 /**
