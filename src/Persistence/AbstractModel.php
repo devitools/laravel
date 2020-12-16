@@ -22,6 +22,8 @@ use OwenIt\Auditing\Contracts\Auditable as Auditing;
 use OwenIt\Auditing\Exceptions\AuditingException;
 use Ramsey\Uuid\Uuid;
 
+use Throwable;
+
 use function Devitools\Helper\counter;
 use function Devitools\Helper\is_binary;
 use function in_array;
@@ -253,14 +255,24 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
             if (!is_binary($value)) {
                 continue;
             }
-            $old[$key] = Common::decodeUuid($value);
+            try {
+                $raw = Common::decodeUuid($value);
+                $old[$key] = $raw;
+            } catch (Throwable $exception) {
+                // silent is gold
+            }
         }
 
         foreach ($new as $key => $value) {
             if (!is_binary($value)) {
                 continue;
             }
-            $new[$key] = Common::decodeUuid($value);
+            try {
+                $raw = Common::decodeUuid($value);
+                $new[$key] = $raw;
+            } catch (Throwable $exception) {
+                // silent is gold
+            }
         }
 
         $morphPrefix = Config::get('audit.user.morph_prefix', 'user');
