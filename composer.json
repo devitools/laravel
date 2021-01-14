@@ -34,8 +34,8 @@
     "phpzm/phpee": "^1.0",
     "predis/predis": "^1.1",
     "tymon/jwt-auth": "^1.0",
-    "vlucas/phpdotenv": "^5.0",
-    "fruitcake/laravel-cors": "^2.0@dev"
+    "fruitcake/laravel-cors": "^2.0@dev",
+    "sentry/sdk": "dev-master"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master"
