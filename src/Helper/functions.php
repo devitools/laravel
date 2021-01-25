@@ -231,3 +231,18 @@ function idToArray(string $id): array
     }
     return $ids;
 }
+
+/**
+ * @param $string
+ * @param boolean $capitalizeFirstCharacter
+ *
+ * @return string
+ */
+function dashesToCamelCase($string, $capitalizeFirstCharacter = false): string
+{
+    $string = str_replace('-', '', ucwords($string, '-'));
+    if (!$capitalizeFirstCharacter) {
+        $string = lcfirst($string);
+    }
+    return $string;
+}

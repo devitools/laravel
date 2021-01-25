@@ -6,6 +6,8 @@ use Devitools\Auth\Login;
 use Devitools\Exceptions\ErrorRuntime;
 use Devitools\Http\Controllers\Controller;
 
+use function Devitools\Helper\dashesToCamelCase;
+
 /**
  * Class Report
  *
@@ -21,7 +23,7 @@ class Report extends Controller
      */
     protected function getFullQualifiedName(string $report): string
     {
-        $name = ucfirst($report);
+        $name = dashesToCamelCase($report, true);
         $namespace = config('app.namespace', '\\Source');
         $fullQualifiedName = "{$namespace}\\Report\\{$name}";
         if (!class_exists($fullQualifiedName)) {
