@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Devitools\Providers;
 
+use Devitools\Auth\Login;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Throwable;
 
 /**
  * Class AppServiceProvider
@@ -21,6 +25,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blade::if('profile', function ($value) {
+            try {
+                $user = Auth::user();
+                /** @var Login $user */
+                /** @noinspection NullPointerExceptionInspection */
+                $reference = $user->profile->getReference();
+                return $reference === $value;
+            } catch (Throwable $exception) {
+                return false;
+            }
+        });
+
         if ($this->app->environment() !== 'production') {
             return;
         }
