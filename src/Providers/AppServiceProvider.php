@@ -25,13 +25,25 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Blade::if('profile', function ($value) {
+        Blade::if('allow', function ($value) {
             try {
                 $user = Auth::user();
                 /** @var Login $user */
                 /** @noinspection NullPointerExceptionInspection */
                 $reference = $user->profile->getReference();
                 return $reference === $value;
+            } catch (Throwable $exception) {
+                return false;
+            }
+        });
+
+        Blade::if('deny', function ($value) {
+            try {
+                $user = Auth::user();
+                /** @var Login $user */
+                /** @noinspection NullPointerExceptionInspection */
+                $reference = $user->profile->getReference();
+                return $reference !== $value;
             } catch (Throwable $exception) {
                 return false;
             }
