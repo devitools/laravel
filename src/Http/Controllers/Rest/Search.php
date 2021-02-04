@@ -74,7 +74,7 @@ trait Search
      */
     public function download(Request $request, string $format = 'csv'): BinaryFileResponse
     {
-        $this->grant($this->repository()->domain(), Scopes::SCOPE_INDEX);
+        $this->grant($this->repository()->domain(), Levels::LEVEL_INDEX);
 
         $labels = $request->get('labels');
 
