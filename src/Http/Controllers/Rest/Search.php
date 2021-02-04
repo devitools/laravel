@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devitools\Http\Controllers\Rest;
 
+use Devitools\Exceptions\ErrorValidation;
 use Devitools\Http\Support\Levels;
 use Devitools\Persistence\Filter\Connectors;
 use Devitools\Persistence\Filter\Filters;
@@ -13,7 +14,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Php\JSON;
 use Ramsey\Uuid\Uuid;
-
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 use function count;
