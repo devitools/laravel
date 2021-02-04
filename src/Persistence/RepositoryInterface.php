@@ -95,6 +95,11 @@ interface RepositoryInterface
     /**
      * @return array
      */
+    public function getDownloadable(): array;
+
+    /**
+     * @return array
+     */
     public function getManyToOne(): array;
 
     /**

@@ -76,6 +76,10 @@ trait Search
             $query = $query->orderBy($column, $direction);
         }
 
+        if ($limit === 0) {
+            return $query->get($this->model->columns());
+        }
+
         return $query
             ->offset($offset)
             ->limit($limit)
