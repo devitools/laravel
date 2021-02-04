@@ -35,6 +35,9 @@ class Router extends Facade
         static::put("{$uri}/{id}/restore", "{$controller}@restore");
         // erase
         static::delete("{$uri}/{id}/erase", "{$controller}@erase");
+
+        // download
+        static::get("{$uri}/download/{format}", "{$controller}@download");
     }
 
     /**

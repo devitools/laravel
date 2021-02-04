@@ -14,10 +14,15 @@ use Illuminate\Http\Request;
 use Php\JSON;
 use Ramsey\Uuid\Uuid;
 
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 use function count;
+use function Devitools\Helper\error;
 use function explode;
 use function is_array;
+use function is_callable;
 use function is_numeric;
+use function is_string;
 
 /**
  * Trait Search
@@ -58,6 +63,39 @@ trait Search
         $total = $this->repository()->count($filters, $trash);
         $meta = ['total' => $total];
         return $this->answerSuccess($data, $meta);
+    }
+
+    /**
+     * @param Request $request
+     * @param string $format
+     *
+     * @return BinaryFileResponse
+     * @throws ErrorValidation
+     */
+    public function download(Request $request, string $format = 'csv'): BinaryFileResponse
+    {
+        $this->grant($this->repository()->domain(), Scopes::SCOPE_INDEX);
+
+        $labels = $request->get('labels');
+
+        $sort = $request->get('sort');
+        $filter = $request->get('filter');
+        $where = $request->get('where');
+
+        $filters = $this->parseSearch($filter, $where);
+        $options = [
+            'filters' => $filters,
+            'offset' => 0,
+            'limit' => 0,
+            'sorter' => $this->parseSorter($sort)
+        ];
+        $data = $this->repository()->search($options);
+
+        if ($format === 'csv') {
+            return $this->parseDownloadCommaSeparatedValues($labels, $data);
+        }
+
+        throw new ErrorValidation([error('format', 'invalid', $format)]);
     }
 
     /**
@@ -104,7 +142,7 @@ trait Search
 
             $target = $manyToOne[$field];
             $reference = JSON::decode($value, true);
-            $value = $reference['id'] ?? null;
+            $value = $reference[config('devitools.schema.primaryKey', 'id')] ?? null;
             if (!$value) {
                 continue;
             }
@@ -154,5 +192,82 @@ trait Search
         }
         [$key, $value] = $pieces;
         return [$key => $value];
+    }
+
+    /**
+     * @param array $labels
+     * @param array $data
+     *
+     * @return BinaryFileResponse
+     */
+    protected function parseDownloadCommaSeparatedValues(array $labels, array $data): BinaryFileResponse
+    {
+        $name = uniqid('download-', false) . '.csv';
+        $filename = storage_path($name);
+        $headers = [
+            'Content-type' => 'text/csv',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+            'Context' => $name,
+        ];
+
+        $handle = fopen($filename, 'wb+');
+        fputcsv($handle, array_values($labels));
+
+        $keys = array_keys($labels);
+        foreach ($data as $datum) {
+            $row = $this->parseDownloadCommaSeparatedValuesRow($keys, $datum);
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+
+        return response()->download($filename, $name, $headers)->deleteFileAfterSend();
+    }
+
+    /**
+     * @param array $keys
+     * @param array $datum
+     *
+     * @return array
+     */
+    protected function parseDownloadCommaSeparatedValuesRow(array $keys, array $datum): array
+    {
+        $row = [];
+        foreach ($keys as $key) {
+            $fields = $this->parseDownloadCommaSeparatedValuesContent($key, $datum);
+            $row[] = $fields;
+        }
+        return $row;
+    }
+
+    /**
+     * @param string $key
+     * @param array $datum
+     *
+     * @return bool|float|int|string|null
+     */
+    protected function parseDownloadCommaSeparatedValuesContent(string $key, array $datum)
+    {
+        $value = $datum[$key] ?? null;
+        if (is_scalar($value)) {
+            return $value;
+        }
+
+        $downloadable = $this->repository()->getDownloadable();
+        if (!isset($downloadable[$key])) {
+            return null;
+        }
+
+        $relationship = $downloadable[$key] ?? config('devitools.schema.displayKey', 'name');
+        if (is_string($relationship)) {
+            return $value[$relationship] ?? null;
+        }
+        if (is_callable($relationship)) {
+            return $relationship($datum);
+        }
+
+        return null;
     }
 }

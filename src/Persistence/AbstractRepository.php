@@ -97,6 +97,14 @@ abstract class AbstractRepository implements RepositoryInterface
     /**
      * @return array
      */
+    public function getDownloadable(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array
+     */
     public function getManyToOne(): array
     {
         return $this->model->manyToOne();
