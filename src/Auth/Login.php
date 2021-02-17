@@ -7,6 +7,7 @@ namespace Devitools\Auth;
 use Dyrynda\Database\Support\GeneratesUuid as HasBinaryUuid;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Notifications\Notifiable;
 use Throwable;
@@ -38,6 +39,12 @@ class Login extends User implements JWTSubject
      * @see HasBinaryUuid
      */
     use HasBinaryUuid;
+    use SoftDeletes;
+
+    /**
+     * @var string
+     */
+    public const DELETED_AT = 'deletedAt';
 
     /**
      * The table associated with the model.
