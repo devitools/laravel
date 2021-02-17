@@ -10,6 +10,7 @@ use Devitools\Units\Common\Instance;
 use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Throwable;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 use function Devitools\Helper\uuid;
@@ -37,7 +38,18 @@ class Session extends Login
      */
     public function login(string $username, string $password, string $device = ''): array
     {
-        $login = static::where(config('auth.fields.username', 'username'), $username)->first();
+        $query = static::where(config('auth.fields.username', 'username'), $username);
+
+        try {
+            $login = $query->withTrashed()->first();
+        } catch (Throwable $error) {
+            $login = $query->first();
+        }
+
+        $deleted = (string)$login->getAttribute(Login::DELETED_AT);
+        if ($deleted) {
+            throw new ErrorUserInative(['user' => 'unavailable']);
+        }
 
         if ($login === null) {
             throw new ErrorUserUnauthorized(['credentials' => 'unknown']);

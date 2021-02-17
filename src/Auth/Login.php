@@ -27,6 +27,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static Login whereRaw(string $column, mixed $value)
  * @method Login firstOrFail()
  * @method Login first()
+ * @method Login withTrashed()
  */
 class Login extends User implements JWTSubject
 {
