@@ -33,7 +33,7 @@ trait Update
         if (!$data) {
             return $this->answerFail(['payload' => 'empty']);
         }
-        $details = ['id' => $id];
+        $details = [__PRIMARY_KEY__ => $id];
 
         $updated = $this->repository()->update($id, $data);
         if ($updated) {

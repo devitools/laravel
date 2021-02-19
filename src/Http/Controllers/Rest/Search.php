@@ -142,7 +142,7 @@ trait Search
 
             $target = $manyToOne[$field];
             $reference = JSON::decode($value, true);
-            $value = $reference[config('devitools.schema.primaryKey', 'id')] ?? null;
+            $value = $reference[__PRIMARY_KEY__] ?? null;
             if (!$value) {
                 continue;
             }

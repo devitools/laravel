@@ -45,7 +45,7 @@ trait Restore
         }
 
         if (count($ids) !== count($executed)) {
-            throw new ErrorResourceIsGone(['id' => array_diff($ids, $executed)]);
+            throw new ErrorResourceIsGone([__PRIMARY_KEY__ => array_diff($ids, $executed)]);
         }
         return $this->answerSuccess(['ticket' => $ids]);
     }

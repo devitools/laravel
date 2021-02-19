@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence\Model;
 
-use Devitools\Domains\Admin\Profile;
 use Devitools\Exceptions\ErrorInvalidArgument;
+use Devitools\Exceptions\ErrorValidation;
 use Devitools\Persistence\AbstractModel;
 use Devitools\Persistence\AbstractRepository;
 use Devitools\Persistence\RepositoryInterface;
@@ -25,6 +25,8 @@ trait Hook
 {
     /**
      * @return void
+     * @throws ErrorInvalidArgument
+     * @throws ErrorValidation
      */
     public static function boot(): void
     {
@@ -109,43 +111,60 @@ trait Hook
 
             $hasMany->where($foreignKey, $this->getValue($localKey))->forceDelete();
 
-            if (is_callable($parser)) {
-                $values = pack($items)->map(function ($data) use ($parser, $foreignKey, $localKey) {
-                    $uuid = Uuid::uuid4();
-                    $value = [
-                        'uuid' => $uuid->getBytes(),
-                        'id' => $uuid->toString(),
-                        $foreignKey => $this->getValue($localKey),
-                    ];
-                    if (config('app.counter')) {
-                        $value['counter'] = counter();
-                    }
-                    return array_merge($value, $parser($data, $foreignKey, $localKey));
-                });
-                $hasMany->insert($values->records());
-                continue;
-            }
+            $this->persistOneToManyItem($parser, $foreignKey, $localKey, $items, $hasMany);
+        }
+    }
 
-            if (is_array($parser)) {
-                /** @var AbstractRepository $reference */
-                $reference = $parser['reference'];
-                /** @var RepositoryInterface $repository */
-                $repository = $reference::instance();
-                foreach ($items as $item) {
-                    $item[$foreignKey] =  $this->getValue($localKey);
-                    $repository->create($item);
+    /**
+     * @param mixed $parser
+     * @param string $foreignKey
+     * @param string $localKey
+     * @param array $items
+     * @param HasMany $instance
+     */
+    protected function persistOneToManyItem(
+        $parser,
+        string $foreignKey,
+        string $localKey,
+        array $items,
+        HasMany $instance
+    ): void {
+        if (is_callable($parser)) {
+            $values = pack($items)->map(function ($data) use ($parser, $foreignKey, $localKey) {
+                $uuid = Uuid::uuid4();
+                $value = [
+                    __BINARY_KEY__ => $uuid->getBytes(),
+                    __PRIMARY_KEY__ => $uuid->toString(),
+                    $foreignKey => $this->getValue($localKey),
+                ];
+                if (config('app.counter')) {
+                    $value['counter'] = counter();
                 }
-                continue;
-            }
+                return array_merge($value, $parser($data, $foreignKey, $localKey));
+            });
+            $instance->insert($values->records());
+            return;
+        }
 
-            if (is_string($parser)) {
-                /** @var AbstractRepository $parser */
-                /** @var RepositoryInterface $repository */
-                $repository = $parser::instance();
-                foreach ($items as $item) {
-                    $item[$foreignKey] =  $this->getValue($localKey);
-                    $repository->create($item);
-                }
+        if (is_array($parser)) {
+            /** @var AbstractRepository $reference */
+            $reference = $parser['reference'];
+            /** @var RepositoryInterface $repository */
+            $repository = $reference::instance();
+            foreach ($items as $item) {
+                $item[$foreignKey] = $this->getValue($localKey);
+                $repository->create($item);
+            }
+            return;
+        }
+
+        if (is_string($parser)) {
+            /** @var AbstractRepository $parser */
+            /** @var RepositoryInterface $repository */
+            $repository = $parser::instance();
+            foreach ($items as $item) {
+                $item[$foreignKey] = $this->getValue($localKey);
+                $repository->create($item);
             }
         }
     }

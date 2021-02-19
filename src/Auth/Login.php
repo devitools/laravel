@@ -67,7 +67,7 @@ class Login extends User implements JWTSubject
      * @var array
      */
     protected $casts = [
-        'uuid' => 'uuid',
+        __BINARY_KEY__ => 'uuid',
     ];
 
     /**
@@ -77,8 +77,8 @@ class Login extends User implements JWTSubject
      */
     protected $hidden = [
         'profileId',
-        'id',
-        'uuid',
+        __PRIMARY_KEY__,
+        __BINARY_KEY__,
         'password',
         'remember_token',
     ];
@@ -88,7 +88,7 @@ class Login extends User implements JWTSubject
      */
     public function profile(): BelongsTo
     {
-        return $this->belongsTo(config('auth.providers.users.profile'), 'profileId', 'uuid');
+        return $this->belongsTo(config('auth.providers.users.profile'), 'profileId', __BINARY_KEY__);
     }
 
     /**
@@ -118,7 +118,7 @@ class Login extends User implements JWTSubject
      */
     public function getKeyName()
     {
-        return 'id';
+        return __PRIMARY_KEY__;
     }
 
     /**

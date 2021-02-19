@@ -25,11 +25,11 @@ trait Create
      */
     public function create(array $data): ?string
     {
-        if (!isset($data['id'])) {
-            $data['id'] = Uuid::uuid1()->toString();
+        if (!isset($data[__PRIMARY_KEY__])) {
+            $data[__PRIMARY_KEY__] = Uuid::uuid1()->toString();
         }
 
-        $data = $this->prepare($data['id'], $data, true);
+        $data = $this->prepare($data[__PRIMARY_KEY__], $data, true);
         $model = clone $this->model;
 
         $primaryKey = $model->exposedKey();

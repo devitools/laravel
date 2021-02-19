@@ -111,7 +111,7 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     /**
      * @var string
      */
-    protected $primaryKey = 'uuid';
+    protected $primaryKey = __BINARY_KEY__;
 
     /**
      * @var string
@@ -123,7 +123,7 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
      *
      * @var array
      */
-    protected $hidden = ['uuid'];
+    protected $hidden = [__BINARY_KEY__];
 
     /**
      * The "type" of the primary key ID.
@@ -185,7 +185,7 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
      */
     public function exposedKey(): string
     {
-        return 'id';
+        return __PRIMARY_KEY__;
     }
 
     /**
@@ -211,7 +211,7 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
      */
     public function getKeyName()
     {
-        return 'uuid';
+        return __BINARY_KEY__;
     }
 
     /**

@@ -78,9 +78,9 @@ class Session extends Login
     protected function credentials(Login $user, string $device): array
     {
         $session = uuid();
-        $id = $user->getAttribute('id');
+        $id = $user->getAttribute(__PRIMARY_KEY__);
 
-        Cache::forever($session, ['id' => $id, 'device' => $device]);
+        Cache::forever($session, [__PRIMARY_KEY__ => $id, 'device' => $device]);
 
         $customClaims = [
             'session' => $session

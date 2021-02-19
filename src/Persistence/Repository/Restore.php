@@ -26,6 +26,6 @@ trait Restore
             return null;
         }
         $instance->restore();
-        return $instance->getValue('id');
+        return $instance->getValue(__PRIMARY_KEY__);
     }
 }
