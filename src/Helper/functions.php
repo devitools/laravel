@@ -226,8 +226,8 @@ function idToArray(string $id): array
 {
     $ids = [$id];
     preg_match_all("/^\[(?<uuid>.*)]$/", $id, $matches);
-    if (isset($matches['uuid'][0])) {
-        $ids = explode(',', $matches['uuid'][0]);
+    if (isset($matches[__BINARY_KEY__][0])) {
+        $ids = explode(',', $matches[__BINARY_KEY__][0]);
     }
     return $ids;
 }

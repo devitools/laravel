@@ -55,8 +55,8 @@ abstract class TableCreate extends Migration
             $table = Table::make($blueprint);
 
             if ($this->withUuid) {
-                $table->efficientUuid('uuid')->primary();
-                $table->string('id')->unique();
+                $table->efficientUuid(__BINARY_KEY__)->primary();
+                $table->string(__PRIMARY_KEY__)->unique();
 
                 if (config('app.counter')) {
                     $table->bigInteger('counter');

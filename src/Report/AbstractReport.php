@@ -93,7 +93,7 @@ abstract class AbstractReport
     protected function normalizeFilters(array $filters): array
     {
         $callback = static function ($info) {
-            if (isset($info['id']) || isset($info['value'])) {
+            if (isset($info[__PRIMARY_KEY__]) || isset($info['value'])) {
                 return true;
             }
             if (is_scalar($info)) {
@@ -102,7 +102,7 @@ abstract class AbstractReport
             return (bool)($info->value ?? false);
         };
         $map = static function ($element) {
-            return $element['id'] ?? $info['value'] ?? $element;
+            return $element[__PRIMARY_KEY__] ?? $info['value'] ?? $element;
         };
         return array_map($map, array_filter($filters, $callback));
     }

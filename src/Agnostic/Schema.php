@@ -29,7 +29,7 @@ abstract class Schema extends AbstractModel
     /**
      * @var string
      */
-    public const PRIMARY_KEY = 'uuid';
+    public const PRIMARY_KEY = __BINARY_KEY__;
 
     /**
      * @var array

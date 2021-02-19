@@ -106,7 +106,7 @@ trait FieldIs
         $this->fields[$this->currentField]->manyToOne = (object)[
             'name' => $exposed,
             'remote' => $remote,
-            'ownerKey' => $ownerKey ?? 'uuid',
+            'ownerKey' => $ownerKey ?? __BINARY_KEY__,
         ];
         return $this;
     }

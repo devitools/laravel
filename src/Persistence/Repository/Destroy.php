@@ -36,7 +36,7 @@ trait Destroy
             } catch (QueryException $error) {
             }
             if (isset($error->errorInfo[1]) && $error->errorInfo[1] === 1451) {
-                throw new ErrorValidation(['id' => 'related']);
+                throw new ErrorValidation([__PRIMARY_KEY__ => 'related']);
             }
             throw $error;
         }
