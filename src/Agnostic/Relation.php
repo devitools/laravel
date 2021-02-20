@@ -2,6 +2,8 @@
 
 namespace Devitools\Agnostic;
 
+use function PhpBrasil\Collection\pack;
+
 /**
  * Trait Relation
  *
@@ -12,17 +14,7 @@ trait Relation
     /**
      * @var array
      */
-    protected array $manyToOne = [];
-
-    /**
-     * @var array
-     */
     protected array $belongsTo = [];
-
-    /**
-     * @var array
-     */
-    protected array $oneToMany = [];
 
     /**
      * @var array
@@ -39,17 +31,24 @@ trait Relation
      * @param string $related
      * @param string $foreignKey
      * @param string $ownerKey
+     * @param array $with
      *
      * @return $this
      */
-    protected function addManyToOne(string $name, string $related, string $foreignKey, string $ownerKey): self
-    {
-        $this->manyToOne[$name] = $foreignKey;
+    protected function addManyToOne(
+        string $name,
+        string $related,
+        string $foreignKey,
+        string $ownerKey,
+        array $with = []
+    ): self {
+        // $this->manyToOne[$name] = $foreignKey;
         $this->belongsTo[$name] = (object)[
-            'related' => $related,
             'foreignKey' => $foreignKey,
+            'related' => $related,
             'ownerKey' => $ownerKey,
             'name' => $name,
+            'with' => $with,
         ];
         return $this;
     }
@@ -58,8 +57,9 @@ trait Relation
      * @param string $name
      * @param string $related
      * @param string $foreignKey
-     * @param string|callable|null $callable
+     * @param string|callable|null $setup
      * @param string|null $localKey
+     * @param array $with
      *
      * @return $this
      */
@@ -67,38 +67,62 @@ trait Relation
         string $name,
         string $related,
         string $foreignKey,
-        $callable,
-        string $localKey
+        $setup,
+        string $localKey,
+        array $with = []
     ): self {
-        $this->oneToMany[$name] = $callable;
+        // $this->oneToMany[$name] = $callable;
         $this->hasMany[$name] = (object)[
+            'setup' => $setup,
             'related' => $related,
             'foreignKey' => $foreignKey,
             'localKey' => $localKey,
+            'with' => $with,
         ];
         return $this;
     }
 
     /**
+     * @param bool $detailed
+     *
      * @return array
      */
-    public function manyToOne(): array
+    public function manyToOne(bool $detailed = false): array
     {
-        return $this->manyToOne;
+        if ($detailed) {
+            return $this->belongsTo;
+        }
+        $manyToOne = [];
+        foreach ($this->belongsTo as $name => $belongsTo) {
+            $manyToOne[$name] = $belongsTo->foreignKey;
+        }
+        return $manyToOne;
     }
 
     /**
+     * @param bool $detailed
+     *
      * @return array
      */
-    public function oneToMany(): array
+    public function oneToMany(bool $detailed = false): array
     {
-        return $this->oneToMany;
+        if ($detailed) {
+            return $this->hasMany;
+        }
+
+        $oneToMany = [];
+        foreach ($this->hasMany as $name => $hasMany) {
+            $oneToMany[$name] = $hasMany->setup;
+        }
+        return $oneToMany;
     }
 
     /**
      * @param string $name
      *
      * @return mixed
+     * @noinspection MagicMethodsValidityInspection
+     * @noinspection PhpUndefinedMethodInspection
      */
     public function __get($name)
     {
@@ -126,6 +150,7 @@ trait Relation
      * @param array $arguments
      *
      * @return mixed
+     * @noinspection PhpUndefinedMethodInspection
      */
     public function __call($name, $arguments)
     {

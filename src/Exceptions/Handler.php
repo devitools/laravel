@@ -7,7 +7,6 @@ namespace Devitools\Exceptions;
 use Devitools\Auth\Login;
 use Devitools\Http\Response\AnswerTrait;
 use Devitools\Http\Status;
-use Exception;
 use ForceUTF8\Encoding;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -18,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
 
+use function Devitools\Helper\url;
 use function in_array;
 use function is_array;
 use function Sentry\configureScope;
@@ -33,15 +33,6 @@ class Handler extends ExceptionHandler
      * @see AnswerTrait
      */
     use AnswerTrait;
-
-    /**
-     * A list of the exception types that are not reported.
-     *
-     * @var array
-     */
-    protected $dontReport = [
-        //
-    ];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
@@ -80,82 +71,84 @@ class Handler extends ExceptionHandler
             }
 
             # capture the URL
-            $scope->setExtra('url', url()->current());
+            $scope->setExtra('url', url(''));
 
             if (!$exception instanceof ErrorGeneral) {
                 return;
             }
-
-            $details = $exception->getDetails();
-            foreach ($details as $key => $value) {
-                $scope->setExtra((string)$key, $value);
-            }
+            $scope->setExtra('details', $exception->getDetails());
         });
         app('sentry')->captureException($exception);
     }
 
+
     /**
      * Report or log an exception.
      *
-     * @param Throwable $exception
+     * @param Throwable $e
      *
      * @return void
-     * @throws Exception
+     * @throws Throwable
      */
-    public function report(Throwable $exception)
+    public function report(Throwable $e)
     {
-        if ($this->shouldReport($exception) && app()->bound('sentry')) {
-            static::capture($exception);
+        if ($this->shouldReport($e) && app()->bound('sentry')) {
+            static::capture($e);
         }
-        parent::report($exception);
+        parent::report($e);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
      * @param Request $request
-     * @param Throwable $exception
+     * @param Throwable $e
      *
      * @return Response
      * @throws Throwable
      */
-    public function render($request, Throwable $exception)
+    public function render($request, Throwable $e)
     {
         $route = $request->route();
         if (!$route || in_array('api', $route->middleware(), true)) {
             $request->headers->set('Accept', 'application/json');
         }
 
-        if ($exception instanceof ErrorGeneral) {
-            return $this->answerWith($exception);
+        if ($e instanceof ErrorGeneral) {
+            return $this->answerWith($e);
         }
 
-        if ($exception instanceof UnauthorizedHttpException) {
+        if ($e instanceof UnauthorizedHttpException) {
             $message = 'Unauthorized';
             $data = [];
-            if ($exception->getMessage() === 'Token has expired') {
+            if ($e->getMessage() === 'Token has expired') {
                 $data['token'] = 'expired';
             }
             return $this->answerError($message, Status::CODE_401, $data);
         }
 
-        if ($exception instanceof QueryException) {
-            $bindings = $exception->getBindings();
+        if ($e instanceof QueryException) {
+            $bindings = $e->getBindings();
             if (!is_array($bindings)) {
                 $bindings = [$bindings];
             }
             foreach ($bindings as $key => $binding) {
                 $bindings[$key] = Encoding::fixUTF8($binding);
             }
-            $message = Encoding::fixUTF8($exception->getMessage());
-            $data = [
-                'sql' => $exception->getSql(),
-                'bindings' => $bindings,
-            ];
+
+            $message = 'Internal Error';
+            $data = [];
+            if (env('APP_DEBUG')) {
+                $message = Encoding::fixUTF8($e->getMessage());
+                $data = [
+                    'sql' => $e->getSql(),
+                    'bindings' => $bindings,
+                ];
+            }
             return $this->answerError($message, Status::CODE_500, $data);
         }
 
-        return parent::render($request, $exception);
+        return parent::render($request, $e);
     }
 
     /**
@@ -163,7 +156,7 @@ class Handler extends ExceptionHandler
      *
      * @return JsonResponse
      */
-    protected function answerWith(ErrorGeneral $exception)
+    protected function answerWith(ErrorGeneral $exception): JsonResponse
     {
         $code = $exception->getStatusCode();
         $meta = ['errors' => $exception->getDetails()];

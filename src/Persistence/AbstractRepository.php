@@ -72,9 +72,9 @@ abstract class AbstractRepository implements RepositoryInterface
      *
      * @link http://php.net/manual/en/language.oop5.decon.php
      *
-     * @param ModelInterface $model
+     * @param ModelInterface|null $model
      */
-    public function __construct(ModelInterface $model = null)
+    public function __construct(?ModelInterface $model = null)
     {
         if ($model) {
             $this->model = $model;
@@ -132,5 +132,47 @@ abstract class AbstractRepository implements RepositoryInterface
     public function getPrototype(): string
     {
         return $this->prototype;
+    }
+
+    /**
+     * @param Builder $query
+     */
+    protected function with(Builder $query): void
+    {
+        $manyToOne = $this->model->manyToOne(true);
+        $with = [];
+        foreach ($manyToOne as $relation => $settings) {
+            $with[] = $relation;
+            if (!is_array($settings->with)) {
+                continue;
+            }
+            array_push($with, ...$settings->with);
+        }
+
+        $oneToMany = $this->model->oneToMany(true);
+        foreach ($oneToMany as $relation => $settings) {
+            $with[] = $relation;
+            if (is_callable($settings)) {
+                continue;
+            }
+            $setup = $settings->setup;
+            if (is_array($setup) && isset($setup['with']) && is_string($setup['with'])) {
+                $with[] = $setup['with'];
+            }
+
+            if (!is_array($settings->with)) {
+                continue;
+            }
+            array_push($with, ...$settings->with);
+        }
+
+        $manyToMany = $this->model->manyToMany();
+        foreach (array_keys($manyToMany) as $relation) {
+            $query = $query->with($relation);
+        }
+
+        foreach ($with as $relation) {
+            $query = $query->with($relation);
+        }
     }
 }

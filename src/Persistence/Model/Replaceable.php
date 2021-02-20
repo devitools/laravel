@@ -43,25 +43,31 @@ trait Replaceable
     }
 
     /**
+     * @param bool $detailed
+     *
      * @return array
      */
-    public function manyToOne(): array
+    public function manyToOne(bool $detailed = false): array
     {
         return [];
     }
 
     /**
+     * @param bool $detailed
+     *
      * @return array
      */
-    public function oneToMany(): array
+    public function oneToMany(bool $detailed = false): array
     {
         return [];
     }
 
     /**
+     * @param bool $detailed
+     *
      * @return array
      */
-    public function manyToMany(): array
+    public function manyToMany(bool $detailed = false): array
     {
         return [];
     }

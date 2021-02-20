@@ -123,22 +123,21 @@ abstract class Schema extends AbstractModel
         }
 
         if (isset($field->manyToOne)) {
-            $this->addManyToOne(
-                $field->manyToOne->name,
-                $field->manyToOne->remote,
-                $key,
-                $field->manyToOne->ownerKey
-            );
+            $name = $field->manyToOne->name;
+            $remote = $field->manyToOne->remote;
+            $ownerKey = $field->manyToOne->ownerKey;
+            $with = $field->manyToOne->with;
+            $this->addManyToOne($name, $remote, $key, $ownerKey, $with);
         }
 
         if (isset($field->hasMany)) {
-            $this->addOneToMany(
-                $field->hasMany->name,
-                $field->hasMany->remote,
-                $field->hasMany->foreignKey,
-                $field->hasMany->callable,
-                $field->hasMany->localKey,
-            );
+            $name = $field->hasMany->name;
+            $remote = $field->hasMany->remote;
+            $foreignKey = $field->hasMany->foreignKey;
+            $setup = $field->hasMany->setup;
+            $localKey = $field->hasMany->localKey;
+            $with = $field->hasMany->with;
+            $this->addOneToMany($name, $remote, $foreignKey, $setup, $localKey, $with);
         }
     }
 
@@ -147,6 +146,7 @@ abstract class Schema extends AbstractModel
      *
      * @return Builder
      * @noinspection ReturnTypeCanBeDeclaredInspection
+     * @noinspection PhpMissingReturnTypeInspection
      */
     public function newQuery($excludeDeleted = true)
     {
