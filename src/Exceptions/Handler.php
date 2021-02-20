@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
 
-use function Devitools\Helper\url;
 use function in_array;
 use function is_array;
 use function Sentry\configureScope;
@@ -71,7 +70,7 @@ class Handler extends ExceptionHandler
             }
 
             # capture the URL
-            $scope->setExtra('url', url(''));
+            $scope->setExtra('url', url()->current());
 
             if (!$exception instanceof ErrorGeneral) {
                 return;
