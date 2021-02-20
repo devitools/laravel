@@ -72,9 +72,9 @@ abstract class AbstractRepository implements RepositoryInterface
      *
      * @link http://php.net/manual/en/language.oop5.decon.php
      *
-     * @param ModelInterface $model
+     * @param ModelInterface|null $model
      */
-    public function __construct(ModelInterface $model = null)
+    public function __construct(?ModelInterface $model = null)
     {
         if ($model) {
             $this->model = $model;
@@ -155,17 +155,15 @@ abstract class AbstractRepository implements RepositoryInterface
             if (is_callable($settings)) {
                 continue;
             }
-            if (!isset($settings['with'])) {
+            $setup = $settings->setup;
+            if (is_array($setup) && isset($setup['with']) && is_string($setup['with'])) {
+                $with[] = $setup['with'];
+            }
+
+            if (!is_array($settings->with)) {
                 continue;
             }
-            if (is_string($settings['with'])) {
-                $with[] = $settings['with'];
-                continue;
-            }
-            if (is_array($settings['with'])) {
-                array_push($with, ...$settings['with']);
-                continue;
-            }
+            array_push($with, ...$settings->with);
         }
 
         $manyToMany = $this->model->manyToMany();
