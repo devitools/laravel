@@ -133,4 +133,48 @@ abstract class AbstractRepository implements RepositoryInterface
     {
         return $this->prototype;
     }
+
+    /**
+     * @param Builder $query
+     */
+    protected function with(Builder $query): void
+    {
+        $manyToOne = $this->model->manyToOne(true);
+        $with = [];
+        foreach ($manyToOne as $relation => $settings) {
+            $with[] = $relation;
+            if (!is_array($settings->with)) {
+                continue;
+            }
+            array_push($with, ...$settings->with);
+        }
+
+        $oneToMany = $this->model->oneToMany(true);
+        foreach ($oneToMany as $relation => $settings) {
+            $with[] = $relation;
+            if (is_callable($settings)) {
+                continue;
+            }
+            if (!isset($settings['with'])) {
+                continue;
+            }
+            if (is_string($settings['with'])) {
+                $with[] = $settings['with'];
+                continue;
+            }
+            if (is_array($settings['with'])) {
+                array_push($with, ...$settings['with']);
+                continue;
+            }
+        }
+
+        $manyToMany = $this->model->manyToMany();
+        foreach (array_keys($manyToMany) as $relation) {
+            $query = $query->with($relation);
+        }
+
+        foreach ($with as $relation) {
+            $query = $query->with($relation);
+        }
+    }
 }

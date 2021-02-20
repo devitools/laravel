@@ -5,6 +5,8 @@ namespace Devitools\Agnostic;
 use Devitools\Persistence\AbstractModel;
 use Devitools\Persistence\AbstractRepository;
 
+use function PhpBrasil\Collection\pack;
+
 /**
  * Trait FieldIs
  *
@@ -107,6 +109,7 @@ trait FieldIs
             'name' => $exposed,
             'remote' => $remote,
             'ownerKey' => $ownerKey ?? __BINARY_KEY__,
+            'with' => [],
         ];
         return $this;
     }
@@ -197,20 +200,21 @@ trait FieldIs
     /**
      * @param string $remote
      * @param string $foreignKey
-     * @param callable|string|null $callable
+     * @param callable|string|null $setup
      * @param string|null $localKey
      *
      * @return $this
      */
-    protected function isArray(string $remote, string $foreignKey, $callable = null, string $localKey = null): self
+    protected function isArray(string $remote, string $foreignKey, $setup = null, string $localKey = null): self
     {
         $this->fields[$this->currentField]->type = 'hasMany';
         $this->fields[$this->currentField]->hasMany = (object)[
             'name' => $this->currentField,
             'remote' => $remote,
             'foreignKey' => $foreignKey,
-            'callable' => $callable,
+            'setup' => $setup,
             'localKey' => $localKey ?? $this->primaryKey,
+            'with' => [],
         ];
         $this->fields[$this->currentField]->fill = false;
         return $this;
@@ -297,6 +301,36 @@ trait FieldIs
     protected function isJSON(): self
     {
         $this->fields[$this->currentField]->type = 'json';
+        return $this;
+    }
+
+    /**
+     * @param array $properties
+     *
+     * @return $this
+     */
+    protected function withNested(array $properties): self
+    {
+        if (isset($this->fields[$this->currentField]->manyToOne)) {
+            $name = $this->fields[$this->currentField]->manyToOne->name;
+            $with = pack($properties)
+                ->map(static function ($property) use ($name) {
+                    return "{$name}.{$property}";
+                })
+                ->records();
+            $this->fields[$this->currentField]->manyToOne->with = $with;
+        }
+
+        if (isset($this->fields[$this->currentField]->hasMany)) {
+            $name = $this->fields[$this->currentField]->hasMany->name;
+            $with = pack($properties)
+                ->map(function ($property) use ($name) {
+                    return "{$name}.{$property}";
+                })
+                ->records();
+            $this->fields[$this->currentField]->hasMany->with = $with;
+        }
+
         return $this;
     }
 }
