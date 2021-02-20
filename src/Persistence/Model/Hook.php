@@ -103,32 +103,25 @@ trait Hook
                 continue;
             }
 
-            /** @var HasMany $hasMany */
-            $hasMany = $this->{$alias}();
-
-            $localKey = $hasMany->getLocalKeyName();
-            $foreignKey = $hasMany->getForeignKeyName();
-
-            $hasMany->where($foreignKey, $this->getValue($localKey))->forceDelete();
-
-            $this->persistOneToManyItem($parser, $foreignKey, $localKey, $items, $hasMany);
+            $this->persistOneToManyItem($alias, $parser, $items);
         }
     }
 
     /**
+     * @param string $alias
      * @param mixed $parser
-     * @param string $foreignKey
-     * @param string $localKey
      * @param array $items
-     * @param HasMany $instance
      */
-    protected function persistOneToManyItem(
-        $parser,
-        string $foreignKey,
-        string $localKey,
-        array $items,
-        HasMany $instance
-    ): void {
+    protected function persistOneToManyItem(string $alias, $parser, array $items): void
+    {
+        /** @var HasMany $hasMany */
+        $hasMany = $this->{$alias}();
+
+        $localKey = $hasMany->getLocalKeyName();
+        $foreignKey = $hasMany->getForeignKeyName();
+
+        $hasMany->where($foreignKey, $this->getValue($localKey))->forceDelete();
+
         if (is_callable($parser)) {
             $values = pack($items)->map(function ($data) use ($parser, $foreignKey, $localKey) {
                 $uuid = Uuid::uuid4();
@@ -142,11 +135,11 @@ trait Hook
                 }
                 return array_merge($value, $parser($data, $foreignKey, $localKey));
             });
-            $instance->insert($values->records());
+            $hasMany->insert($values->records());
             return;
         }
 
-        if (is_array($parser)) {
+        if (is_array($parser) && isset($parser['reference'])) {
             /** @var AbstractRepository $reference */
             $reference = $parser['reference'];
             /** @var RepositoryInterface $repository */
@@ -166,6 +159,20 @@ trait Hook
                 $item[$foreignKey] = $this->getValue($localKey);
                 $repository->create($item);
             }
+            return;
+        }
+
+        /** @noinspection PhpUndefinedFieldInspection */
+        $related = $this->hasMany[$alias]->related;
+        if (!class_exists($related)) {
+            return;
+        }
+        foreach ($items as $item) {
+            $item[$foreignKey] = $this->getValue($localKey);
+            /** @var AbstractModel $model */
+            $model = new $related();
+            $model->fill($item);
+            $model->save();
         }
     }
 
