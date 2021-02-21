@@ -15,6 +15,7 @@ use Illuminate\Foundation\Bootstrap\RegisterProviders;
 use Illuminate\Foundation\Bootstrap\SetRequestForConsole;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Symfony\Component\Console\Input\InputInterface;
+use Throwable;
 
 /**
  * Class Kernel
@@ -51,6 +52,7 @@ class Kernel extends ConsoleKernel
      * Define the application's command schedule.
      *
      * @param Schedule $schedule
+     *
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -65,7 +67,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         /** @noinspection PhpIncludeInspection */
         require base_path('routes/console.php');
@@ -80,20 +82,24 @@ class Kernel extends ConsoleKernel
     {
         parent::bootstrap();
 
-         Transaction::start();
+        Transaction::start();
     }
 
     /**
      * Terminate the application.
      *
-     * @param  InputInterface  $input
-     * @param  int  $status
+     * @param InputInterface $input
+     * @param int $status
+     *
      * @return void
      */
     public function terminate($input, $status)
     {
         parent::terminate($input, $status);
 
-        Transaction::finish($status);
+        try {
+            Transaction::finish($status);
+        } catch (Throwable $exception) {
+        }
     }
 }

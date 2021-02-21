@@ -120,7 +120,10 @@ trait Hook
         $localKey = $hasMany->getLocalKeyName();
         $foreignKey = $hasMany->getForeignKeyName();
 
-        $hasMany->where($foreignKey, $this->getValue($localKey))->forceDelete();
+        $previous = $hasMany->where($foreignKey, $this->getValue($localKey))->get();
+        foreach ($previous as $record) {
+            $record->forceDelete();
+        }
 
         if (is_callable($parser)) {
             $values = pack($items)->map(function ($data) use ($parser, $foreignKey, $localKey) {

@@ -34,6 +34,7 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Throwable;
 
 // use Devitools\Http\Middleware\VerifyCsrfToken;
 
@@ -143,7 +144,10 @@ class Kernel extends HttpKernel
     {
         parent::terminate($request, $response);
 
-        Transaction::finish($response);
+        try {
+            Transaction::finish($response);
+        } catch (Throwable $exception) {
+        }
     }
 
     /**
