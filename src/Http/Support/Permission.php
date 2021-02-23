@@ -25,10 +25,11 @@ trait Permission
     /**
      * @param string $domain
      * @param string $scope
+     * @param bool $special
      *
      * @throws ErrorUserForbidden
      */
-    public function grant(string $domain, string $scope): void
+    public function grant(string $domain, string $scope, bool $special = false): void
     {
         /** @var Login $user */
         $user = auth()->user();
@@ -37,6 +38,9 @@ trait Permission
         }
 
         $namespace = "{$domain}.{$scope}";
+        if ($special) {
+            $namespace = "special:{$domain}.{$scope}";
+        }
         $permissions = $user
             ->getPermissions()
             ->pluck('namespace')
