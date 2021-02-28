@@ -23,13 +23,18 @@ trait Permission
     protected bool $allowGuest = false;
 
     /**
+     * @var Login|null
+     */
+    private ?Login $session;
+
+    /**
      * @param string $domain
      * @param string $scope
      * @param bool $special
      *
      * @throws ErrorUserForbidden
      */
-    public function grant(string $domain, string $scope, bool $special = false): void
+    public function grant(string $domain, string $scope = '', bool $special = false): void
     {
         /** @var Login $user */
         $user = auth()->user();
@@ -37,18 +42,28 @@ trait Permission
             return;
         }
 
-        $namespace = "{$domain}.{$scope}";
-        if ($special) {
-            $namespace = "special:{$domain}.{$scope}";
+        $this->session = $user;
+
+        if ($scope) {
+            $scope = ".{$scope}";
         }
-        $permissions = $user
-            ->getPermissions()
-            ->pluck('namespace')
-            ->toArray();
+        $namespace = "{$domain}{$scope}";
+        if ($special) {
+            $namespace = "special:{$domain}{$scope}";
+        }
+        $permissions = $user->getPermissions();
         if (in_array($namespace, $permissions, true)) {
             return;
         }
 
         throw new ErrorUserForbidden(['namespace' => error('namespace', 'required', $namespace)]);
+    }
+
+    /**
+     * @return Login|null
+     */
+    protected function getSession(): ?Login
+    {
+        return $this->session;
     }
 }
