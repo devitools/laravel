@@ -166,4 +166,19 @@ abstract class Schema extends AbstractModel
     {
         return $this->currencies;
     }
+
+    /**
+     * @return array
+     */
+    public function getDefaults(): array
+    {
+        $defaults = [];
+        foreach ($this->fields as $field => $settings) {
+            if (!isset($settings->value)) {
+                continue;
+            }
+            $defaults[$field] = $settings->value;
+        }
+        return $defaults;
+    }
 }

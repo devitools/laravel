@@ -47,6 +47,7 @@ trait Fields
             'currency' => false,
             'hidden' => false,
             'avoid' => null,
+            'value' => null,
         ];
         $this->fields[$key] = (object)array_merge($defaults, $properties);
         return $this;
@@ -104,6 +105,17 @@ trait Fields
             $avoid = [$avoid];
         }
         $this->fields[$this->currentField]->avoid = $avoid;
+        return $this;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return $this
+     */
+    protected function defaultValue($value): self
+    {
+        $this->fields[$this->currentField]->value = $value;
         return $this;
     }
 
