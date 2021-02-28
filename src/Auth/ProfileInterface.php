@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Devitools\Auth;
 
-use Illuminate\Database\Eloquent\Collection;
-
 /**
  * Interface ProfileInterface
  *
@@ -19,7 +17,7 @@ interface ProfileInterface
     public function getReference(): string;
 
     /**
-     * @return Collection
+     * @return array
      */
-    public function getPermissions(): Collection;
+    public function getPermissions(): array;
 }

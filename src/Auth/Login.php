@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Devitools\Auth;
 
 use Dyrynda\Database\Support\GeneratesUuid as HasBinaryUuid;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
@@ -135,15 +134,15 @@ class Login extends User implements JWTSubject
     }
 
     /**
-     * @return Collection
+     * @return string[]
      */
-    public function getPermissions(): Collection
+    public function getPermissions(): array
     {
         try {
             return $this->profile->getPermissions();
         } catch (Throwable $error) {
             // silent is gold
         }
-        return new Collection();
+        return [];
     }
 }
