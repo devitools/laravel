@@ -6,6 +6,7 @@ namespace Devitools\Http\Support;
 
 use Devitools\Auth\Login;
 use Devitools\Exceptions\ErrorUserForbidden;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 use function Devitools\Helper\error;
 use function in_array;
@@ -23,9 +24,9 @@ trait Permission
     protected bool $allowGuest = false;
 
     /**
-     * @var Login|null
+     * @var JWTSubject|null
      */
-    private ?Login $session;
+    private ?JWTSubject $session;
 
     /**
      * @param string $domain
@@ -60,9 +61,9 @@ trait Permission
     }
 
     /**
-     * @return Login|null
+     * @return JWTSubject|null
      */
-    protected function getSession(): ?Login
+    protected function getSession(): ?JWTSubject
     {
         return $this->session;
     }
