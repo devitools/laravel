@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Devitools\Units\Common;
 
-use Devitools\Auth\Login;
 use Devitools\Exceptions\ErrorUserForbidden;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 /**
  * Trait UserSession
@@ -15,12 +15,11 @@ use Devitools\Exceptions\ErrorUserForbidden;
 trait UserSession
 {
     /**
-     * @return Login
+     * @return Authenticatable
      * @throws ErrorUserForbidden
      */
-    protected function getUser(): Login
+    protected function getUser(): Authenticatable
     {
-        /** @var Login $user */
         $user = auth()->user();
         if (!$user) {
             throw new ErrorUserForbidden(['user' => 'forbidden']);
