@@ -28,7 +28,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method Login first()
  * @method Login withTrashed()
  */
-class Login extends User implements JWTSubject
+class Login extends User implements JWTSubject, Authenticator
 {
     /**
      * @see Notifiable
@@ -144,5 +144,17 @@ class Login extends User implements JWTSubject
             // silent is gold
         }
         return [];
+    }
+
+    /**
+     * Get an attribute from the model.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function getValue(string $name)
+    {
+        return $this->getAttribute($name);
     }
 }

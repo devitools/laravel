@@ -18,6 +18,11 @@ use Devitools\Units\Common\Instance;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Builder;
 
+use function is_array;
+use function is_callable;
+use function is_object;
+use function is_string;
+
 /**
  * Class AbstractRepository
  *
@@ -143,6 +148,9 @@ abstract class AbstractRepository implements RepositoryInterface
         $with = [];
         foreach ($manyToOne as $relation => $settings) {
             $with[] = $relation;
+            if (!is_object($settings)) {
+                continue;
+            }
             if (!is_array($settings->with)) {
                 continue;
             }
@@ -153,6 +161,9 @@ abstract class AbstractRepository implements RepositoryInterface
         foreach ($oneToMany as $relation => $settings) {
             $with[] = $relation;
             if (is_callable($settings)) {
+                continue;
+            }
+            if (!is_object($settings)) {
                 continue;
             }
             $setup = $settings->setup;

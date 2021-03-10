@@ -38,59 +38,43 @@ class Session extends Login
      */
     public function login(string $username, string $password, string $device = ''): array
     {
-        $query = static::where(config('auth.fields.username', 'username'), $username);
+        $user = $this->getUser($username);
 
-        try {
-            $login = $query->withTrashed()->first();
-        } catch (Throwable $error) {
-            $login = $query->first();
-        }
+        /**
+         * @throws ErrorUserInative
+         * @throws ErrorUserUnauthorized
+         */
+        $this->validate($user, $password);
 
-        $deleted = (string)$login->getAttribute(Login::DELETED_AT);
-        if ($deleted) {
-            throw new ErrorUserInative(['user' => 'unavailable']);
-        }
-
-        if ($login === null) {
-            throw new ErrorUserUnauthorized(['credentials' => 'unknown']);
-        }
-
-        if (!Hash::check($password, $login->getAttribute(config('auth.fields.password', 'password')))) {
-            throw new ErrorUserUnauthorized(['credentials' => 'invalid']);
-        }
-
-        $active = config('auth.fields.active', 'active');
-        if ($active && !$login->getAttribute($active)) {
-            throw new ErrorUserInative(['user' => 'inactive']);
-        }
-
-        return $this->credentials($login, $device);
+        return $this->credentials($user, $device);
     }
 
     /**
-     * @param Login $user
+     * @param Authenticator|null $user
      * @param string $device
      *
      * @return array
      * @throws ErrorUserUnauthorized
      * @throws Exception
      */
-    protected function credentials(Login $user, string $device): array
+    protected function credentials(?Authenticator $user, string $device): array
     {
+        if ($user === null) {
+            throw new ErrorUserUnauthorized(['credentials' => 'unknown']);
+        }
+
         $session = uuid();
-        $id = $user->getAttribute(__PRIMARY_KEY__);
+        $id = $user->getValue(__PRIMARY_KEY__);
+        $customClaims = ['session' => $session];
 
-        Cache::forever($session, [__PRIMARY_KEY__ => $id, 'device' => $device]);
-
-        $customClaims = [
-            'session' => $session
-        ];
         /** @noinspection PhpUndefinedMethodInspection */
         $token = JWTAuth::claims($customClaims)->fromUser($user);
 
         if (!$token) {
             throw new ErrorUserUnauthorized(['credentials' => 'invalid']);
         }
+
+        Cache::forever($session, [__PRIMARY_KEY__ => $id, 'device' => $device]);
 
         /** @noinspection PhpUndefinedMethodInspection */
         $token_expires_at = JWTAuth::setToken($token)->getPayload()->get('exp');
@@ -102,5 +86,53 @@ class Session extends Login
             'session' => $session,
             'type' => $user->getReference(),
         ];
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return Authenticator
+     */
+    protected function getUser(string $username): ?Authenticator
+    {
+        $query = (new static())
+            ->newQuery()
+            ->where(config('auth.fields.username', 'username'), $username);
+
+        try {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $user = $query->withTrashed()->first();
+        } catch (Throwable $error) {
+            $user = $query->first();
+        }
+        return $user;
+    }
+
+    /**
+     * @param Authenticator|null $user
+     * @param string $password
+     *
+     * @throws ErrorUserInative
+     * @throws ErrorUserUnauthorized
+     */
+    protected function validate(?Authenticator $user, string $password)
+    {
+        if ($user === null) {
+            throw new ErrorUserUnauthorized(['credentials' => 'unknown']);
+        }
+
+        $deleted = (string)$user->getValue(Login::DELETED_AT);
+        if ($deleted) {
+            throw new ErrorUserInative(['user' => 'unavailable']);
+        }
+
+        if (!Hash::check($password, $user->getValue(config('auth.fields.password', 'password')))) {
+            throw new ErrorUserUnauthorized(['credentials' => 'invalid']);
+        }
+
+        $active = config('auth.fields.active', 'active');
+        if ($active && !$user->getValue($active)) {
+            throw new ErrorUserInative(['user' => 'inactive']);
+        }
     }
 }
