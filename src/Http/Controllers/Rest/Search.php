@@ -58,11 +58,44 @@ trait Search
             'limit' => $limit,
             'sorter' => $this->parseSorter($sort)
         ];
-        $data = $this->repository()->search($options, $trash);
+        return $this->resolveSearch($options, $trash);
+    }
 
-        $total = $this->repository()->count($filters, $trash);
-        $meta = ['total' => $total];
+    /**
+     * @param array $options
+     * @param bool $trash
+     *
+     * @return JsonResponse
+     */
+    protected function resolveSearch(array $options, bool $trash): JsonResponse
+    {
+        $data = $this->resolveSearchData($options, $trash);
+        $meta = $this->resolveSearchMeta($options, $trash);
         return $this->answerSuccess($data, $meta);
+    }
+
+    /**
+     * @param array $options
+     * @param bool $trash
+     *
+     * @return array
+     */
+    protected function resolveSearchData(array $options, bool $trash): array
+    {
+        return $this->repository()->search($options, $trash);
+    }
+
+    /**
+     * @param array $options
+     * @param bool $trash
+     *
+     * @return array
+     */
+    protected function resolveSearchMeta(array $options, bool $trash): array
+    {
+        $filters = $options['filters'] ?? [];
+        $total = $this->repository()->count($filters, $trash);
+        return ['total' => $total];
     }
 
     /**
@@ -92,7 +125,7 @@ trait Search
         $data = $this->repository()->search($options);
 
         if ($format === 'csv') {
-            return $this->parseDownloadCommaSeparatedValues($labels, $data);
+            return $this->resolveDownloadCommaSeparatedValues($labels, $data);
         }
 
         throw new ErrorValidation([error('format', 'invalid', $format)]);
@@ -200,7 +233,7 @@ trait Search
      *
      * @return BinaryFileResponse
      */
-    protected function parseDownloadCommaSeparatedValues(array $labels, array $data): BinaryFileResponse
+    protected function resolveDownloadCommaSeparatedValues(array $labels, array $data): BinaryFileResponse
     {
         $name = uniqid('download-', false) . '.csv';
         $filename = storage_path($name);
