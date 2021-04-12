@@ -12,7 +12,7 @@
     "devitools"
   ],
   "homepage": "https://github.com/devitools/laravel",
-  "version": "4.5.1",
+  "version": "4.5.2",
   "authors": [
     {
       "name": "William",
@@ -35,7 +35,7 @@
     "predis/predis": "^1.1",
     "tymon/jwt-auth": "^1.0",
     "fruitcake/laravel-cors": "^2.0@dev",
-    "sentry/sdk": "dev-master"
+    "sentry/sentry-laravel": "2.4.2"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master"
