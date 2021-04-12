@@ -54,10 +54,6 @@ class Handler extends ExceptionHandler
      */
     public static function capture(Throwable $exception): void
     {
-        if (!function_exists('configureScope')) {
-            return;
-        }
-
         configureScope(static function (Scope $scope) use ($exception): void {
             # capture the user
             try {
