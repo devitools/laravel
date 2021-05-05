@@ -169,7 +169,7 @@ trait Search
             }
 
             if (!isset($manyToOne[$field])) {
-                $filters[$field] = FilterValue::build($value, $operator, Connectors:: AND);
+                $filters[$field] = FilterValue::build($value, $operator);
                 continue;
             }
 
@@ -182,7 +182,7 @@ trait Search
 
             $operator = Filters::EQUAL;
             $value = Uuid::fromString($value)->getBytes();
-            $filters[$target] = FilterValue::build($value, $operator, Connectors:: AND);
+            $filters[$target] = FilterValue::build($value, $operator);
         }
         return $filters;
     }
@@ -204,7 +204,7 @@ trait Search
                 $field = $operator;
                 $operator = Filters::LIKE;
             }
-            $filters[$field] = FilterValue::build($filter, $operator, Connectors:: OR);
+            $filters[$field] = FilterValue::build($filter, $operator, Connectors::OR);
         }
         return $filters;
     }

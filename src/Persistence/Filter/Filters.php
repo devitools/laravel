@@ -9,6 +9,8 @@ use Devitools\Persistence\Filter\Operators\FilterCurrency;
 use Devitools\Persistence\Filter\Operators\FilterEqual;
 use Devitools\Persistence\Filter\Operators\FilterIn;
 use Devitools\Persistence\Filter\Operators\FilterLike;
+use Devitools\Persistence\Filter\Operators\FilterMultiEqual;
+use Devitools\Persistence\Filter\Operators\FilterMultiLike;
 use Devitools\Persistence\Filter\Operators\FilterNotEqual;
 use Devitools\Persistence\Filter\Operators\FilterNotIn;
 
@@ -60,6 +62,16 @@ final class Filters
     public const BETWEEN = 'between';
 
     /**
+     * @var string
+     */
+    public const MULTI_EQUAL = 'multi-eq';
+
+    /**
+     * @var string
+     */
+    public const MULTI_LIKE = 'multi-like';
+
+    /**
      * @var array
      */
     private static array $filters = [];
@@ -78,18 +90,20 @@ final class Filters
      */
     public static function filter(string $operator): ?FilterInterface
     {
-        if (isset(static::$filters[$operator])) {
-            return static::$filters[$operator];
+        if (isset(self::$filters[$operator])) {
+            return self::$filters[$operator];
         }
 
         $operators = [
-            static::EQUAL => FilterEqual::class,
-            static::NOT_EQUAL => FilterNotEqual::class,
-            static::LIKE => FilterLike::class,
-            static::IN => FilterIn::class,
-            static::NIN => FilterNotIn::class,
-            static::CURRENCY => FilterCurrency::class,
-            static::BETWEEN => FilterBetween::class,
+            self::EQUAL => FilterEqual::class,
+            self::NOT_EQUAL => FilterNotEqual::class,
+            self::LIKE => FilterLike::class,
+            self::IN => FilterIn::class,
+            self::NIN => FilterNotIn::class,
+            self::CURRENCY => FilterCurrency::class,
+            self::BETWEEN => FilterBetween::class,
+            self::MULTI_EQUAL => FilterMultiEqual::class,
+            self::MULTI_LIKE => FilterMultiLike::class,
         ];
 
         if (!isset($operators[$operator])) {
@@ -98,8 +112,8 @@ final class Filters
 
         /** @var FilterInterface $reference */
         $reference = $operators[$operator];
-        static::$filters[$operator] = $reference::get();
+        self::$filters[$operator] = $reference::get();
 
-        return static::$filters[$operator];
+        return self::$filters[$operator];
     }
 }
