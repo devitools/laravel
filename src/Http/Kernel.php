@@ -8,6 +8,7 @@ use Devitools\Http\Middleware\Authenticate;
 use Devitools\Http\Middleware\CheckForMaintenanceMode;
 use Devitools\Http\Middleware\EncryptCookies;
 use Devitools\Http\Middleware\RedirectIfAuthenticated;
+use Devitools\Http\Middleware\ThrottleRequestsByDevice;
 use Devitools\Http\Middleware\TrimStrings;
 use Devitools\Http\Middleware\TrustProxies;
 use Devitools\LoadEnvironment;
@@ -30,7 +31,6 @@ use Illuminate\Http\Middleware\SetCacheHeaders;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -116,7 +116,7 @@ class Kernel extends HttpKernel
         'guest' => RedirectIfAuthenticated::class,
         'password.confirm' => RequirePassword::class,
         'signed' => ValidateSignature::class,
-        'throttle' => ThrottleRequests::class,
+        'throttle' => ThrottleRequestsByDevice::class,
         'verified' => EnsureEmailIsVerified::class,
     ];
 

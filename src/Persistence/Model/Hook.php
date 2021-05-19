@@ -103,7 +103,7 @@ trait Hook
                 continue;
             }
 
-            $this->persistOneToManyItem($alias, $parser, $items);
+            $this->persistOneToManyItems($alias, $parser, $items);
         }
     }
 
@@ -112,7 +112,7 @@ trait Hook
      * @param mixed $parser
      * @param array $items
      */
-    protected function persistOneToManyItem(string $alias, $parser, array $items): void
+    protected function persistOneToManyItems(string $alias, $parser, array $items): void
     {
         /** @var HasMany $hasMany */
         $hasMany = $this->{$alias}();
@@ -120,12 +120,17 @@ trait Hook
         $localKey = $hasMany->getLocalKeyName();
         $foreignKey = $hasMany->getForeignKeyName();
 
-        $previous = $hasMany->where($foreignKey, $this->getValue($localKey))->get();
-        foreach ($previous as $record) {
-            $record->forceDelete();
-        }
+        // TODO: apply sync on everywhere
+
+        $delete = function () use ($hasMany, $localKey, $foreignKey) {
+            $previous = $hasMany->where($foreignKey, $this->getValue($localKey))->get();
+            foreach ($previous as $record) {
+                $record->forceDelete();
+            }
+        };
 
         if (is_callable($parser)) {
+            $delete();
             $values = pack($items)->map(function ($data) use ($parser, $foreignKey, $localKey) {
                 $uuid = Uuid::uuid4();
                 $value = [
@@ -143,6 +148,7 @@ trait Hook
         }
 
         if (is_array($parser) && isset($parser['reference'])) {
+            $delete();
             /** @var AbstractRepository $reference */
             $reference = $parser['reference'];
             /** @var RepositoryInterface $repository */
@@ -155,6 +161,7 @@ trait Hook
         }
 
         if (is_string($parser)) {
+            $delete();
             /** @var AbstractRepository $parser */
             /** @var RepositoryInterface $repository */
             $repository = $parser::instance();
@@ -170,12 +177,60 @@ trait Hook
         if (!class_exists($related)) {
             return;
         }
+        $this->persistSynchronizeOneToManyItem($hasMany, $related, $items);
+    }
+
+    /**
+     * @param HasMany $hasMany
+     * @param mixed $related
+     * @param array $items
+     */
+    protected function persistSynchronizeOneToManyItem(HasMany $hasMany, mixed $related, array $items)
+    {
+        $localKey = $hasMany->getLocalKeyName();
+        $foreignKey = $hasMany->getForeignKeyName();
+        /** @var AbstractModel $related */
+        $identifier = $related::identifier();
+        $primaryKey = $identifier[1];
+
+        $children = $hasMany
+            ->where($foreignKey, $this->getValue($localKey))
+            ->get()
+            ->reduce(function ($accumulator, AbstractModel $model) {
+                $accumulator[$model->getPrimaryKeyValue()] = true;
+                return $accumulator;
+            }, []);
+
+        $instance = static function ($primaryKeyValue) use ($related) {
+            if (!$primaryKeyValue) {
+                return new $related();
+            }
+            return (new $related())->find($primaryKeyValue);
+        };
+
         foreach ($items as $item) {
-            $item[$foreignKey] = $this->getValue($localKey);
+            $primaryKeyValue = null;
+            if (isset($item[$primaryKey])) {
+                $primaryKeyValue = (string)$item[$primaryKey];
+                unset($children[$primaryKeyValue]);
+            }
             /** @var AbstractModel $model */
-            $model = new $related();
+            $model = $instance($primaryKeyValue);
+            if (!$model) {
+                continue;
+            }
+
+            $item[$foreignKey] = $this->getValue($localKey);
             $model->fill($item);
             $model->save();
+        }
+
+        $previous = $hasMany
+            ->where($foreignKey, $this->getValue($localKey))
+            ->whereIn($primaryKey, array_keys($children))
+            ->get();
+        foreach ($previous as $record) {
+            $record->forceDelete();
         }
     }
 
