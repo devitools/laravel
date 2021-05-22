@@ -58,7 +58,7 @@ class Login extends User implements JWTSubject, Authenticator
      *
      * @var string
      */
-    protected $keyType = 'binary';
+    protected $keyType = 'string';
 
     /**
      * The attributes that should be cast.

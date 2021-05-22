@@ -38,7 +38,7 @@
     "sentry/sentry-laravel": "2.4.2"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-master"
+    "roave/security-advisories": "dev-latest"
   },
   "autoload": {
     "psr-4": {

@@ -155,12 +155,12 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
 
             if (isset($model->attributes[$uuidColumn]) && $model->attributes[$uuidColumn] !== null) {
                 /* @var Uuid $uuid */
-                $uuid = $uuid::fromString(strtolower($model->attributes[$uuidColumn]));
+                $uuid = Uuid::fromString(strtolower($model->attributes[$uuidColumn]));
             }
 
             $id = $model->getFilled($model->exposedKey());
             if ($id && $id !== __UNDEFINED__) {
-                $uuid = $uuid::fromString($id);
+                $uuid = Uuid::fromString($id);
             }
 
             $model->attributes[$uuidColumn] = $uuid->getBytes();
