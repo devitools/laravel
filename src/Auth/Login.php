@@ -66,7 +66,7 @@ class Login extends User implements JWTSubject, Authenticator
      * @var array
      */
     protected $casts = [
-        __BINARY_KEY__ => 'uuid',
+        __BINARY_KEY__ => 'string',
     ];
 
     /**
