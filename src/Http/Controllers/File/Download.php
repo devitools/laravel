@@ -6,10 +6,14 @@ namespace Devitools\Http\Controllers\File;
 
 use Devitools\Http\Controllers\Controller;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Response as ResponseFile;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
+use Php\Text;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Throwable;
 
 use function request;
 
@@ -21,61 +25,115 @@ use function request;
 class Download extends Controller
 {
     /**
-     * @var array
-     */
-    public const HEADERS = [
-        'pdf' => [
-            'Content-Type' => 'application/pdf'
-        ],
-        'jpg' => [
-            'Content-Type' => 'image/png'
-        ],
-        'jpeg' => [
-            'Content-Type' => 'image/png'
-        ],
-        'png' => [
-            'Content-Type' => 'image/png'
-        ],
-        'mp3' => [
-            'Content-Type' => 'audio/mpeg'
-        ],
-        'mp4' => [
-            'Content-Type' => 'video/mp4'
-        ],
-    ];
-
-    /**
      * The __invoke method is called when a script tries to call an object as a function.
      *
      * @param string $any
      *
-     * @return false|Factory|View|string
+     * @return Application|ResponseFactory|ResponseFile|BinaryFileResponse
      * @link https://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.invoke
      */
-    public function __invoke($any)
+    public function __invoke(string $any)
     {
-        $resource = addslashes($any);
+        $path = $this->getPath($any);
         try {
-            $path = preg_replace('/\\.[^.\\s]{3,4}$/', '', $resource);
-            $content = Storage::disk('minio')->get($path);
-        } catch (FileNotFoundException $fileNotFoundException) {
-            return response(null, 404);
+            $headers = $this->getHeaders($path);
+            $content = $this->getContent($path);
+        } catch (Throwable $exception) {
+            return $this->notfoundDownload($path, $exception);
         }
-
-        $info = pathinfo($resource);
-        $extension = $info['extension'] ?? '';
-        $headers = static::HEADERS[$extension] ?? ['Content-Type' => 'text/html'];
 
         if (request()->get('download')) {
-            $name = request()->get('name');
-            if (!$name) {
-                $name = 'download' . '.' . $extension;
-            }
-            $filename = storage_path() . '/temp/' . uniqid('static', true);
-            file_put_contents($filename, $content);
-            return response()->download($filename, $name, $headers)->deleteFileAfterSend();
+            return $this->forceDownload($path, $headers, $content);
         }
+        return $this->download($path, $headers, $content);
+    }
 
+    /**
+     * @param string $any
+     *
+     * @return string
+     */
+    protected function getPath(string $any): string
+    {
+        $resource = addslashes($any);
+        return preg_replace('/\\.[^.\\s]{3,4}$/', '', $resource);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return array
+     */
+    protected function getHeaders(string $path): array
+    {
+        return ['Content-Type' => Storage::disk('minio')->mimeType($path)];
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return string
+     * @throws FileNotFoundException
+     */
+    protected function getContent(string $path): string
+    {
+        if (!Text::trim($path)) {
+            $path = __UNDEFINED__;
+        }
+        return Storage::disk('minio')->get($path);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function getExtension(string $path): string
+    {
+        $info = pathinfo($path);
+        return $info['extension'] ?? '';
+    }
+
+    /**
+     * @param string $path
+     * @param string $content
+     * @param array $headers
+     *
+     * @return BinaryFileResponse
+     */
+    protected function forceDownload(string $path, array $headers, string $content): BinaryFileResponse
+    {
+        $name = request()->get('name');
+        if (!$name) {
+            $extension = $this->getExtension($path);
+            $name = 'download' . '.' . $extension;
+        }
+        $filename = storage_path() . '/temp/' . uniqid('static', true);
+        file_put_contents($filename, $content);
+        return response()->download($filename, $name, $headers)->deleteFileAfterSend();
+    }
+
+    /**
+     * @param string $path
+     * @param array $headers
+     * @param string $content
+     *
+     * @return ResponseFile
+     */
+    protected function download(string $path, array $headers, string $content): ResponseFile
+    {
+        $headers['Meta-Path'] = $path;
         return Response::make($content, 200, $headers);
+    }
+
+    /**
+     * @param string $path
+     * @param Throwable $exception
+     *
+     * @return Application|ResponseFactory|ResponseFile
+     */
+    protected function notfoundDownload(string $path, Throwable $exception)
+    {
+        return response(null, 404);
     }
 }
