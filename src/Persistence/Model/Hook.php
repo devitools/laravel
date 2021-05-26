@@ -185,7 +185,7 @@ trait Hook
      * @param mixed $related
      * @param array $items
      */
-    protected function persistSynchronizeOneToManyItem(HasMany $hasMany, mixed $related, array $items)
+    protected function persistSynchronizeOneToManyItem(HasMany $hasMany, $related, array $items)
     {
         $localKey = $hasMany->getLocalKeyName();
         $foreignKey = $hasMany->getForeignKeyName();
