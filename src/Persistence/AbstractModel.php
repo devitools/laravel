@@ -189,6 +189,14 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     }
 
     /**
+     * @return string
+     */
+    public static function getExternalKey(): string
+    {
+        return __PRIMARY_KEY__;
+    }
+
+    /**
      * @return array
      */
     public function columns(): array
