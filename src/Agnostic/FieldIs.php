@@ -124,6 +124,17 @@ trait FieldIs
     }
 
     /**
+     * @param string $instruction
+     *
+     * @return $this
+     */
+    protected function isCalculated(string $instruction): self
+    {
+        $this->fields[$this->currentField]->calculated = $instruction;
+        return $this;
+    }
+
+    /**
      * @param string $exposed
      *
      * @return AbstractModel|null

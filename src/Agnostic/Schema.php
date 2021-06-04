@@ -32,11 +32,6 @@ abstract class Schema extends AbstractModel
     public const PRIMARY_KEY = __BINARY_KEY__;
 
     /**
-     * @var array
-     */
-    protected array $currencies = [];
-
-    /**
      * The resource associated with the schema.
      *
      * @return string
@@ -112,6 +107,10 @@ abstract class Schema extends AbstractModel
 
         if ($field->cast) {
             $this->casts[$key] = $field->cast;
+        }
+
+        if ($field->calculated) {
+            $this->calculated[$key] = $field->calculated;
         }
 
         if (count($field->rules)) {

@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as Auditing;
 use OwenIt\Auditing\Exceptions\AuditingException;
@@ -140,6 +141,20 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     protected array $readable = [];
 
     /**
+     * Fields that are calculated
+     *
+     * @var array
+     */
+    protected array $calculated = [];
+
+    /**
+     * Fields that are currencies
+     *
+     * @var array
+     */
+    protected array $currencies = [];
+
+    /**
      * Boot the trait, adding a creating observer.
      * When persisting a new model instance, we resolve the UUID field, then set
      * a fresh UUID, taking into account if we need to cast to binary or not.
@@ -208,7 +223,14 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
             ? []
             : [static::CREATED_BY, static::UPDATED_BY, static::DELETED_BY];
 
-        return array_merge($keys, $visible, $this->readable, $timestamps, $responsible);
+        $columns = array_merge($keys, $visible, $timestamps, $responsible);
+        $callback = function ($column) {
+            if (isset($this->calculated[$column])) {
+                return DB::raw("({$this->calculated[$column]}) as '{$column}'");
+            }
+            return $column;
+        };
+        return array_map($callback, $columns);
     }
 
     /**

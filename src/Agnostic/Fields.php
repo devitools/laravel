@@ -48,6 +48,7 @@ trait Fields
             'hidden' => false,
             'avoid' => null,
             'value' => null,
+            'calculated' => null,
         ];
         $this->fields[$key] = (object)array_merge($defaults, $properties);
         return $this;
