@@ -52,6 +52,7 @@ trait Hook
         });
 
         static::saving(static function (AbstractModel $model) {
+            $model->prepare();
             // parse many to one relationship
             $model->persistManyToOne();
             // validate the values

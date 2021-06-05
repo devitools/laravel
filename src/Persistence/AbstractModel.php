@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence;
 
+use Devitools\Exceptions\ErrorInvalidArgument;
 use Devitools\Persistence\AbstractModel as Common;
 use Devitools\Persistence\Model\Fill;
 use Devitools\Persistence\Model\Helper;
@@ -12,7 +13,9 @@ use Devitools\Persistence\Model\Replaceable;
 use Devitools\Persistence\Model\Responsible;
 use Devitools\Persistence\Model\Validation;
 use Devitools\Persistence\Model\Value;
+use Devitools\Persistence\Value\Currency;
 use Dyrynda\Database\Support\GeneratesUuid as HasBinaryUuid;
+use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -350,6 +353,55 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
 
         $this->counter = counter();
         return $this;
+    }
+
+    /**
+     * @return void
+     * @throws ErrorInvalidArgument
+     */
+    public function prepare(): void
+    {
+        $currencies = $this->currencies();
+        $data = $this->getValues();
+        foreach ($data as $field => $datum) {
+            if (!in_array($field, $currencies, true)) {
+                continue;
+            }
+            if ($datum instanceof Currency) {
+                continue;
+            }
+            $this->setValue($field, Currency::fromValue($datum));
+        }
+    }
+
+    /**
+     * Resolve the custom caster class for a given key.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    protected function resolveCasterClass($key)
+    {
+        $castType = $this->getCasts()[$key];
+
+        $arguments = [];
+
+        if (is_string($castType) && strpos($castType, ':') !== false) {
+            $segments = explode(':', $castType, 2);
+
+            $castType = $segments[0];
+            $arguments = explode(',', $segments[1]);
+        }
+
+        if (is_subclass_of($castType, Castable::class)) {
+            $castType = $castType::castUsing($arguments);
+        }
+
+        if (is_object($castType)) {
+            return $castType;
+        }
+
+        return new $castType(...$arguments);
     }
 
     /**

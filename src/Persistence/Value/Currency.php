@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Devitools\Persistence\Value;
 
 use Devitools\Exceptions\ErrorInvalidArgument;
+use Devitools\Persistence\ModelInterface;
+use Illuminate\Contracts\Database\Eloquent\Castable;
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes;
 use JsonSerializable;
 
 use function PhpBrasil\Collection\Helper\stringify;
@@ -14,7 +18,7 @@ use function PhpBrasil\Collection\Helper\stringify;
  *
  * @package Devitools\Units\Common
  */
-class Currency implements JsonSerializable
+class Currency implements JsonSerializable, Castable
 {
     /**
      * @var string
@@ -41,7 +45,7 @@ class Currency implements JsonSerializable
 
     /**
      * @param float|int|Currency|null $value
-     * @param int $precision
+     * @param int|null $precision
      *
      * @return Currency
      * @throws ErrorInvalidArgument
@@ -52,6 +56,44 @@ class Currency implements JsonSerializable
             return $value;
         }
         return static::fromNumber($value, $precision);
+    }
+
+    /**
+     * Get the name of the caster class to use when casting from / to this cast target.
+     *
+     * @param array $arguments
+     *
+     * @return string|CastsAttributes|CastsInboundAttributes
+     */
+    public static function castUsing(array $arguments = [])
+    {
+        return new static('', '', env('APP_PRECISION', 2));
+    }
+
+    /**
+     * @param ModelInterface $instance
+     * @param string $key
+     * @param int $value
+     * @param array $attributes
+     *
+     * @return mixed
+     */
+    public function get(ModelInterface $instance, string $key, int $value, array $attributes)
+    {
+        return static::fromInteger($value);
+    }
+
+    /**
+     * @param ModelInterface $instance
+     * @param string $key
+     * @param Currency $value
+     * @param array $attributes
+     *
+     * @return mixed
+     */
+    public function set(ModelInterface $instance, string $key, Currency $value, array $attributes)
+    {
+        return $value->toNumber();
     }
 
     /**
@@ -119,7 +161,7 @@ class Currency implements JsonSerializable
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return (string)$this->toInteger();
     }
