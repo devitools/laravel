@@ -86,14 +86,18 @@ class Currency implements JsonSerializable, Castable
     /**
      * @param ModelInterface $instance
      * @param string $key
-     * @param Currency $value
+     * @param Currency|int $value
      * @param array $attributes
      *
      * @return mixed
+     * @throws ErrorInvalidArgument
      */
-    public function set(ModelInterface $instance, string $key, Currency $value, array $attributes)
+    public function set(ModelInterface $instance, string $key, $value, array $attributes)
     {
-        return $value->toNumber();
+        if ($value instanceof self) {
+            return $value->toNumber();
+        }
+        return static::fromValue($value);
     }
 
     /**
