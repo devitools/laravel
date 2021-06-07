@@ -44,7 +44,7 @@ class Login extends User implements JWTSubject, Authenticator
     /**
      * @var string
      */
-    public const DELETED_AT = 'deletedAt';
+    public const DELETED_AT = __DELETED_AT__;
 
     /**
      * The table associated with the model.
@@ -87,7 +87,9 @@ class Login extends User implements JWTSubject, Authenticator
      */
     public function profile(): BelongsTo
     {
-        return $this->belongsTo(config('auth.providers.users.profile'), 'profileId', __BINARY_KEY__);
+        $related = config('auth.providers.users.profile');
+        $foreignKey = config('devitools.auth.profileId', 'profileId');
+        return $this->belongsTo($related, $foreignKey, __BINARY_KEY__);
     }
 
     /**

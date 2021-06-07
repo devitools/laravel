@@ -15,20 +15,21 @@ use Devitools\Persistence\Model\Validation;
 use Devitools\Persistence\Model\Value;
 use Devitools\Persistence\Value\Currency;
 use Dyrynda\Database\Support\GeneratesUuid as HasBinaryUuid;
-use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as Auditing;
 use OwenIt\Auditing\Exceptions\AuditingException;
 use Ramsey\Uuid\Uuid;
-
 use Throwable;
 
 use function Devitools\Helper\counter;
+use function Devitools\Helper\ip;
 use function Devitools\Helper\is_binary;
 use function in_array;
 
@@ -71,32 +72,32 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     /**
      * @var string
      */
-    public const CREATED_AT = 'createdAt';
+    public const CREATED_AT = __CREATED_AT__;
 
     /**
      * @var string
      */
-    public const UPDATED_AT = 'updatedAt';
+    public const UPDATED_AT = __UPDATED_AT__;
 
     /**
      * @var string
      */
-    public const DELETED_AT = 'deletedAt';
+    public const DELETED_AT = __DELETED_AT__;
 
     /**
      * @var string
      */
-    public const UPDATED_BY = 'updatedBy';
+    public const UPDATED_BY = __UPDATED_BY__;
 
     /**
      * @var string
      */
-    public const CREATED_BY = 'createdBy';
+    public const CREATED_BY = __CREATED_BY__;
 
     /**
      * @var string
      */
-    public const DELETED_BY = 'deletedBy';
+    public const DELETED_BY = __DELETED_BY__;
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -156,6 +157,16 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
      * @var array
      */
     protected array $currencies = [];
+
+    /**
+     * The name of the column that should be used for the UUID.
+     *
+     * @return string
+     */
+    public function uuidColumn(): string
+    {
+        return __BINARY_KEY__;
+    }
 
     /**
      * Boot the trait, adding a creating observer.
@@ -227,13 +238,21 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
             : [static::CREATED_BY, static::UPDATED_BY, static::DELETED_BY];
 
         $columns = array_merge($keys, $visible, $timestamps, $responsible);
-        $callback = function ($column) {
-            if (isset($this->calculated[$column])) {
-                return DB::raw("({$this->calculated[$column]}) as '{$column}'");
-            }
-            return $column;
-        };
+        $callback = fn($column) => $this->parseColumn($column);
         return array_map($callback, $columns);
+    }
+
+    /**
+     * @param string $field
+     *
+     * @return Expression|string
+     */
+    protected function parseColumn(string $field)
+    {
+        if (isset($this->calculated[$field])) {
+            return DB::raw("({$this->calculated[$field]}) as '{$field}'");
+        }
+        return $field;
     }
 
     /**
@@ -319,12 +338,12 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
                 'old_values' => $old,
                 'new_values' => $new,
                 'event' => $this->auditEvent,
-                'auditable_id' => $this->id,
+                'auditable_id' => $this->getPrimaryKeyValue(),
                 'auditable_type' => $this->getMorphClass(),
                 $morphPrefix . '_id' => $user->uuid ?? null,
                 $morphPrefix . '_type' => $user ? $user->getMorphClass() : null,
                 'url' => $this->resolveUrl(),
-                'ip_address' => $this->resolveIpAddress(),
+                'ip_address' => ip(),
                 'user_agent' => $this->resolveUserAgent(),
                 'tags' => empty($tags) ? null : $tags,
             ]
@@ -372,36 +391,6 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
             }
             $this->setValue($field, Currency::fromValue($datum));
         }
-    }
-
-    /**
-     * Resolve the custom caster class for a given key.
-     *
-     * @param  string  $key
-     * @return mixed
-     */
-    protected function resolveCasterClass($key)
-    {
-        $castType = $this->getCasts()[$key];
-
-        $arguments = [];
-
-        if (is_string($castType) && strpos($castType, ':') !== false) {
-            $segments = explode(':', $castType, 2);
-
-            $castType = $segments[0];
-            $arguments = explode(',', $segments[1]);
-        }
-
-        if (is_subclass_of($castType, Castable::class)) {
-            $castType = $castType::castUsing($arguments);
-        }
-
-        if (is_object($castType)) {
-            return $castType;
-        }
-
-        return new $castType(...$arguments);
     }
 
     /**

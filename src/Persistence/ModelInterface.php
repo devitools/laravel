@@ -26,7 +26,7 @@ interface ModelInterface
     public function sorter(): array;
 
     /**
-     * @param array [$names]
+     * @param array|null $names
      *
      * @return array
      */

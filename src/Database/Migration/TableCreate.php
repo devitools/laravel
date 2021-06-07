@@ -11,6 +11,7 @@ use Illuminate\Database\Schema\Blueprint;
 
 /**
  * Class TableCreate
+ *
  * @package Devitools\Database\Migration
  */
 abstract class TableCreate extends Migration
@@ -37,6 +38,7 @@ abstract class TableCreate extends Migration
 
     /**
      * @param Table $table
+     *
      * @return void
      */
     abstract protected function withStatements(Table $table): void;
@@ -84,9 +86,9 @@ abstract class TableCreate extends Migration
      */
     private function timestamps(Table $table)
     {
-        $table->timestamp('updatedAt')->nullable();
-        $table->timestamp('createdAt')->nullable();
-        $table->timestamp('deletedAt')->nullable();
+        $table->timestamp(config('devitools.schema.updatedAt', 'updatedAt'))->nullable();
+        $table->timestamp(config('devitools.schema.createdAt', 'createdAt'))->nullable();
+        $table->timestamp(config('devitools.schema.deletedAt', 'deletedAt'))->nullable();
     }
 
     /**
@@ -94,9 +96,9 @@ abstract class TableCreate extends Migration
      */
     private function responsible(Table $table)
     {
-        $table->string('updatedBy')->nullable();
-        $table->string('createdBy')->nullable();
-        $table->string('deletedBy')->nullable();
+        $table->string(config('devitools.schema.updatedBy', 'updatedBy'))->nullable();
+        $table->string(config('devitools.schema.createdBy', 'createdBy'))->nullable();
+        $table->string(config('devitools.schema.deletedBy', 'deletedBy'))->nullable();
     }
 
     /**

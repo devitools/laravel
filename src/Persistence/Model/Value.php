@@ -30,7 +30,7 @@ trait Value
     protected array $setters = [];
 
     /**
-     * @param array [$names]
+     * @param array|null $names
      *
      * @return array
      */
