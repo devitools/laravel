@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence\Model;
 
+use Devitools\Auth\Login;
 use Devitools\Units\Common\UserSession;
 use Throwable;
 
@@ -24,8 +25,11 @@ trait Responsible
     protected function getResponsibleName(): string
     {
         try {
+            /** @var Login $user */
             $user = $this->getUser();
-            return "{$user->name} [{$user->id}]";
+            $name = $user->getAttributeValue(config('devitools.auth.name', 'name'));
+            $id = $user->getAttributeValue(config('devitools.schema.primaryKey', 'id'));
+            return "{$name} [{$id}]";
         } catch (Throwable $exception) {
         }
         return 'anonymous';
