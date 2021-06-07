@@ -44,7 +44,7 @@ trait Validation
      */
     public function validate(): bool
     {
-        $validator = Validator::make($this->getValues(), $this->getRules());
+        $validator = Validator::make($this->getAttributes(), $this->getRules());
         if ($validator->fails()) {
             $this->addValidationErrors($validator);
             throw new ErrorValidation($this->getErrors());

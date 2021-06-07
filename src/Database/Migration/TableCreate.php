@@ -86,9 +86,9 @@ abstract class TableCreate extends Migration
      */
     private function timestamps(Table $table)
     {
-        $table->timestamp(config('devitools.schema.updatedAt', 'updatedAt'))->nullable();
-        $table->timestamp(config('devitools.schema.createdAt', 'createdAt'))->nullable();
-        $table->timestamp(config('devitools.schema.deletedAt', 'deletedAt'))->nullable();
+        $table->timestamp(__UPDATED_AT__)->nullable();
+        $table->timestamp(__CREATED_AT__)->nullable();
+        $table->timestamp(__DELETED_AT__)->nullable();
     }
 
     /**
@@ -96,9 +96,9 @@ abstract class TableCreate extends Migration
      */
     private function responsible(Table $table)
     {
-        $table->string(config('devitools.schema.updatedBy', 'updatedBy'))->nullable();
-        $table->string(config('devitools.schema.createdBy', 'createdBy'))->nullable();
-        $table->string(config('devitools.schema.deletedBy', 'deletedBy'))->nullable();
+        $table->string(__UPDATED_BY__)->nullable();
+        $table->string(__CREATED_BY__)->nullable();
+        $table->string(__DELETED_BY__)->nullable();
     }
 
     /**
