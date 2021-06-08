@@ -6,9 +6,6 @@ namespace Devitools\Persistence\Value;
 
 use Devitools\Exceptions\ErrorInvalidArgument;
 use Devitools\Persistence\ModelInterface;
-use Illuminate\Contracts\Database\Eloquent\Castable;
-use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes;
 use JsonSerializable;
 
 use function PhpBrasil\Collection\Helper\stringify;
@@ -16,9 +13,9 @@ use function PhpBrasil\Collection\Helper\stringify;
 /**
  * Class Currency
  *
- * @package Devitools\Units\Common
+ * @package Devitools\Persistence\Value
  */
-class Currency implements JsonSerializable, Castable
+class Currency implements JsonSerializable
 {
     /**
      * @var string
@@ -56,48 +53,6 @@ class Currency implements JsonSerializable, Castable
             return $value;
         }
         return static::fromNumber($value, $precision);
-    }
-
-    /**
-     * Get the name of the caster class to use when casting from / to this cast target.
-     *
-     * @param array $arguments
-     *
-     * @return string|CastsAttributes|CastsInboundAttributes
-     */
-    public static function castUsing(array $arguments = [])
-    {
-        return new static('', '', env('APP_PRECISION', 2));
-    }
-
-    /**
-     * @param ModelInterface $instance
-     * @param string $key
-     * @param int $value
-     * @param array $attributes
-     *
-     * @return mixed
-     */
-    public function get(ModelInterface $instance, string $key, int $value, array $attributes)
-    {
-        return static::fromInteger($value);
-    }
-
-    /**
-     * @param ModelInterface $instance
-     * @param string $key
-     * @param Currency|int $value
-     * @param array $attributes
-     *
-     * @return mixed
-     * @throws ErrorInvalidArgument
-     */
-    public function set(ModelInterface $instance, string $key, $value, array $attributes)
-    {
-        if ($value instanceof self) {
-            return $value->toNumber();
-        }
-        return static::fromValue($value);
     }
 
     /**

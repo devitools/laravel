@@ -15,7 +15,6 @@ use Devitools\Persistence\Model\Validation;
 use Devitools\Persistence\Model\Value;
 use Devitools\Persistence\Value\Currency;
 use Dyrynda\Database\Support\GeneratesUuid as HasBinaryUuid;
-use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -25,7 +24,6 @@ use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as Auditing;
 use OwenIt\Auditing\Exceptions\AuditingException;
 use Ramsey\Uuid\Uuid;
-
 use Throwable;
 
 use function Devitools\Helper\counter;
@@ -362,46 +360,48 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     public function prepare(): void
     {
         $currencies = $this->currencies();
-        $data = $this->getValues();
-        foreach ($data as $field => $datum) {
-            if (!in_array($field, $currencies, true)) {
+        foreach ($currencies as $field) {
+            if (!isset($attributes[$field])) {
                 continue;
             }
-            if ($datum instanceof Currency) {
+            $value = $attributes[$field];
+            if ($value instanceof Currency) {
                 continue;
             }
-            $this->setValue($field, Currency::fromValue($datum));
+            $this->attributes[$field] = Currency::fromValue($value);
         }
     }
 
     /**
-     * Resolve the custom caster class for a given key.
+     * Set the array of model attributes. No checking is done.
      *
-     * @param  string  $key
-     * @return mixed
+     * @param array $attributes
+     * @param bool $sync
+     *
+     * @return $this
      */
-    protected function resolveCasterClass($key)
+    public function setRawAttributes(array $attributes, $sync = false)
     {
-        $castType = $this->getCasts()[$key];
+        $currencies = $this->currencies();
+        foreach ($currencies as $field) {
+            if (!isset($attributes[$field])) {
+                continue;
+            }
+            $value = $attributes[$field];
+            if ($value instanceof Currency) {
+                continue;
+            }
+            $attributes[$field] = Currency::fromInteger($value);
+        }
+        $this->attributes = $attributes;
 
-        $arguments = [];
-
-        if (is_string($castType) && strpos($castType, ':') !== false) {
-            $segments = explode(':', $castType, 2);
-
-            $castType = $segments[0];
-            $arguments = explode(',', $segments[1]);
+        if ($sync) {
+            $this->syncOriginal();
         }
 
-        if (is_subclass_of($castType, Castable::class)) {
-            $castType = $castType::castUsing($arguments);
-        }
+        $this->classCastCache = [];
 
-        if (is_object($castType)) {
-            return $castType;
-        }
-
-        return new $castType(...$arguments);
+        return $this;
     }
 
     /**
