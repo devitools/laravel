@@ -381,16 +381,48 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     public function prepare(): void
     {
         $currencies = $this->currencies();
-        $data = $this->getValues();
-        foreach ($data as $field => $datum) {
-            if (!in_array($field, $currencies, true)) {
+        foreach ($currencies as $field) {
+            if (!isset($attributes[$field])) {
                 continue;
             }
-            if ($datum instanceof Currency) {
+            $value = $attributes[$field];
+            if ($value instanceof Currency) {
                 continue;
             }
-            $this->setValue($field, Currency::fromValue($datum));
+            $this->attributes[$field] = Currency::fromValue($value);
         }
+    }
+
+    /**
+     * Set the array of model attributes. No checking is done.
+     *
+     * @param array $attributes
+     * @param bool $sync
+     *
+     * @return $this
+     */
+    public function setRawAttributes(array $attributes, $sync = false)
+    {
+        $currencies = $this->currencies();
+        foreach ($currencies as $field) {
+            if (!isset($attributes[$field])) {
+                continue;
+            }
+            $value = $attributes[$field];
+            if ($value instanceof Currency) {
+                continue;
+            }
+            $attributes[$field] = Currency::fromInteger($value);
+        }
+        $this->attributes = $attributes;
+
+        if ($sync) {
+            $this->syncOriginal();
+        }
+
+        $this->classCastCache = [];
+
+        return $this;
     }
 
     /**

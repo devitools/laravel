@@ -43,9 +43,9 @@ class Download extends Controller
         }
 
         if (request()->get('download')) {
-            return $this->forceDownload($path, $headers, $content);
+            return $this->download($any, $headers, $content);
         }
-        return $this->download($path, $headers, $content);
+        return $this->respond($any, $headers, $content);
     }
 
     /**
@@ -66,7 +66,9 @@ class Download extends Controller
      */
     protected function getHeaders(string $path): array
     {
-        return ['Content-Type' => Storage::disk('minio')->mimeType($path)];
+        return [
+            'Content-Type' => Storage::disk('minio')->mimeType($path)
+        ];
     }
 
     /**
@@ -88,10 +90,10 @@ class Download extends Controller
      *
      * @return string
      */
-    protected function getExtension(string $path): string
+    protected function getName(string $path): string
     {
         $info = pathinfo($path);
-        return $info['extension'] ?? '';
+        return $info['basename'] ?? '';
     }
 
     /**
@@ -101,12 +103,11 @@ class Download extends Controller
      *
      * @return BinaryFileResponse
      */
-    protected function forceDownload(string $path, array $headers, string $content): BinaryFileResponse
+    protected function download(string $path, array $headers, string $content): BinaryFileResponse
     {
         $name = request()->get('name');
         if (!$name) {
-            $extension = $this->getExtension($path);
-            $name = 'download' . '.' . $extension;
+            $name = $this->getName($path);
         }
         $filename = storage_path() . '/temp/' . uniqid('static', true);
         file_put_contents($filename, $content);
@@ -120,9 +121,8 @@ class Download extends Controller
      *
      * @return ResponseFile
      */
-    protected function download(string $path, array $headers, string $content): ResponseFile
+    protected function respond(string $path, array $headers, string $content): ResponseFile
     {
-        $headers['Meta-Path'] = $path;
         return Response::make($content, 200, $headers);
     }
 
