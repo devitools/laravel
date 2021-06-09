@@ -7,6 +7,7 @@ namespace Devitools\Helper;
 use Devitools\Exceptions\ErrorInvalidArgument;
 use Devitools\Persistence\Value\Currency;
 use Exception;
+use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 use TypeError;
@@ -245,4 +246,47 @@ function dashesToCamelCase($string, $capitalizeFirstCharacter = false): string
         $string = lcfirst($string);
     }
     return $string;
+}
+
+if (!function_exists('camel_keys')) {
+    /**
+     * Convert array keys to camel case recursively.
+     *
+     * @param array $array
+     *
+     * @return array
+     */
+    function camel_keys(array $array): array
+    {
+        $result = [];
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $value = camel_keys($value);
+            }
+            $result[Str::camel($key)] = $value;
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('snake_keys')) {
+    /**
+     * Convert array keys to snake case recursively.
+     *
+     * @param array $array
+     * @param string $delimiter
+     *
+     * @return array
+     */
+    function snake_keys(array $array, string $delimiter = '_'): array
+    {
+        $result = [];
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $value = snake_keys($value, $delimiter);
+            }
+            $result[Str::snake($key, $delimiter)] = $value;
+        }
+        return $result;
+    }
 }
