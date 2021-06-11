@@ -24,8 +24,8 @@ class Report extends Controller
     protected function getFullQualifiedName(string $report): string
     {
         $name = dashesToCamelCase($report, true);
-        $namespace = config('app.namespace', '\\Source');
-        $fullQualifiedName = "{$namespace}\\Report\\{$name}";
+        $namespace = config('devitools.report.namespace', '\\App\\Report');
+        $fullQualifiedName = "{$namespace}\\{$name}";
         if (!class_exists($fullQualifiedName)) {
             throw new ErrorRuntime(['report' => $report]);
         }

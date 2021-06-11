@@ -5,29 +5,37 @@ declare(strict_types=1);
 namespace Devitools\Report\Where;
 
 /**
- * Trait WhereEqual
+ * Trait WhereBoolean
  *
  * @package Devitools\Report\Where
  */
-trait WhereEqual
+trait WhereBoolean
 {
     /**
      * @param array $filters
      * @param string $column
      * @param string $property
-     *
      * @return $this
      */
-    protected function addWhereEqual(array $filters, string $column, string $property = ''): self
+    protected function addWhereBoolean(array &$filters, string $column, string $property = ''): self
     {
         if (!$property) {
             $property = $column;
         }
+
         $value = $filters[$property] ?? null;
         if (!$value) {
             return $this;
         }
-        $this->where[] = "{$column} = :{$property}";
+
+        unset($filters[$property]);
+
+        if ($value === 'true') {
+            $this->where[] = "{$column} = 1";
+            return $this;
+        }
+
+        $this->where[] = "({$column} = 0 or {$column} is null)";
         return $this;
     }
 }

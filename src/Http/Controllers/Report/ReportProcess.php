@@ -29,7 +29,7 @@ class ReportProcess extends Report
         $user = $this->getUser();
 
         $printing = $request->get('p') === 'true';
-        $filters = $request->post();
+        $filters = $request->all();
 
         /** @var AbstractReport $fullQualifiedName */
         return $fullQualifiedName

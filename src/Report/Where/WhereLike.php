@@ -8,7 +8,6 @@ namespace Devitools\Report\Where;
  * Trait WhereLike
  *
  * @package Devitools\Report\Where
- * @property array $where
  */
 trait WhereLike
 {
@@ -16,7 +15,6 @@ trait WhereLike
      * @param array $filters
      * @param string $column
      * @param string $property
-     *
      * @return $this
      */
     protected function addWhereLike(array &$filters, string $column, string $property = ''): self

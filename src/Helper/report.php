@@ -42,8 +42,13 @@ function value($row, string $property)
  *
  * @return string
  */
-function valueNumber($row, string $property, int $precision = 2, $decimals = ',', $thousands = '.'): string
-{
+function valueNumber(
+    $row,
+    string $property,
+    int $precision = 2,
+    string $decimals = ',',
+    string $thousands = '.'
+): string {
     $value = (float)value($row, $property);
     return number_format($value, $precision, $decimals, $thousands);
 }
@@ -56,7 +61,7 @@ function valueNumber($row, string $property, int $precision = 2, $decimals = ','
  *
  * @return string
  */
-function valueSelect($row, string $property, array $options, $fallback = ' - '): string
+function valueSelect($row, string $property, array $options, string $fallback = ' - '): string
 {
     $value = $row->$property ?? null;
     return $options[$value] ?? $fallback;
@@ -119,10 +124,10 @@ function valueDatetime($row, string $property, string $fallback = ' - '): string
  */
 function responsible($row, string $property)
 {
-    $regex = '/^(.*)\s\[.*\]/';
+    $regex = '/^(.*)\s\[.*]/';
     $value = property($row, $property, ' - ');
 
-    preg_match_all($regex, $value, $matches, PREG_SET_ORDER, 0);
+    preg_match_all($regex, $value, $matches, PREG_SET_ORDER);
 
     return $matches[0][1] ?? $value;
 }

@@ -8,7 +8,6 @@ namespace Devitools\Report\Where;
  * Trait WhereBetween
  *
  * @package Devitools\Report\Where
- * @property array $where
  */
 trait WhereBetween
 {
@@ -21,7 +20,7 @@ trait WhereBetween
      * @return $this
      */
     protected function addWhereBetween(
-        array &$filters,
+        array $filters,
         string $column,
         string $begin = 'begin',
         string $end = 'end'
@@ -29,27 +28,51 @@ trait WhereBetween
         $start = $filters[$begin] ?? null;
         $finish = $filters[$end] ?? null;
 
-        if (!$start && !$finish) {
-            return $this;
-        }
-
         if ($start && $finish) {
-            $filters[$begin] = "{$start} 00:00:00";
-            $filters[$end] = "{$finish} 23:59:59";
             $this->where[] = "{$column} BETWEEN :{$begin} AND :{$end}";
             return $this;
         }
 
         if ($start) {
-            $filters[$begin] = "{$start} 00:00:00";
             $this->where[] = "{$column} >= :{$begin}";
             return $this;
         }
 
         if ($finish) {
-            $filters[$end] = "{$finish} 23:59:59";
-            $this->where[] = "{$column} <= :{$end}";
+            $this->where[] = "{$column} >= :{$end}";
         }
+        return $this;
+    }
+
+    /**
+     * @param array $filters
+     * @param string $column
+     * @param string $property
+     *
+     * @return $this
+     */
+    protected function addWhereBetweenByRange(array &$filters, string $column, string $property = ''): self
+    {
+        if (!$property) {
+            $property = $column;
+        }
+        $value = $filters[$property] ?? null;
+        if (!$value) {
+            return $this;
+        }
+
+        $dates = explode(',', $value);
+        [$begin, $end] = $dates;
+        $propertyBegin = "{$property}_begin";
+        $propertyEnd = "{$property}_end";
+
+        unset($filters[$property]);
+
+        $filters[$propertyBegin] = $begin;
+        $filters[$propertyEnd] = $end;
+
+        $this->where[] = "{$column} between :{$propertyBegin} and :{$propertyEnd}";
+
         return $this;
     }
 }
