@@ -42,11 +42,11 @@ jobs:
           configuration: tests/phpunit.xml
           args: --testdox
 
-#      - name: PHPUnit Coverage
-#        uses: php-actions/phpunit@v2
-#        with:
-#          php_extensions: xdebug
-#          configuration: tests/phpunit.xml
-#          args: --coverage-text --colors=never
-#        env:
-#          XDEBUG_MODE: coverage
+      - name: PHPUnit Coverage
+        uses: php-actions/phpunit@v2
+        with:
+          php_extensions: xdebug
+          configuration: tests/phpunit.xml
+          args: --coverage-text --colors=never
+        env:
+          XDEBUG_MODE: coverage
