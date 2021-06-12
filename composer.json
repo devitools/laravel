@@ -16,9 +16,23 @@
   "authors": [
     {
       "name": "William",
-      "email": "wilcorrea@gmail.com"
+      "email": "wilcorrea@gmail.com",
+      "role": "Owner"
+    },
+    {
+      "name": "Kilderson Sena",
+      "email": "dersonsena@gmail.com",
+      "role": "Developer"
     }
   ],
+  "scripts": {
+    "test": "phpunit --testdox --configuration tests/phpunit.xml",
+    "test-unit": "phpunit --configuration tests/phpunit.xml --testdox --testsuite unit",
+    "test-integration": "phpunit --configuration tests/phpunit.xml --testdox --testsuite integration",
+    "test-filter": "phpunit --configuration tests/phpunit.xml --filter ",
+    "coverage": "phpunit --configuration tests/phpunit.xml --coverage-html tests/coverage/html",
+    "coverage-ci": "phpunit --configuration tests/phpunit.xml --coverage-text --colors=never"
+  },
   "require": {
     "php": ">=7.4",
     "ext-curl": "*",
@@ -60,5 +74,10 @@
     "files": [
       "src/Helper/index.php"
     ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Devitools\\Tests\\": "tests\\"
+    }
   }
 }
