@@ -27,19 +27,15 @@ function uuid()
         // 32 bits for "time_low"
         random_int(0, 0xffff),
         random_int(0, 0xffff),
-
         // 16 bits for "time_mid"
         random_int(0, 0xffff),
-
         // 16 bits for "time_hi_and_version",
         // four most significant bits holds version number 4
         random_int(0, 0x0fff) | 0x4000,
-
         // 16 bits, 8 bits for "clk_seq_hi_res",
         // 8 bits for "clk_seq_low",
         // two most significant bits holds zero and one for variant DCE1.1
         random_int(0, 0x3fff) | 0x8000,
-
         // 48 bits for "node"
         random_int(0, 0xffff),
         random_int(0, 0xffff),
@@ -114,7 +110,7 @@ function url($path)
  *
  * @return array
  */
-function error(string $property, string $message, $value, $parameters = [], $code = null)
+function error(string $property, string $message, $value, array $parameters = [], $code = null)
 {
     return [
         'property_path' => $property,
@@ -239,7 +235,7 @@ function idToArray(string $id): array
  *
  * @return string
  */
-function dashesToCamelCase($string, $capitalizeFirstCharacter = false): string
+function dashesToCamelCase($string, bool $capitalizeFirstCharacter = false): string
 {
     $string = str_replace('-', '', ucwords($string, '-'));
     if (!$capitalizeFirstCharacter) {

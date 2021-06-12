@@ -137,7 +137,7 @@ trait Basic
             return $filter->query($model, $value, $column, $connector);
         }
 
-        if ($connector === Connectors:: OR) {
+        if ($connector === Connectors::OR) {
             return $model->orWhere($column, $value);
         }
         return $model->where($column, $value);
