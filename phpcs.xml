@@ -18,4 +18,8 @@
     <autoload>./vendor/autoload.php</autoload>
 
     <rule ref="PSR12"/>
+
+    <rule ref="PSR1.Files.SideEffects">
+        <exclude-pattern>*</exclude-pattern>
+    </rule>
 </ruleset>
