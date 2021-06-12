@@ -2,3 +2,4 @@
 /vendor
 /tests/phpunit.xml
 /tests/.phpunit.result.cache
+/tests/coverage
