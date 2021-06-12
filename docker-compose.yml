@@ -18,6 +18,7 @@ services:
       - PHP_POST_MAX_SIZE=500M
       - PHP_UPLOAD_MAX_FILESIZE=500M
       - PHP_DEBUGGER="xdebug"
+      - XDEBUG_MODE=coverage,debug
       #      - PHP_IDE_CONFIG="serverName=_"
       - XDEBUG_REMOTE_AUTOSTART=On
       - XDEBUG_REMOTE_CONNECT_BACK=Off
