@@ -147,7 +147,7 @@ abstract class Schema extends AbstractModel
      * @noinspection ReturnTypeCanBeDeclaredInspection
      * @noinspection PhpMissingReturnTypeInspection
      */
-    public function newQuery($excludeDeleted = true)
+    public function newQuery(bool $excludeDeleted = true)
     {
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $query = parent::newQuery($excludeDeleted);
