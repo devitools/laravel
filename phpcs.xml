@@ -9,7 +9,6 @@
 
     <file>./src</file>
 
-    <exclude-pattern>*/tests/*</exclude-pattern>
     <exclude-pattern>*/vendor/*</exclude-pattern>
 
     <arg name="extensions" value="php" />
