@@ -31,10 +31,10 @@ class JWTServiceProvider extends LaravelServiceProvider
             $parser = new Parser(
                 $app['request'],
                 [
-                    (new AuthHeaders)->setHeaderName($this->config('token_key_name')),
-                    (new QueryString)->setKey($this->config('token_key_query_string')),
-                    (new InputSource)->setKey($this->config('token_key_name')),
-                    (new RouteParams)->setKey($this->config('token_key_name')),
+                    (new AuthHeaders())->setHeaderName($this->config('token_key_name')),
+                    (new QueryString())->setKey($this->config('token_key_query_string')),
+                    (new InputSource())->setKey($this->config('token_key_name')),
+                    (new RouteParams())->setKey($this->config('token_key_name')),
                     (new Cookies($this->config('decrypt_cookies')))->setKey($this->config('token_key_name')),
                 ]
             );
