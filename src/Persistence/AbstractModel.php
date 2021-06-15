@@ -382,10 +382,10 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     {
         $currencies = $this->currencies();
         foreach ($currencies as $field) {
-            if (!isset($attributes[$field])) {
+            if (!isset($this->attributes[$field])) {
                 continue;
             }
-            $value = $attributes[$field];
+            $value = $this->attributes[$field];
             if ($value instanceof Currency) {
                 continue;
             }
