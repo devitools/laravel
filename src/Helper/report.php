@@ -119,22 +119,6 @@ function valueDatetime($row, string $property, string $fallback = ' - '): string
 /**
  * @param mixed $row
  * @param string $property
- *
- * @return mixed
- */
-function responsible($row, string $property)
-{
-    $regex = '/^(.*)\s\[.*]/';
-    $value = property($row, $property, ' - ');
-
-    preg_match_all($regex, $value, $matches, PREG_SET_ORDER);
-
-    return $matches[0][1] ?? $value;
-}
-
-/**
- * @param mixed $row
- * @param string $property
  * @param bool $currency
  *
  * @return string
@@ -151,4 +135,131 @@ function valueCurrency($row, string $property, bool $currency = false): string
     }
 
     return env('APP_CURRENCY', '$') . ' ' . $value;
+}
+
+/**
+ * @param mixed $row
+ * @param string $property
+ *
+ * @return mixed
+ */
+function responsible($row, string $property)
+{
+    $regex = '/^(.*)\s\[.*]/';
+    $value = property($row, $property, ' - ');
+
+    preg_match_all($regex, $value, $matches, PREG_SET_ORDER);
+
+    return $matches[0][1] ?? $value;
+}
+
+namespace Report\Info;
+
+use DateTime;
+use stdClass;
+use Throwable;
+
+/**
+ * @param stdClass|array $info
+ *
+ * @return string
+ */
+function label($info): string
+{
+    if (is_array($info)) {
+        $info = (object)$info;
+    }
+    return $info->label ?? '';
+}
+
+/**
+ * @param stdClass|array $info
+ *
+ * @return string
+ */
+function value($info): string
+{
+    if (is_array($info)) {
+        $info = (object)$info;
+    }
+    $type = $info->type ?? null;
+    $value = $info->value;
+    if ($type === 'datetime') {
+        return datetime($value);
+    }
+    if ($type === 'date') {
+        return date($value);
+    }
+    if ($type === 'boolean') {
+        return boolean($value);
+    }
+    if ($type === 'select' || $type === 'options') {
+        return select($info);
+    }
+    return $value;
+}
+
+/**
+ * @param string $value
+ *
+ * @return string
+ */
+function datetime(string $value): string
+{
+    try {
+        return DateTime::createFromFormat('Y-m-d H:i:s', $value)->format('d/m/Y H:i:s');
+    } catch (Throwable $throwable) {
+        // silence is gold
+    }
+    return '-';
+}
+
+/**
+ * @param string $value
+ *
+ * @return string
+ */
+function date(string $value): string
+{
+    try {
+        return DateTime::createFromFormat('Y-m-d', $value)->format('d/m/Y');
+    } catch (Throwable $throwable) {
+        // silence is gold
+    }
+    return '-';
+}
+
+/**
+ * @param int|bool $value
+ *
+ * @return string
+ */
+function boolean($value): string
+{
+    return $value ? 'SIM' : 'NÃO';
+}
+
+/**
+ * @param stdClass $info
+ *
+ * @return mixed
+ */
+function select(stdClass $info)
+{
+    $value = $info->value;
+    if (!isset($info->options)) {
+        return $value;
+    }
+    return array_reduce(
+        $info->options,
+        static function ($found, $option) use ($value) {
+            if (isset($found)) {
+                return $found;
+            }
+            if (isset($option->value) && $option->value === $value) {
+                return $option->label;
+            }
+            return null;
+        }
+    );
 }
