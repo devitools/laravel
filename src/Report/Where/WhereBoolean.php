@@ -24,13 +24,13 @@ trait WhereBoolean
         }
 
         $value = $filters[$property] ?? null;
-        if (!$value) {
+        if ($value === null) {
             return $this;
         }
 
         unset($filters[$property]);
 
-        if ($value === 'true') {
+        if ($value === 'true' || $value === "1") {
             $this->where[] = "{$column} = 1";
             return $this;
         }
