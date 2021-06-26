@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Devitools\Helper;
 
 use Devitools\Exceptions\ErrorInvalidArgument;
+use Devitools\Persistence\Filter\Filters;
 use Devitools\Persistence\Value\Currency;
 use Exception;
 use Illuminate\Support\Str;
@@ -16,232 +17,262 @@ use function is_int;
 use function PhpBrasil\Collection\Helper\stringify;
 use function request;
 
-/**
- * @return string
- * @throws Exception
- */
-function uuid()
-{
-    return sprintf(
-        '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-        // 32 bits for "time_low"
-        random_int(0, 0xffff),
-        random_int(0, 0xffff),
-        // 16 bits for "time_mid"
-        random_int(0, 0xffff),
-        // 16 bits for "time_hi_and_version",
-        // four most significant bits holds version number 4
-        random_int(0, 0x0fff) | 0x4000,
-        // 16 bits, 8 bits for "clk_seq_hi_res",
-        // 8 bits for "clk_seq_low",
-        // two most significant bits holds zero and one for variant DCE1.1
-        random_int(0, 0x3fff) | 0x8000,
-        // 48 bits for "node"
-        random_int(0, 0xffff),
-        random_int(0, 0xffff),
-        random_int(0, 0xffff)
-    );
-}
-
-/**
- * @param $value
- *
- * @return string
- */
-function encodeUuid($value): string
-{
-    return Uuid::fromString($value)->getBytes();
-}
-
-/**
- * @param $value
- *
- * @return string
- */
-function decodeUuid($value): string
-{
-    return Uuid::fromBytes($value)->toString();
-}
-
-/**
- * @param string $content
- *
- * @return bool
- */
-function is_binary($content)
-{
-    if (!is_scalar($content)) {
-        return false;
-    }
-    return preg_match('~[^\x20-\x7E\t\r\n]~', stripAccents((string)$content)) > 0;
-}
-
-/**
- * @param string $withAccents
- *
- * @return string
- */
-function stripAccents(string $withAccents): string
-{
-    /** @noinspection SpellCheckingInspection */
-    return strtr(
-        $withAccents,
-        'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ',
-        'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY'
-    );
-}
-
-/**
- * @param $path
- *
- * @return string
- */
-function url($path)
-{
-    return env('APP_URL') . str_replace('//', '/', "/{$path}");
-}
-
-/**
- * @param string $property
- * @param string $message
- * @param $value
- * @param array $parameters
- * @param null $code
- *
- * @return array
- */
-function error(string $property, string $message, $value, array $parameters = [], $code = null)
-{
-    return [
-        'property_path' => $property,
-        'message' => $message,
-        'value' => $value,
-        'parameters' => $parameters,
-        'code' => $code,
-    ];
-}
-
-/**
- * @param float|int|null $number
- *
- * @return int
- */
-function numberToCurrency($number): int
-{
-    try {
-        return Currency::fromNumber($number)->toInteger();
-    } catch (ErrorInvalidArgument $e) {
-        return 0;
+if (!function_exists('uuid')) {
+    /**
+     * @return string
+     * @throws Exception
+     */
+    function uuid(): string
+    {
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            // 32 bits for "time_low"
+            random_int(0, 0xffff),
+            random_int(0, 0xffff),
+            // 16 bits for "time_mid"
+            random_int(0, 0xffff),
+            // 16 bits for "time_hi_and_version",
+            // four most significant bits holds version number 4
+            random_int(0, 0x0fff) | 0x4000,
+            // 16 bits, 8 bits for "clk_seq_hi_res",
+            // 8 bits for "clk_seq_low",
+            // two most significant bits holds zero and one for variant DCE1.1
+            random_int(0, 0x3fff) | 0x8000,
+            // 48 bits for "node"
+            random_int(0, 0xffff),
+            random_int(0, 0xffff),
+            random_int(0, 0xffff)
+        );
     }
 }
 
-/**
- * @param int|Currency|null $currency
- *
- * @return float
- */
-function currencyToNumber($currency): float
-{
-    if ($currency instanceof Currency) {
-        return $currency->toNumber();
+if (!function_exists('encodeUuid')) {
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
+    function encodeUuid(string $value): string
+    {
+        return Uuid::fromString($value)->getBytes();
     }
-    if ($currency === null) {
-        $currency = 0;
-    }
-    if (!is_int($currency)) {
-        $string = stringify($currency);
-        throw new TypeError("Currency must be int or Currency, '{$string}' given");
-    }
-    return Currency::fromInteger($currency)->toNumber();
 }
 
-/**
- * @param int $currency
- *
- * @return string
- */
-function currencyFormat(int $currency): string
-{
-    $number = currencyToNumber($currency);
-    $decimals = env('APP_PRECISION', 2);
-    $decimalSeparator = env('APP_DECIMAL_SEPARATOR', '.');
-    $thousandSeparator = env('APP_DECIMAL_SEPARATOR', '');
-    return number_format($number, $decimals, $decimalSeparator, $thousandSeparator);
-}
-
-/**
- * @param string $text
- *
- * @return bool
- */
-function is_dot(string $text): bool
-{
-    return ((int)strpos($text, '.')) > 1;
-}
-
-/**
- * @return string|null
- */
-function ip()
-{
-    return $_SERVER['HTTP_CLIENT_IP']
-        ?? $_SERVER['HTTP_X_FORWARDED_FOR']
-        ?? $_SERVER['HTTP_X_FORWARDED']
-        ?? $_SERVER['HTTP_FORWARDED_FOR']
-        ?? $_SERVER['HTTP_FORWARDED']
-        ?? $_SERVER['REMOTE_ADDR']
-        ?? request()->ip();
-}
-
-/**
- * @param int|null $sleep
- *
- * @return int
- */
-function counter(int $sleep = null): int
-{
-    if ($sleep) {
-        sleep(0);
+if (!function_exists('decodeUuid')) {
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
+    function decodeUuid(string $value): string
+    {
+        return Uuid::fromBytes($value)->toString();
     }
-    try {
-        $random = (string)random_int(100, 999);
-    } catch (Throwable $error) {
-        $random = '101';
-    }
-    $micro = (string)(microtime(true) * 10000);
-    $size = 18;
-    $counter = substr(str_pad($micro . $random, $size, '0'), 0, $size);
-    return (int)$counter;
 }
 
-/**
- * @param string $id
- *
- * @return array|string[]
- */
-function idToArray(string $id): array
-{
-    $ids = [$id];
-    preg_match_all("/^\[(?<uuid>.*)]$/", $id, $matches);
-    if (isset($matches[__BINARY_KEY__][0])) {
-        $ids = explode(',', $matches[__BINARY_KEY__][0]);
+if (!function_exists('is_binary')) {
+    /**
+     * @param mixed $content
+     *
+     * @return bool
+     */
+    function is_binary($content): bool
+    {
+        if (!is_scalar($content)) {
+            return false;
+        }
+        return preg_match('~[^\x20-\x7E\t\r\n]~', stripAccents((string)$content)) > 0;
     }
-    return $ids;
 }
 
-/**
- * @param $string
- * @param boolean $capitalizeFirstCharacter
- *
- * @return string
- */
-function dashesToCamelCase($string, bool $capitalizeFirstCharacter = false): string
-{
-    $string = str_replace('-', '', ucwords($string, '-'));
-    if (!$capitalizeFirstCharacter) {
-        $string = lcfirst($string);
+if (!function_exists('stripAccents')) {
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
+    function stripAccents(string $value): string
+    {
+        /** @noinspection SpellCheckingInspection */
+        return strtr(
+            $value,
+            'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ',
+            'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY'
+        );
     }
-    return $string;
+}
+
+if (!function_exists('url')) {
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    function url(string $path): string
+    {
+        return env('APP_URL') . str_replace('//', '/', "/{$path}");
+    }
+}
+
+if (!function_exists('error')) {
+    /**
+     * @param string $property
+     * @param string $message
+     * @param $value
+     * @param array $parameters
+     * @param null $code
+     *
+     * @return array
+     */
+    function error(string $property, string $message, $value, array $parameters = [], $code = null): array
+    {
+        return [
+            'property_path' => $property,
+            'message' => $message,
+            'value' => $value,
+            'parameters' => $parameters,
+            'code' => $code,
+        ];
+    }
+}
+
+if (!function_exists('numberToCurrency')) {
+    /**
+     * @param float|int|null $number
+     *
+     * @return int
+     */
+    function numberToCurrency($number): int
+    {
+        try {
+            return Currency::fromNumber($number)->toInteger();
+        } catch (ErrorInvalidArgument $e) {
+            return 0;
+        }
+    }
+}
+
+if (!function_exists('currencyToNumber')) {
+    /**
+     * @param int|Currency|null $currency
+     *
+     * @return float
+     */
+    function currencyToNumber($currency): float
+    {
+        if ($currency instanceof Currency) {
+            return $currency->toNumber();
+        }
+        if ($currency === null) {
+            $currency = 0;
+        }
+        if (!is_int($currency)) {
+            $string = stringify($currency);
+            throw new TypeError("Currency must be int or Currency, '{$string}' given");
+        }
+        return Currency::fromInteger($currency)->toNumber();
+    }
+}
+
+if (!function_exists('currencyFormat')) {
+    /**
+     * @param int $currency
+     *
+     * @return string
+     */
+    function currencyFormat(int $currency): string
+    {
+        $number = currencyToNumber($currency);
+        $decimals = env('APP_PRECISION', 2);
+        $decimalSeparator = env('APP_DECIMAL_SEPARATOR', '.');
+        $thousandSeparator = env('APP_DECIMAL_SEPARATOR', '');
+        return number_format($number, $decimals, $decimalSeparator, $thousandSeparator);
+    }
+}
+
+if (!function_exists('is_dot')) {
+    /**
+     * @param string $text
+     *
+     * @return bool
+     */
+    function is_dot(string $text): bool
+    {
+        return ((int)strpos($text, '.')) > 1;
+    }
+}
+
+if (!function_exists('ip')) {
+    /**
+     * @return string|null
+     */
+    function ip(): ?string
+    {
+        return $_SERVER['HTTP_CLIENT_IP']
+            ?? $_SERVER['HTTP_X_FORWARDED_FOR']
+            ?? $_SERVER['HTTP_X_FORWARDED']
+            ?? $_SERVER['HTTP_FORWARDED_FOR']
+            ?? $_SERVER['HTTP_FORWARDED']
+            ?? $_SERVER['REMOTE_ADDR']
+            ?? request()->ip();
+    }
+}
+
+if (!function_exists('counter')) {
+    /**
+     * @param int|null $sleep
+     *
+     * @return int
+     */
+    function counter(int $sleep = null): int
+    {
+        if ($sleep) {
+            sleep(0);
+        }
+        try {
+            $random = (string)random_int(100, 999);
+        } catch (Throwable $error) {
+            $random = '101';
+        }
+        $micro = (string)(microtime(true) * 10000);
+        $size = 18;
+        $counter = substr(str_pad($micro . $random, $size, '0'), 0, $size);
+        return (int)$counter;
+    }
+}
+
+if (!function_exists('idToArray')) {
+    /**
+     * @param string $id
+     *
+     * @return array|string[]
+     */
+    function idToArray(string $id): array
+    {
+        $ids = [$id];
+        preg_match_all("/^\[(?<uuid>.*)]$/", $id, $matches);
+        if (isset($matches[__BINARY_KEY__][0])) {
+            $ids = explode(',', $matches[__BINARY_KEY__][0]);
+        }
+        return $ids;
+    }
+}
+
+if (!function_exists('dashesToCamelCase')) {
+    /**
+     * @param string $string
+     * @param bool $capitalizeFirst
+     *
+     * @return string
+     */
+    function dashesToCamelCase(string $string, bool $capitalizeFirst = false): string
+    {
+        $string = str_replace('-', '', ucwords($string, '-'));
+        if (!$capitalizeFirst) {
+            $string = lcfirst($string);
+        }
+        return $string;
+    }
 }
 
 if (!function_exists('camel_keys')) {
@@ -284,5 +315,76 @@ if (!function_exists('snake_keys')) {
             $result[Str::snake($key, $delimiter)] = $value;
         }
         return $result;
+    }
+}
+
+if (!function_exists('uuidToDatabase')) {
+    /**
+     * @param string $uuid
+     *
+     * @return string
+     */
+    function uuidToDatabase(string $uuid): string
+    {
+        $uuid = strtoupper($uuid);
+        $pieces = explode('-', $uuid);
+        return "0x{$pieces[2]}{$pieces[1]}{$pieces[0]}{$pieces[3]}{$pieces[4]}";
+    }
+}
+
+if (!function_exists('baseURL')) {
+    /**
+     * @return string
+     */
+    function baseURL(): string
+    {
+        $host = filter_input(INPUT_SERVER, 'HTTP_HOST');
+        $self = filter_input(INPUT_SERVER, 'PHP_SELF');
+        $path = str_replace('/index.php', '', $self);
+        return "//{$host}{$path}";
+    }
+}
+
+if (!function_exists('withSeparator')) {
+    /**
+     * @param string $value
+     * @param string $operator
+     *
+     * @return string
+     */
+    function withSeparator(string $value, string $operator = 'eq'): string
+    {
+        return $operator . Filters::SEPARATION_OPERATOR . $value;
+    }
+}
+
+if (!function_exists('withoutSeparator')) {
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
+    function withoutSeparator(string $value): string
+    {
+        $array = explode(Filters::SEPARATION_OPERATOR, $value);
+        return array_pop($array);
+    }
+}
+
+if (!function_exists('parseSeparator')) {
+    /**
+     * @param string $filter
+     *
+     * @return array|null
+     */
+    function parseSeparator(string $filter): ?array
+    {
+        preg_match_all('/^(?<operator>.*)' . Filters::SEPARATION_OPERATOR . '(?<value>.*)$/', $filter, $matches);
+        if (isset($matches['operator'][0], $matches['value'][0])) {
+            $value = $matches['value'][0];
+            $operator = $matches['operator'][0];
+            return ['$value' => $value, '$operator' => $operator];
+        }
+        return null;
     }
 }

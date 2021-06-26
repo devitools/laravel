@@ -156,7 +156,6 @@ function responsible($row, string $property)
 namespace Report\Info;
 
 use DateTime;
-use phpDocumentor\Reflection\Types\Boolean;
 use stdClass;
 use Throwable;
 
@@ -194,7 +193,7 @@ function value($info): string
     if ($type === 'boolean') {
         return boolean($value);
     }
-    if ($type === 'string'){
+    if ($type === 'string') {
         return string($value);
     }
     if ($type === 'select' || $type === 'options') {
@@ -262,30 +261,28 @@ function select(stdClass $info)
                 return $option->label;
             }
 
-            if (isset($found)) {
-                return $found;
-            }
-            return $value;
+            return $found ?? $value;
         }
     );
 }
+
 function string(string $value): string
 {
     $exploded = explode(',', $value);
 
     return array_reduce(
         $exploded,
-        static function($ant, $element) {
+        static function ($ant, $element) {
             $found = date($element);
-            if ((strcmp($found, '-') === 0)){
+            if ((strcmp($found, '-') === 0)) {
                 return $element;
             }
             $valueReturned = $ant;
-            if(!isset($valueReturned)){
+            if (!isset($valueReturned)) {
                 $valueReturned = $found;
             }
-            if(isset($ant)){
-                $valueReturned = $ant.' a '.$found;
+            if (isset($ant)) {
+                $valueReturned = $ant . ' a ' . $found;
             }
             return $valueReturned;
         },
