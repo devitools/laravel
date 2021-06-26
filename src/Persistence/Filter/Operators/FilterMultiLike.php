@@ -28,7 +28,7 @@ class FilterMultiLike extends FilterAbstract
         if (count($pieces) === 1) {
             return $query->where($column, 'like', "%{$value}%");
         }
-        return $query->where(function ($query) use ($column, $pieces) {
+        return $query->where(static function ($query) use ($column, $pieces) {
             foreach ($pieces as $value) {
                 $query->where($column, 'like', "%{$value}%");
             }
@@ -49,7 +49,7 @@ class FilterMultiLike extends FilterAbstract
         if (count($pieces) === 1) {
             return $query->orWhere($column, 'like', "%{$value}%");
         }
-        return $query->orWhere(function ($query) use ($column, $pieces) {
+        return $query->orWhere(static function ($query) use ($column, $pieces) {
             foreach ($pieces as $value) {
                 $query->where($column, 'like', "%{$value}%");
             }

@@ -14,7 +14,7 @@ class SchemaTest extends TestCase
 {
     public function testIfSingleSchemaIsCreatedCorrectly()
     {
-        $schemaStub = new class extends Schema {
+        $schemaStub = new class() extends Schema {
             public string $field1 = '';
             public string $field2 = '';
             public string $fakeDomain = '';
@@ -88,7 +88,7 @@ class SchemaTest extends TestCase
 
     public function testIfCustomPropertiesChangeSchemaParams()
     {
-        $schemaStub = new class extends Schema {
+        $schemaStub = new class() extends Schema {
             public array $fakeRules = [];
             public array $fakeScopes = [];
             public string $fakeValue = '';
@@ -151,7 +151,7 @@ class SchemaTest extends TestCase
 
     public function testIfBasicHelperFieldsMethodsChangesSchema()
     {
-        $schemaStub = new class extends Schema {
+        $schemaStub = new class() extends Schema {
             public string $fakeValue = '';
 
             public function __construct(array $attributes = [])
@@ -193,7 +193,7 @@ class SchemaTest extends TestCase
 
     public function testValuesWhenDifferentContextAvoidIsProvided()
     {
-        $schemaStub = new class extends Schema {
+        $schemaStub = new class() extends Schema {
             public string $field1 = '';
             public string $field2 = '';
             public string $field3 = '';
@@ -244,7 +244,7 @@ class SchemaTest extends TestCase
 
     public function testIfDefaultMethodReturnDefaultValuesCorrectly()
     {
-        $schemaStub = new class extends Schema {
+        $schemaStub = new class() extends Schema {
             public string $field1 = '';
             public string $field2 = '';
             public string $field3 = '';

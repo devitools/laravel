@@ -28,7 +28,7 @@ class FilterMultiEqual extends FilterAbstract
         if (count($pieces) === 1) {
             return $query->where($column, '=', $value);
         }
-        return $query->where(function ($query) use ($column, $pieces) {
+        return $query->where(static function ($query) use ($column, $pieces) {
             foreach ($pieces as $value) {
                 $query->where($column, '=', $value);
             }
@@ -49,7 +49,7 @@ class FilterMultiEqual extends FilterAbstract
         if (count($pieces) === 1) {
             return $query->orWhere($column, '=', $value);
         }
-        return $query->orWhere(function ($query) use ($column, $pieces) {
+        return $query->orWhere(static function ($query) use ($column, $pieces) {
             foreach ($pieces as $value) {
                 $query->orWhere($column, '=', $value);
             }

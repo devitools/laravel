@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as Auditing;
 use OwenIt\Auditing\Exceptions\AuditingException;
@@ -184,7 +183,7 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
 
             if (isset($model->attributes[$uuidColumn]) && $model->attributes[$uuidColumn] !== null) {
                 /* @var Uuid $uuid */
-                $uuid = Uuid::fromString(strtolower($model->attributes[$uuidColumn]));
+                $uuid = Uuid::fromString(mb_strtolower($model->attributes[$uuidColumn]));
             }
 
             $id = $model->getFilled($model->exposedKey());
@@ -238,7 +237,7 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
             : [static::CREATED_BY, static::UPDATED_BY, static::DELETED_BY];
 
         $columns = array_merge($keys, $visible, $timestamps, $responsible);
-        $callback = fn($column) => $this->parseColumn($column);
+        $callback = fn ($column) => $this->parseColumn($column);
         return array_map($callback, $columns);
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Devitools\Agnostic;
 
 use Devitools\Persistence\Model\AssignContexts;

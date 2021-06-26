@@ -198,7 +198,7 @@ if (!function_exists('is_dot')) {
      */
     function is_dot(string $text): bool
     {
-        return ((int)strpos($text, '.')) > 1;
+        return ((int)mb_strpos($text, '.')) > 1;
     }
 }
 
@@ -236,7 +236,7 @@ if (!function_exists('counter')) {
         }
         $micro = (string)(microtime(true) * 10000);
         $size = 18;
-        $counter = substr(str_pad($micro . $random, $size, '0'), 0, $size);
+        $counter = mb_substr(str_pad($micro . $random, $size, '0'), 0, $size);
         return (int)$counter;
     }
 }
@@ -326,7 +326,7 @@ if (!function_exists('uuidToDatabase')) {
      */
     function uuidToDatabase(string $uuid): string
     {
-        $uuid = strtoupper($uuid);
+        $uuid = mb_strtoupper($uuid);
         $pieces = explode('-', $uuid);
         return "0x{$pieces[2]}{$pieces[1]}{$pieces[0]}{$pieces[3]}{$pieces[4]}";
     }

@@ -100,13 +100,13 @@ trait Validation
             break;
         }
         foreach ($errors as $error => $datum) {
-            $message = strtolower($error);
+            $message = mb_strtolower($error);
             if ($this->validationPath) {
                 $property = "{$this->validationPath}.{$property}";
             }
             $parameters = $datum;
             if (count($datum) === 1) {
-                $parameters = [strtolower($error) => $datum[0]];
+                $parameters = [mb_strtolower($error) => $datum[0]];
             }
             $this->addError($property, $message, $value, $parameters);
         }

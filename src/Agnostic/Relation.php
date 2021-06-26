@@ -1,8 +1,8 @@
 <?php
 
-namespace Devitools\Agnostic;
+declare(strict_types=1);
 
-use function PhpBrasil\Collection\pack;
+namespace Devitools\Agnostic;
 
 /**
  * Trait Relation

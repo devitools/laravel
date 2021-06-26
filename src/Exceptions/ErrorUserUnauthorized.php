@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Devitools\Exceptions;
 
 use Devitools\Http\Status;

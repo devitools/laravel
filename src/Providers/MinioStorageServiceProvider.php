@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Devitools\Providers;
 
 use Aws\S3\S3Client;
@@ -24,7 +26,7 @@ class MinioStorageServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Storage::extend('minio', function ($app, $config) {
+        Storage::extend('minio', static function ($app, $config) {
             $client = new S3Client([
                 'credentials' => [
                     'key' => $config["key"],

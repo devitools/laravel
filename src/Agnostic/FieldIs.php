@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Devitools\Agnostic;
 
 use Devitools\Persistence\AbstractModel;
@@ -335,7 +337,7 @@ trait FieldIs
         if (isset($this->fields[$this->currentField]->hasMany)) {
             $name = $this->fields[$this->currentField]->hasMany->name;
             $with = pack($properties)
-                ->map(function ($property) use ($name) {
+                ->map(static function ($property) use ($name) {
                     return "{$name}.{$property}";
                 })
                 ->records();

@@ -192,9 +192,9 @@ class Table
      */
     public function __call($name, $arguments)
     {
-        $prefix = substr($name, 0, 4);
+        $prefix = mb_substr($name, 0, 4);
         if ($prefix === 'with') {
-            $name = lcfirst(substr($name, 4));
+            $name = lcfirst(mb_substr($name, 4));
             return $this->run($name, $arguments);
         }
 

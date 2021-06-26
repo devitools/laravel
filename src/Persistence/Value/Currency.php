@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Devitools\Persistence\Value;
 
 use Devitools\Exceptions\ErrorInvalidArgument;
-use Devitools\Persistence\ModelInterface;
 use JsonSerializable;
 
 use function PhpBrasil\Collection\Helper\stringify;
@@ -76,7 +75,7 @@ class Currency implements JsonSerializable
             throw new ErrorInvalidArgument($details, $message);
         }
 
-        if (strpos((string)$value, '.') === false) {
+        if (mb_strpos((string)$value, '.') === false) {
             return new static((string)$value, '0', $precision);
         }
 

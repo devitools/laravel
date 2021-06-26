@@ -196,7 +196,7 @@ trait Hook
         $children = $hasMany
             ->where($foreignKey, $this->getValue($localKey))
             ->get()
-            ->reduce(function ($accumulator, AbstractModel $model) {
+            ->reduce(static function ($accumulator, AbstractModel $model) {
                 $accumulator[$model->getPrimaryKeyValue()] = true;
                 return $accumulator;
             }, []);

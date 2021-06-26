@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Blade::if('allow', function ($value) {
+        Blade::if('allow', static function ($value) {
             try {
                 $user = Auth::user();
                 /** @var Login $user */
@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        Blade::if('deny', function ($value) {
+        Blade::if('deny', static function ($value) {
             try {
                 $user = Auth::user();
                 /** @var Login $user */
