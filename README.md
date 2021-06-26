@@ -53,7 +53,7 @@
 
 Este é o adaptador do núcleo **Devitools** para o Laravel. O objetivo principal é entregar de forma simples uma base para usar tecnologia de ponta em diversas etapas da produção de software. Por ser um conjunto de ferramentas, nossas tecnologias podem ser adotadas de forma parcial ou progressiva.
 
-## :rocket: Tecnologias
+## 🚀 Tecnologias
 
 Este projeto foi construído utilizando estas tecnologias:
 
@@ -74,9 +74,37 @@ Fique livre para abrir uma [_issue_](https://github.com/devitools/laravel/issues
 
 Após seu _pull request_ ser aprovado, você pode excluir a sua _branch_.
 
+## 🔧 Como testar
+
+Inicialize um novo arquivo de configurações com base no `sample` que é incorporado ao projeto.
+```bash
+cp tests/phpunit.xml.sample tests/phpunit.xml
+```
+
+### 🔦 Comandos
+
+#### Composer instalado
+
+Rode o comando `test` que está na seção de `scripts` do `composer.json`.
+```bash
+composer run test
+```
+
+#### Docker
+
+Caso esteja usando docker use o comando `docker-compose up -d` para iniciar os serviços e rode o comando a seguir.
+```bash
+docker-compose exec laravel-adapter bash -c "su -c \"composer run test\" application"
+```
+
+Se seu sistema tiver suporte a `makefile` é possível utilizar o comando abaixo.
+```bash
+make test
+```
+
 ## 🤔 Documentação
 Se você tiver dúvidas ou precisar de ajuda para integrar o devitools/laravel ao seu projeto, [clique aqui](https://docs.devi.tools/) para consultar a documentação ou entre em contato através do e-mail _contato@devi.tools_
 
-## :memo: Licença
+## 📝 Licença
 
 Este projeto está sob licença MIT.
