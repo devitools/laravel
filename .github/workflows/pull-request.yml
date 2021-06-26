@@ -13,7 +13,7 @@ jobs:
         with:
           php_version: 7.4
           version: 2
-          php_extensions: zip
+          php_extensions: zip pcntl
 
       - name: PHP Code Sniffer
         run: composer run phpcs
@@ -31,7 +31,7 @@ jobs:
         with:
           php_version: 7.4
           version: 2
-          php_extensions: zip xdebug
+          php_extensions: zip xdebug pcntl
 
       - name: Creating PHPUnit configuration file
         run: cp tests/phpunit.xml.sample tests/phpunit.xml
@@ -42,11 +42,11 @@ jobs:
           configuration: tests/phpunit.xml
           args: --testdox
 
-#      - name: PHPUnit Coverage
-#        uses: php-actions/phpunit@v2
-#        with:
-#          php_extensions: xdebug
-#          configuration: tests/phpunit.xml
-#          args: --coverage-text --colors=never
-#        env:
-#          XDEBUG_MODE: coverage
+      - name: PHPUnit Coverage
+        uses: php-actions/phpunit@v2
+        with:
+          php_extensions: xdebug
+          configuration: tests/phpunit.xml
+          args: --coverage-text --colors=never
+        env:
+          XDEBUG_MODE: coverage

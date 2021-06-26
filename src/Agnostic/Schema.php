@@ -141,16 +141,13 @@ abstract class Schema extends AbstractModel
     }
 
     /**
-     * @param bool $excludeDeleted
-     *
      * @return Builder
      * @noinspection ReturnTypeCanBeDeclaredInspection
      * @noinspection PhpMissingReturnTypeInspection
      */
-    public function newQuery($excludeDeleted = true)
+    public function newQuery()
     {
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $query = parent::newQuery($excludeDeleted);
+        $query = parent::newQuery();
 
         if (!$this->hasHook('query:default')) {
             return $query;
