@@ -29,7 +29,7 @@ trait Update
     {
         $this->grant($this->repository()->domain(), Levels::LEVEL_EDIT);
 
-        $data = $request->all();
+        $data = $this->getData($request);
         if (!$data) {
             return $this->answerFail(['payload' => 'empty']);
         }
