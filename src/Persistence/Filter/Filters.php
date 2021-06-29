@@ -208,6 +208,16 @@ final class Filters
      *
      * @return string
      */
+    public static function filterLikeIn(string $value): string
+    {
+        return self::filterAs($value, self::LIKE_IN);
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
     public static function filterMultiEqual(string $value): string
     {
         return self::filterAs($value, self::MULTI_EQUAL);
