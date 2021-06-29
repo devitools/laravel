@@ -10,6 +10,7 @@ use Devitools\Persistence\Filter\Operators\FilterDate;
 use Devitools\Persistence\Filter\Operators\FilterEqual;
 use Devitools\Persistence\Filter\Operators\FilterIn;
 use Devitools\Persistence\Filter\Operators\FilterLike;
+use Devitools\Persistence\Filter\Operators\FilterLikeIn;
 use Devitools\Persistence\Filter\Operators\FilterMultiEqual;
 use Devitools\Persistence\Filter\Operators\FilterMultiLike;
 use Devitools\Persistence\Filter\Operators\FilterNotEqual;
@@ -56,6 +57,11 @@ final class Filters
      * @var string
      */
     public const LIKE = 'like';
+
+    /**
+     * @var string
+     */
+    public const LIKE_IN = 'like-in';
 
     /**
      * @var string
@@ -107,6 +113,7 @@ final class Filters
             self::EQUAL => FilterEqual::class,
             self::IN => FilterIn::class,
             self::LIKE => FilterLike::class,
+            self::LIKE_IN => FilterLikeIn::class,
             self::MULTI_EQUAL => FilterMultiEqual::class,
             self::MULTI_LIKE => FilterMultiLike::class,
             self::NOT_EQUAL => FilterNotEqual::class,
