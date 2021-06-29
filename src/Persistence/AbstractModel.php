@@ -229,7 +229,8 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
      */
     public function columns(): array
     {
-        $visible = array_diff($this->getFillable(), $this->hidden);
+        $fields = array_merge($this->readable, $this->getFillable());
+        $visible = array_diff($fields, $this->hidden);
         $keys = [$this->exposedKey(), $this->getKeyName()];
         $timestamps = [static::CREATED_AT, static::UPDATED_AT, static::DELETED_AT];
         $responsible = config('app.no-responsible')
