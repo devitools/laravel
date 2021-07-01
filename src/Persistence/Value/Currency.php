@@ -96,8 +96,11 @@ class Currency implements JsonSerializable
         if ($value === null) {
             return new static('0', '0', $precision);
         }
-        $amount = ($value / (10 ** $precision));
-        return new static((string)$amount, '0', $precision);
+        $value = (string)($value / (10 ** $precision));
+        $pieces = explode('.', $value);
+        $amount = $pieces[0] ?? 0;
+        $cents = $pieces[1] ?? 0;
+        return new static((string)$amount, (string)$cents, $precision);
     }
 
     /**
