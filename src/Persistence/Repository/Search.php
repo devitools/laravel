@@ -27,8 +27,8 @@ trait Search
     public function search(array $options = [], $trash = false): array
     {
         $filters = $options['filters'] ?? [];
-        $offset = $options['offset'] ?? 0;
-        $limit = $options['limit'] ?? 25;
+        $offset = (int)$options['offset'] ?? 0;
+        $limit = (int)$options['limit'] ?? 25;
         $sorter = $options['sorter'] ?? null;
 
         if (!is_array($sorter)) {
@@ -43,9 +43,9 @@ trait Search
      * @param array $sorter
      * @param int $offset
      * @param int $limit
-     * @param bool $trash
+     * @param false $trash
      *
-     * @return AbstractModel[]|Builder[]|Collection
+     * @return Builder[]|Collection
      */
     public function find(array $filters, $sorter = [], $offset = 0, $limit = 25, $trash = false)
     {
@@ -63,7 +63,7 @@ trait Search
      *
      * @return Builder[]|Collection
      */
-    protected function queryFind($query, $sorter = [], $offset = 0, $limit = 0)
+    protected function queryFind($query, array $sorter = [], int $offset = 0, int $limit = 0)
     {
         $manyToOne = $this->model->manyToOne();
         foreach (array_keys($manyToOne) as $related) {
@@ -72,7 +72,6 @@ trait Search
         }
 
         foreach ($sorter as $column => $direction) {
-            /** @noinspection CallableParameterUseCaseInTypeContextInspection */
             $query = $query->orderBy($column, $direction);
         }
 
