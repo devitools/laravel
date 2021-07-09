@@ -31,7 +31,7 @@ trait AddressResolver
             switch ($driver) {
                 case 'google':
                     $via_cep = $this->resolveZipViaCep($zip);
-                    $google = $this->resolveZipGoogle($zip);
+                    $google = $this->resolveZipGoogle($zip) ?? [];
                     $localization = array_merge($via_cep, $google);
                     break;
                 case 'via-cep':
@@ -41,6 +41,10 @@ trait AddressResolver
         } catch (Throwable $e) {
             return null;
         }
+        if (!is_array($localization)) {
+            return null;
+        }
+
         $ttl = 60 * 60 * 24 * 3; // 72h
         Cache::put($key, $localization, $ttl);
         return Localization::build($localization);
@@ -89,7 +93,7 @@ trait AddressResolver
         $first = $results[0] ?? null;
         $types = $first['types'] ?? [];
         if (!in_array('postal_code', $types, true)) {
-            return null;
+            return [];
         }
         $data = [];
         $components = $first['address_components'] ?? [];
