@@ -27,6 +27,7 @@ trait AddressResolver
         if (Cache::has($key)) {
             return Localization::build(Cache::get($key));
         }
+
         try {
             switch ($driver) {
                 case 'google':
@@ -41,6 +42,7 @@ trait AddressResolver
         } catch (Throwable $e) {
             return null;
         }
+
         if (!is_array($localization)) {
             return null;
         }
