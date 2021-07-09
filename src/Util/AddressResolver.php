@@ -22,7 +22,7 @@ trait AddressResolver
      */
     protected function resolveZip(string $zip): ?Localization
     {
-        $driver = config('devitools.address.driver.default', 'via-cep');
+        $driver = config('devitools.address.driver', 'via-cep');
         $key = "zip:{$driver}-{$zip}";
         if (Cache::has($key)) {
             return Localization::build(Cache::get($key));
@@ -78,7 +78,7 @@ trait AddressResolver
      */
     private function resolveZipGoogle(string $zip): ?array
     {
-        $key = config('devitools.address.driver.google.key', '');
+        $key = config('devitools.address.drivers.google.key', '');
         $payload = file_get_contents(
             "https://maps.google.com/maps/api/geocode/json?" .
             "address=${zip}&" .
