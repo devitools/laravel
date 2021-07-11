@@ -27,8 +27,8 @@ trait Search
     public function search(array $options = [], $trash = false): array
     {
         $filters = $options['filters'] ?? [];
-        $offset = (int)$options['offset'] ?? 0;
-        $limit = (int)$options['limit'] ?? 25;
+        $offset = (int)($options['offset'] ?? 0);
+        $limit = (int)($options['limit'] ?? 25);
         $sorter = $options['sorter'] ?? null;
 
         if (!is_array($sorter)) {
