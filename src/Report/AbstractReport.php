@@ -164,6 +164,7 @@ abstract class AbstractReport
      * @param string $type
      *
      * @return array
+     * @noinspection PhpUnusedParameterInspection
      */
     protected function parseCollection(array $collection, string $type = 'html'): array
     {
