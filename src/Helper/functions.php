@@ -251,8 +251,8 @@ if (!function_exists('idToArray')) {
     {
         $ids = [$id];
         preg_match_all("/^\[(?<uuid>.*)]$/", $id, $matches);
-        if (isset($matches[__BINARY_KEY__][0])) {
-            $ids = explode(',', $matches[__BINARY_KEY__][0]);
+        if (isset($matches[__PRIMARY_KEY__][0])) {
+            $ids = explode(',', $matches[__PRIMARY_KEY__][0]);
         }
         return $ids;
     }

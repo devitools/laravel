@@ -31,7 +31,7 @@ trait Destroy
      * @return JsonResponse
      * @throws ErrorResourceIsGone
      */
-    public function destroy(Request $request, string $id, $erase = false): JsonResponse
+    public function destroy(Request $request, string $id, bool $erase = false): JsonResponse
     {
         $this->grant($this->repository()->domain(), Levels::LEVEL_REMOVE);
 

@@ -115,8 +115,6 @@ abstract class AbstractReport
      */
     final public function execute(array $filters, string $type = 'html')
     {
-        require __DIR__ . '/../Helper/report.php';
-
         if ($type === 'csv') {
             return $this->csv($filters);
         }

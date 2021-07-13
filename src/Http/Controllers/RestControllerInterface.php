@@ -47,10 +47,11 @@ interface RestControllerInterface
     /**
      * @param Request $request
      * @param string $id
+     * @param bool $erase
      *
      * @return JsonResponse
      */
-    public function destroy(Request $request, string $id): JsonResponse;
+    public function destroy(Request $request, string $id, bool $erase = false): JsonResponse;
 
     /**
      * @param Request $request
