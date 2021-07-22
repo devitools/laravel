@@ -29,11 +29,7 @@ trait Search
         $filters = $options['filters'] ?? [];
         $offset = (int)($options['offset'] ?? 0);
         $limit = (int)($options['limit'] ?? 25);
-        $sorter = $options['sorter'] ?? null;
-
-        if (!is_array($sorter)) {
-            $sorter = $this->model->sorter();
-        }
+        $sorter = $this->model->parseSorter($options['sorter'] ?? null);
 
         return $this->find($filters, $sorter, $offset, $limit, $trash)->toArray();
     }

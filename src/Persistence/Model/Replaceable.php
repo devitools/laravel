@@ -45,6 +45,30 @@ trait Replaceable
     }
 
     /**
+     * @param array|null $sorter
+     *
+     * @return array
+     */
+    public function parseSorter(?array $sorter = null): array
+    {
+        if (!is_array($sorter)) {
+            return $this->sorter();
+        }
+
+        $manyToOne = $this->manyToOne();
+        $parsed = [];
+        foreach ($sorter as $field => $type) {
+            if (isset($manyToOne[$field])) {
+                $column = $manyToOne[$field];
+                $parsed[$column] = $type;
+                continue;
+            }
+            $parsed[$field] = $type;
+        }
+        return $parsed;
+    }
+
+    /**
      * @param bool $detailed
      *
      * @return array
