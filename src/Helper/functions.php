@@ -177,16 +177,18 @@ if (!function_exists('currencyToNumber')) {
 if (!function_exists('currencyFormat')) {
     /**
      * @param int $currency
+     * @param bool $prefixed
      *
      * @return string
      */
-    function currencyFormat(int $currency): string
+    function currencyFormat(int $currency, bool $prefixed = false): string
     {
+        $prefix = $prefixed ? env('APP_CURRENCY', '') . ' ' : '';
         $number = currencyToNumber($currency);
         $decimals = env('APP_PRECISION', 2);
         $decimalSeparator = env('APP_DECIMAL_SEPARATOR', '.');
-        $thousandSeparator = env('APP_DECIMAL_SEPARATOR', '');
-        return number_format($number, $decimals, $decimalSeparator, $thousandSeparator);
+        $thousandSeparator = env('APP_THOUSAND_SEPARATOR', '');
+        return $prefix . number_format($number, $decimals, $decimalSeparator, $thousandSeparator);
     }
 }
 

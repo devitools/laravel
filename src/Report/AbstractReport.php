@@ -58,7 +58,7 @@ abstract class AbstractReport
      *
      * @return static
      */
-    public static function build(string $user, bool $printing = false)
+    public static function build(string $user, bool $printing = false): self
     {
         return new static($user, $printing);
     }
@@ -202,14 +202,11 @@ abstract class AbstractReport
     abstract protected function template(): string;
 
     /**
-     * @param string $template
-     * @param array $parameters
-     *
-     * @return false|Factory|View|string
+     * @return array
      */
-    final protected function renderHTML(string $template, array $parameters = [])
+    protected function getData(): array
     {
-        $base = [
+        return [
             'layout' => $this->layout,
             'printing' => $this->printing,
             'title' => $this->title,
@@ -217,6 +214,17 @@ abstract class AbstractReport
             'info' => $this->info,
             'user' => $this->user,
         ];
+    }
+
+    /**
+     * @param string $template
+     * @param array $parameters
+     *
+     * @return false|Factory|View|string
+     */
+    final protected function renderHTML(string $template, array $parameters = [])
+    {
+        $base = $this->getData();
         $data = array_merge($base, $parameters);
         return (string)view($template, $data);
     }
