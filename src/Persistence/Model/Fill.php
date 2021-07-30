@@ -68,10 +68,9 @@ trait Fill
         }
 
         $fillable = $this->getFillable();
-        $keys = array_keys($attributes);
         $data = [];
         foreach ($fillable as $field) {
-            if (!in_array($field, $keys, true)) {
+            if (!array_key_exists($field, $attributes)) {
                 continue;
             }
             $value = $attributes[$field];
@@ -87,9 +86,10 @@ trait Fill
         /** @var AbstractModel $fill */
         $fill = parent::fill($data);
 
+        $keys = array_keys($attributes);
         $notFillable = array_diff($keys, $fillable);
         foreach ($notFillable as $field) {
-            if (!in_array($field, $keys, true)) {
+            if (!array_key_exists($field, $attributes)) {
                 continue;
             }
             $this->setFilled($field, $attributes[$field]);
@@ -106,7 +106,7 @@ trait Fill
     protected function castValue(string $cast, $value)
     {
         if ($value === null) {
-            return $value;
+            return null;
         }
 
         if (is_string($value)) {
@@ -140,8 +140,7 @@ trait Fill
      */
     public function getFilled(string $key, $fallback = null)
     {
-        $keys = array_keys($this->filled);
-        if (in_array($key, $keys, true)) {
+        if (array_key_exists($key, $this->filled)) {
             return $this->filled[$key];
         }
         return $fallback ?? __UNDEFINED__;
