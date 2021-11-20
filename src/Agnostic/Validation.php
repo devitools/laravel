@@ -93,6 +93,15 @@ trait Validation
     }
 
     /**
+     *
+     * @return $this
+     */
+    protected function validationNullable(): self
+    {
+        return $this->validationAdd('nullable');
+    }
+
+    /**
      * @param string $regex
      *
      * @return $this
@@ -111,4 +120,5 @@ trait Validation
     {
         return $this->validationAdd('in', $options);
     }
+
 }
