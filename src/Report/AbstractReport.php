@@ -38,6 +38,11 @@ abstract class AbstractReport
     /**
      * @var array
      */
+    protected array $arguments = [];
+
+    /**
+     * @var array
+     */
     private array $info;
 
     /**
@@ -45,22 +50,25 @@ abstract class AbstractReport
      *
      * @param string $user
      * @param bool $printing
+     * @param array $arguments
      */
-    public function __construct(string $user, bool $printing = false)
+    public function __construct(string $user, bool $printing = false, array $arguments = [])
     {
         $this->user = $user;
         $this->printing = $printing;
+        $this->arguments = $arguments;
     }
 
     /**
      * @param string $user
      * @param bool $printing
+     * @param array $arguments
      *
      * @return static
      */
-    public static function build(string $user, bool $printing = false): self
+    public static function build(string $user, bool $printing = false, array $arguments = []): self
     {
-        return new static($user, $printing);
+        return new static($user, $printing, $arguments);
     }
 
     /**
@@ -99,7 +107,7 @@ abstract class AbstractReport
             if (is_scalar($info)) {
                 return (string)$info !== '';
             }
-            return (bool)($info->value ?? false);
+            return $info->value ?? false;
         };
         $map = static function ($element) {
             return $element[__PRIMARY_KEY__] ?? $info['value'] ?? $element;
@@ -214,6 +222,14 @@ abstract class AbstractReport
             'info' => $this->info,
             'user' => $this->user,
         ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getArguments(): array
+    {
+        return $this->arguments ?? [];
     }
 
     /**

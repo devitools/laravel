@@ -32,10 +32,11 @@ class ReportProcess extends Report
 
         $printing = $request->get('p') === 'true';
         $filters = $request->post();
+        $arguments = $request->all();
 
         /** @var AbstractReport $fullQualifiedName */
         return $fullQualifiedName
-            ::build($user, $printing)
+            ::build($user, $printing, $arguments)
             ->execute($filters);
     }
 }
