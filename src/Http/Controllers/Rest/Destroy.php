@@ -30,6 +30,7 @@ trait Destroy
      *
      * @return JsonResponse
      * @throws ErrorResourceIsGone
+     * @throws ErrorUserForbidden
      */
     public function destroy(Request $request, string $id, bool $erase = false): JsonResponse
     {

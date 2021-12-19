@@ -28,9 +28,13 @@ abstract class AbstractRestController extends AbstractPersistenceController impl
      * Basic operations
      */
     use Create;
-    use Destroy;
     use Read;
-    use Restore;
-    use Search;
     use Update;
+    use Destroy;
+
+    /**
+     * Plus operations
+     */
+    use Search;
+    use Restore;
 }

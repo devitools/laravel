@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Devitools\Http\Controllers\Rest;
 
+use Devitools\Exceptions\ErrorUserForbidden;
+use Devitools\Exceptions\ErrorValidation;
 use Devitools\Http\Support\Levels;
 use Devitools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
@@ -21,6 +23,8 @@ trait Create
      * @param Request $request
      *
      * @return JsonResponse
+     * @throws ErrorUserForbidden
+     * @throws ErrorValidation
      */
     public function create(Request $request): JsonResponse
     {

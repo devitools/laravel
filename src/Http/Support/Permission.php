@@ -30,12 +30,12 @@ trait Permission
 
     /**
      * @param string $domain
-     * @param string $scope
+     * @param string $level
      * @param bool $special
      *
      * @throws ErrorUserForbidden
      */
-    public function grant(string $domain, string $scope = '', bool $special = false): void
+    public function grant(string $domain, string $level = '', bool $special = false): void
     {
         /** @var Login $user */
         $user = auth()->user();
@@ -45,12 +45,12 @@ trait Permission
 
         $this->session = $user;
 
-        if ($scope) {
-            $scope = ".{$scope}";
+        if ($level) {
+            $level = ".{$level}";
         }
-        $namespace = "{$domain}{$scope}";
+        $namespace = "{$domain}{$level}";
         if ($special) {
-            $namespace = "special:{$domain}{$scope}";
+            $namespace = "special:{$domain}{$level}";
         }
         $permissions = $user->getPermissions();
         if (in_array($namespace, $permissions, true)) {

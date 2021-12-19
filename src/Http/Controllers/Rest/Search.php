@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devitools\Http\Controllers\Rest;
 
+use Devitools\Exceptions\ErrorUserForbidden;
 use Devitools\Exceptions\ErrorValidation;
 use Devitools\Http\Support\Levels;
 use Devitools\Persistence\Filter\Connectors;
@@ -36,6 +37,7 @@ trait Search
      * @param Request $request
      *
      * @return JsonResponse
+     * @throws ErrorUserForbidden
      */
     public function search(Request $request): JsonResponse
     {
@@ -104,6 +106,7 @@ trait Search
      *
      * @return BinaryFileResponse
      * @throws ErrorValidation
+     * @throws ErrorUserForbidden
      */
     public function download(Request $request, string $format = 'csv'): BinaryFileResponse
     {

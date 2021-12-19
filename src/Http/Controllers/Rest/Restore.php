@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Devitools\Http\Controllers\Rest;
 
 use Devitools\Exceptions\ErrorResourceIsGone;
+use Devitools\Exceptions\ErrorUserForbidden;
 use Devitools\Http\Support\Levels;
 use Devitools\Persistence\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
@@ -28,6 +29,7 @@ trait Restore
      *
      * @return JsonResponse
      * @throws ErrorResourceIsGone
+     * @throws ErrorUserForbidden
      */
     public function restore(Request $request, string $id): JsonResponse
     {
