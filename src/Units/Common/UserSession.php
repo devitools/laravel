@@ -6,6 +6,7 @@ namespace Devitools\Units\Common;
 
 use Devitools\Exceptions\ErrorUserForbidden;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Throwable;
 
 /**
  * Trait UserSession
@@ -25,5 +26,22 @@ trait UserSession
             throw new ErrorUserForbidden(['user' => 'forbidden']);
         }
         return $user;
+    }
+
+    /**
+     * @param string $permission
+     *
+     * @return bool
+     * @throws ErrorUserForbidden
+     */
+    protected function can(string $permission): bool
+    {
+        try {
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+            $permissions = $this->getUser()->getPermissions();
+        } catch (Throwable $e) {
+            return false;
+        }
+        return in_array($permission, $permissions, true);
     }
 }
