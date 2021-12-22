@@ -314,6 +314,7 @@ trait FieldIs
     protected function isJSON(): self
     {
         $this->fields[$this->currentField]->type = 'json';
+        $this->fields[$this->currentField]->cast = 'json';
         return $this;
     }
 
