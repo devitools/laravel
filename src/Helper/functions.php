@@ -390,3 +390,20 @@ if (!function_exists('parseSeparator')) {
         return null;
     }
 }
+
+if (!function_exists('inspect')) {
+    /**
+     * @param mixed $value
+     *
+     * @return void
+     */
+    function inspect($value): ?array
+    {
+        header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Credentials: true');
+        http_response_code(400);
+        /** @noinspection ForgottenDebugOutputInspection */
+        var_dump($value);
+        die;
+    }
+}
