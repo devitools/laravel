@@ -6,6 +6,7 @@ namespace Devitools\Agnostic;
 
 use Devitools\Persistence\AbstractModel;
 use Devitools\Persistence\AbstractRepository;
+use RuntimeException;
 
 use function PhpBrasil\Collection\pack;
 
@@ -17,7 +18,7 @@ use function PhpBrasil\Collection\pack;
 trait FieldIs
 {
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isBoolean(): self
     {
@@ -27,7 +28,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isInput(): self
     {
@@ -36,7 +37,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isNumber(): self
     {
@@ -45,7 +46,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isPassword(): self
     {
@@ -54,7 +55,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isEmail(): self
     {
@@ -63,7 +64,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isText(): self
     {
@@ -72,7 +73,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isCheckbox(): self
     {
@@ -80,7 +81,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isRadio(): self
     {
@@ -89,7 +90,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isSelect(): self
     {
@@ -102,10 +103,13 @@ trait FieldIs
      * @param string $exposed
      * @param string|null $ownerKey
      *
-     * @return $this
+     * @return FieldIs|Schema
      */
     protected function isSelectRemote(string $remote, string $exposed, string $ownerKey = null): self
     {
+        if (method_exists($this, $exposed)) {
+            throw new RuntimeException('The exposed "' . $exposed . '" is not available');
+        }
         $this->fields[$this->currentField]->type = 'string';
         $this->fields[$this->currentField]->manyToOne = (object)[
             'name' => $exposed,
@@ -117,7 +121,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isSelectRemoteMultiple(): self
     {
@@ -128,7 +132,7 @@ trait FieldIs
     /**
      * @param string $instruction
      *
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isCalculated(string $instruction): self
     {
@@ -167,7 +171,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isToggle(): self
     {
@@ -175,7 +179,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isDate(): self
     {
@@ -184,7 +188,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isDatetime(): self
     {
@@ -193,7 +197,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isInputPlan(): self
     {
@@ -202,7 +206,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isUrl(): self
     {
@@ -213,10 +217,10 @@ trait FieldIs
     /**
      * @param string $remote
      * @param string $foreignKey
-     * @param callable|string|null $setup
+     * @param null $setup
      * @param string|null $localKey
      *
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isArray(string $remote, string $foreignKey, $setup = null, string $localKey = null): self
     {
@@ -234,11 +238,11 @@ trait FieldIs
     }
 
     /**
-     * @param string $foreignKey
      * @param string $repository
+     * @param string $foreignKey
      * @param string|null $localKey
      *
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isBuiltin(string $repository, string $foreignKey, string $localKey = null): self
     {
@@ -254,7 +258,7 @@ trait FieldIs
      * @param string|callable $callable
      * @param string|null $localKey
      *
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isTree(string $remote, string $foreignKey, $callable, string $localKey = null): self
     {
@@ -263,7 +267,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isCurrency(): self
     {
@@ -273,7 +277,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isImage(): self
     {
@@ -282,7 +286,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isFile(): self
     {
@@ -291,7 +295,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isFileSync(): self
     {
@@ -300,7 +304,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isInternationalPhone(): self
     {
@@ -309,7 +313,7 @@ trait FieldIs
     }
 
     /**
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function isJSON(): self
     {
@@ -321,7 +325,7 @@ trait FieldIs
     /**
      * @param array $properties
      *
-     * @return $this
+     * @return Schema|FieldIs
      */
     protected function withNested(array $properties): self
     {

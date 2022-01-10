@@ -19,7 +19,7 @@ trait Read
      * @param string $id
      * @param bool $trash
      *
-     * @return ModelInterface
+     * @return ModelInterface|null
      */
     public function read(string $id, $trash = false): ?ModelInterface
     {
