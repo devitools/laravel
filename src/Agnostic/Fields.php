@@ -33,7 +33,7 @@ trait Fields
      * @param string $key
      * @param array $properties
      *
-     * @return $this
+     * @return Fields|Schema
      */
     protected function addField(string $key, array $properties = []): self
     {
@@ -59,7 +59,7 @@ trait Fields
     /**
      * @param bool $unique
      *
-     * @return $this
+     * @return Fields|Schema
      */
     protected function unique(bool $unique = true): self
     {
@@ -70,7 +70,7 @@ trait Fields
     /**
      * @param bool $hidden
      *
-     * @return $this
+     * @return Fields|Schema
      */
     protected function hidden(bool $hidden = true): self
     {
@@ -83,7 +83,7 @@ trait Fields
      *
      * @param bool|null $fill
      *
-     * @return $this
+     * @return Fields|Schema
      */
     protected function massAssignment(bool $fill = true): self
     {
@@ -94,9 +94,9 @@ trait Fields
     /**
      * Allow fill the field in mass assignment
      *
-     * @param string|string[] $context
+     * @param string $context
      *
-     * @return $this
+     * @return Fields|Schema
      */
     protected function avoid($context = 'all'): self
     {
@@ -114,7 +114,7 @@ trait Fields
     /**
      * @param $value
      *
-     * @return $this
+     * @return Fields|Schema
      */
     protected function defaultValue($value): self
     {
@@ -142,7 +142,7 @@ trait Fields
      *
      * @param string $cast
      *
-     * @return $this
+     * @return Fields|Schema
      */
     protected function castAs(string $cast): self
     {
