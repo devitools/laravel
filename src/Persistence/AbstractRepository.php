@@ -124,7 +124,7 @@ abstract class AbstractRepository implements RepositoryInterface
     }
 
     /**
-     * @return array|string[]
+     * @return string[]
      */
     public function getDefaults(): array
     {

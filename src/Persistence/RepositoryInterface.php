@@ -17,7 +17,7 @@ interface RepositoryInterface
     /**
      * @param array $data
      *
-     * @return string
+     * @return string|null
      */
     public function create(array $data): ?string;
 
@@ -25,7 +25,7 @@ interface RepositoryInterface
      * @param string $id
      * @param bool $trash
      *
-     * @return ModelInterface
+     * @return ModelInterface|null
      */
     public function read(string $id, $trash = false): ?ModelInterface;
 
@@ -33,7 +33,7 @@ interface RepositoryInterface
      * @param string $id
      * @param array $data
      *
-     * @return string
+     * @return string|null
      */
     public function update(string $id, array $data): ?string;
 
@@ -41,14 +41,14 @@ interface RepositoryInterface
      * @param string $id
      * @param bool $erase
      *
-     * @return string
+     * @return string|null
      */
     public function destroy(string $id, $erase = false): ?string;
 
     /**
      * @param string $id
      *
-     * @return string
+     * @return string|null
      */
     public function restore(string $id): ?string;
 
@@ -83,7 +83,7 @@ interface RepositoryInterface
      * @param string $id
      * @param bool $trash
      *
-     * @return AbstractModel
+     * @return AbstractModel|null
      */
     public function pull(string $id, bool $trash = false): ?AbstractModel;
 
@@ -113,7 +113,7 @@ interface RepositoryInterface
     public function currencies(): array;
 
     /**
-     * @return array|string[]
+     * @return array
      */
     public function getDefaults(): array;
 
