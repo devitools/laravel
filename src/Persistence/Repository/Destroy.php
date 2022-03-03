@@ -16,13 +16,13 @@ use Illuminate\Database\QueryException;
 trait Destroy
 {
     /**
-     * @param string $id
+     * @param string|int $id
      * @param bool $erase
      *
-     * @return string
+     * @return string|null
      * @throws ErrorValidation
      */
-    public function destroy(string $id, $erase = false): ?string
+    public function destroy($id, $erase = false): ?string
     {
         /** @var AbstractModel $instance */
         $instance = $this->pull($id, (bool)$erase);
