@@ -120,18 +120,18 @@ if (!function_exists('error')) {
      * @param string $message
      * @param $value
      * @param array $parameters
-     * @param null $code
+     * @param null $domain
      *
      * @return array
      */
-    function error(string $property, string $message, $value, array $parameters = [], $code = null): array
+    function error(string $property, string $message, $value, array $parameters = [], $domain = null): array
     {
         return [
             'property_path' => $property,
             'message' => $message,
             'value' => $value,
             'parameters' => $parameters,
-            'code' => $code,
+            'domain' => $domain,
         ];
     }
 }

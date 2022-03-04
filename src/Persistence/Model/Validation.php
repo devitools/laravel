@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Devitools\Persistence\Model;
 
 use Devitools\Exceptions\ErrorValidation;
+use Devitools\Persistence\AbstractModel;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Support\Facades\Validator;
 
@@ -108,7 +109,7 @@ trait Validation
             if (count($datum) === 1) {
                 $parameters = [mb_strtolower($error) => $datum[0]];
             }
-            $this->addError($property, $message, $value, $parameters);
+            $this->addError($property, $message, $value, $parameters, $this->domain());
         }
     }
 
@@ -117,13 +118,13 @@ trait Validation
      * @param string $message
      * @param mixed $value
      * @param array $parameters
-     * @param mixed $code
+     * @param mixed $domain
      *
-     * @return $this
+     * @return Validation|AbstractModel
      */
-    final protected function addError(string $property, string $message, $value, $parameters = [], $code = null): self
+    final protected function addError(string $property, string $message, $value, $parameters = [], $domain = null): self
     {
-        $this->errors[] = error($property, $message, $value, $parameters, $code);
+        $this->errors[] = error($property, $message, $value, $parameters, $domain);
         return $this;
     }
 
