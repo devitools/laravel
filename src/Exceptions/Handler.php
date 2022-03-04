@@ -138,6 +138,7 @@ class Handler extends ExceptionHandler
                 $data = [
                     'sql' => $e->getSql(),
                     'bindings' => $bindings,
+                    'trace' => $e->getTrace(),
                 ];
             }
             return $this->answerError($message, Status::CODE_500, $data);
