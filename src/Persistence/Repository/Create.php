@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence\Repository;
 
+use Devitools\Exceptions\ErrorExternalIntegration;
+use Devitools\Exceptions\ErrorInvalidArgument;
 use Devitools\Persistence\AbstractModel;
 use Devitools\Persistence\Model\AssignContexts;
-use Exception;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -20,8 +21,9 @@ trait Create
     /**
      * @param array $data
      *
-     * @return string
-     * @throws Exception
+     * @return string|null
+     * @throws ErrorExternalIntegration
+     * @throws ErrorInvalidArgument
      */
     public function create(array $data): ?string
     {

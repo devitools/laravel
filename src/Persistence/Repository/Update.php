@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Devitools\Persistence\Repository;
 
+use Devitools\Exceptions\ErrorExternalIntegration;
+use Devitools\Exceptions\ErrorInvalidArgument;
 use Devitools\Persistence\AbstractModel;
 use Devitools\Persistence\Model\AssignContexts;
 
@@ -18,7 +20,9 @@ trait Update
      * @param string $id
      * @param array $data
      *
-     * @return string
+     * @return string|null
+     * @throws ErrorExternalIntegration
+     * @throws ErrorInvalidArgument
      */
     public function update(string $id, array $data): ?string
     {
