@@ -25,6 +25,7 @@ use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as Auditing;
 use OwenIt\Auditing\Exceptions\AuditingException;
 use Ramsey\Uuid\Uuid;
+use ReflectionClass;
 use Throwable;
 
 use function Devitools\Helper\counter;
@@ -439,10 +440,31 @@ abstract class AbstractModel extends Eloquent implements ModelInterface, Auditin
     }
 
     /**
-     * @return array|string[]
+     * @return array
      */
     public function getDefaults(): array
     {
         return [];
+    }
+
+    /**
+     * Fire a custom model event for the given event.
+     *
+     * @param string $event
+     * @param string $method
+     *
+     * @return mixed|null
+     */
+    protected function fireCustomModelEvent($event, $method)
+    {
+        if (!isset($this->dispatchesEvents[$event])) {
+            return null;
+        }
+
+        $reflect = new ReflectionClass($this);
+        $name = lcfirst($reflect->getShortName());
+        $abstract = $this->dispatchesEvents[$event];
+        $parameters = [$name => $this];
+        return static::$dispatcher->$method(app($abstract, $parameters));
     }
 }
