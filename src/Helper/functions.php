@@ -252,7 +252,7 @@ if (!function_exists('idToArray')) {
     function idToArray(string $id): array
     {
         $ids = [$id];
-        preg_match_all("/^\[(?<uuid>.*)]$/", $id, $matches);
+        preg_match_all("/^\[(?<".__PRIMARY_KEY__.">.*)]$/", $id, $matches);
         if (isset($matches[__PRIMARY_KEY__][0])) {
             $ids = explode(',', $matches[__PRIMARY_KEY__][0]);
         }
