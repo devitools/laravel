@@ -94,7 +94,7 @@ trait Fields
     /**
      * Allow fill the field in mass assignment
      *
-     * @param string $context
+     * @param string|array $context
      *
      * @return Fields|Schema
      */

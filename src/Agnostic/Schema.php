@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Devitools\Agnostic;
 
 use Devitools\Persistence\AbstractModel;
-use Devitools\Units\Common\UserSession;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -18,7 +17,6 @@ abstract class Schema extends AbstractModel
     /**
      * @trait
      */
-    use UserSession;
     use Fields;
     use FieldIs;
     use Relation;
