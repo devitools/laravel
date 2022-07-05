@@ -12,13 +12,13 @@ namespace Devitools\Units\Common;
 trait Instance
 {
     /**
-     * Create a instance of this class
+     * Create an instance of this class
      *
      * @param array $parameters
      *
-     * @return $this
+     * @return mixed
      */
-    public static function instance(array $parameters = []): self
+    public static function instance(array $parameters = [])
     {
         return app(static::class, $parameters);
     }
