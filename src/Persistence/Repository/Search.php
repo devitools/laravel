@@ -8,8 +8,6 @@ use Devitools\Persistence\AbstractModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-use function is_array;
-
 /**
  * Trait Search
  *
@@ -59,7 +57,7 @@ trait Search
      *
      * @return Builder[]|Collection
      */
-    protected function queryFind($query, array $sorter = [], int $offset = 0, int $limit = 0)
+    protected function queryFind(Builder|AbstractModel $query, array $sorter = [], int $offset = 0, int $limit = 0)
     {
         $manyToOne = $this->model->manyToOne();
         foreach (array_keys($manyToOne) as $related) {
