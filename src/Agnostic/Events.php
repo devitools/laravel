@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devitools\Agnostic;
 
+use Devitools\Agnostic\Events\EventsAvailable;
 use Devitools\Exceptions\ErrorRuntime;
 
 /**
@@ -23,22 +24,22 @@ trait Events
     protected function addEvent(string $event, string $handler): self
     {
         $supported = [
-            'retrieved',
-            'creating',
-            'created',
-            'updating',
-            'updated',
-            'saving',
-            'saved',
-            'deleting',
-            'deleted',
-            'trashed',
-            'forceDeleted',
-            'restoring',
-            'restored',
-            'replicating',
+            EventsAvailable::RETRIEVED,
+            EventsAvailable::CREATING,
+            EventsAvailable::CREATED,
+            EventsAvailable::UPDATING,
+            EventsAvailable::UPDATED,
+            EventsAvailable::SAVING,
+            EventsAvailable::SAVED,
+            EventsAvailable::DELETING,
+            EventsAvailable::DELETED,
+            EventsAvailable::TRASHED,
+            EventsAvailable::FORCE_DELETED,
+            EventsAvailable::RESTORING,
+            EventsAvailable::RESTORED,
+            EventsAvailable::REPLICATING,
         ];
-        if (!in_array($event, $supported)) {
+        if (!in_array($event, $supported, true)) {
             throw new ErrorRuntime(['event' => 'not-supported']);
         }
         $this->dispatchesEvents[$event] = $handler;
