@@ -143,9 +143,9 @@ trait FieldIs
     /**
      * @param string $exposed
      *
-     * @return AbstractModel|null
+     * @return Schema|null
      */
-    public function remote(string $exposed): ?AbstractModel
+    public function remote(string $exposed): ?Schema
     {
         $collection = $this->$exposed();
         if ($collection) {
@@ -157,11 +157,11 @@ trait FieldIs
     /**
      * @param string $exposed
      * @param string $name
-     * @param mixed $fallback
+     * @param mixed|null $fallback
      *
      * @return mixed|null
      */
-    public function remoteValue(string $exposed, string $name, $fallback = null)
+    public function remoteValue(string $exposed, string $name, mixed $fallback = null)
     {
         $model = $this->remote($exposed);
         if (!$model) {
