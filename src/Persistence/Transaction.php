@@ -66,12 +66,12 @@ abstract class Transaction
             return;
         }
 
-        if (static::isForce($context)) {
+        if (self::isForce($context)) {
             DB::commit();
             return;
         }
 
-        if (static::isError($context)) {
+        if (self::isError($context)) {
             DB::rollBack();
             return;
         }
