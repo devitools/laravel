@@ -15,7 +15,7 @@ trait Validation
      * @param string $rule
      * @param array $parameters
      *
-     * @return $this
+     * @return Schema|Validation
      */
     protected function validationAdd(string $rule, array $parameters = []): self
     {
@@ -30,7 +30,7 @@ trait Validation
     /**
      * @param string $rule
      *
-     * @return $this
+     * @return Validation|Schema
      */
     protected function validationRemove(string $rule): self
     {
@@ -43,7 +43,7 @@ trait Validation
     /**
      * @param $min
      *
-     * @return $this
+     * @return Validation|Schema
      */
     protected function validationMin($min): self
     {
@@ -53,7 +53,7 @@ trait Validation
     /**
      * @param $max
      *
-     * @return $this
+     * @return Validation|Schema
      */
     protected function validationMax($max): self
     {
@@ -61,7 +61,7 @@ trait Validation
     }
 
     /**
-     * @return $this
+     * @return Validation|Schema
      */
     protected function validationEmail(): self
     {
@@ -69,7 +69,7 @@ trait Validation
     }
 
     /**
-     * @return $this
+     * @return Validation|Schema
      */
     protected function validationRequired(): self
     {
@@ -77,7 +77,7 @@ trait Validation
     }
 
     /**
-     * @return $this
+     * @return Validation|Schema
      */
     protected function validationString(): self
     {
@@ -85,7 +85,7 @@ trait Validation
     }
 
     /**
-     * @return $this
+     * @return Validation|Schema
      */
     protected function validationSometimes(): self
     {
@@ -94,7 +94,7 @@ trait Validation
 
     /**
      *
-     * @return $this
+     * @return Validation|Schema
      */
     protected function validationNullable(): self
     {
@@ -104,7 +104,7 @@ trait Validation
     /**
      * @param string $regex
      *
-     * @return $this
+     * @return Validation|Schema
      */
     protected function validationRegex(string $regex): self
     {
@@ -114,7 +114,7 @@ trait Validation
     /**
      * @param array $options
      *
-     * @return $this
+     * @return Validation|Schema
      */
     protected function validationIn(array $options): self
     {

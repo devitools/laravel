@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Devitools\Persistence\Model;
 
 use Devitools\Auth\Login;
+use Devitools\Exceptions\ErrorUserForbidden;
 use Devitools\Units\Common\UserSession;
 use Throwable;
 
@@ -25,14 +26,36 @@ trait Responsible
     protected function getResponsibleName(): string
     {
         try {
-            /** @var Login $user */
-            $user = $this->getUser();
-            $name = $user->getAttributeValue(config('devitools.auth.name', 'name'));
-            $id = $user->getAttributeValue(config('devitools.schema.primaryKey', 'id'));
-            return "{$name} [{$id}]";
+            return $this->getCurrentUserResponsibleName();
         } catch (Throwable $exception) {
         }
-        return 'anonymous';
+        $name = config('devitools.responsible.anonymous.name', 'anonymous');
+        $id = config('devitools.responsible.anonymous.id', 'unknown');
+        return $this->formatResponsibleName($name, $id);
+    }
+
+    /**
+     * @return string
+     * @throws ErrorUserForbidden
+     */
+    protected function getCurrentUserResponsibleName(): string
+    {
+        /** @var Login $user */
+        $user = $this->getUser();
+        $name = $user->getAttributeValue(config('devitools.auth.name', 'name'));
+        $id = $user->getAttributeValue(config('devitools.schema.primaryKey', 'id'));
+        return $this->formatResponsibleName($name, $id);
+    }
+
+    /**
+     * @param string $name
+     * @param string $id
+     *
+     * @return string
+     */
+    protected function formatResponsibleName(string $name, string $id): string
+    {
+        return "{$name} [{$id}]";
     }
 
     /**
