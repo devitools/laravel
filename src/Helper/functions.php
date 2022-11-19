@@ -72,7 +72,7 @@ if (!function_exists('decodeUuid')) {
 
 if (!function_exists('is_binary')) {
     /**
-     * @param mixed $content
+     * @param $content
      *
      * @return bool
      */
@@ -93,7 +93,6 @@ if (!function_exists('stripAccents')) {
      */
     function stripAccents(string $value): string
     {
-        /** @noinspection SpellCheckingInspection */
         return strtr(
             $value,
             'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ',
@@ -216,7 +215,7 @@ if (!function_exists('ip')) {
             ?? $_SERVER['HTTP_FORWARDED_FOR']
             ?? $_SERVER['HTTP_FORWARDED']
             ?? $_SERVER['REMOTE_ADDR']
-            ?? request()->ip();
+            ?? request()?->ip();
     }
 }
 
@@ -252,7 +251,7 @@ if (!function_exists('idToArray')) {
     function idToArray(string $id): array
     {
         $ids = [$id];
-        preg_match_all("/^\[(?<".__PRIMARY_KEY__.">.*)]$/", $id, $matches);
+        preg_match_all("/^\[(?<" . __PRIMARY_KEY__ . ">.*)]$/", $id, $matches);
         if (isset($matches[__PRIMARY_KEY__][0])) {
             $ids = explode(',', $matches[__PRIMARY_KEY__][0]);
         }
@@ -393,15 +392,15 @@ if (!function_exists('parseSeparator')) {
 
 if (!function_exists('inspect')) {
     /**
-     * @param mixed $value
+     * @param $value
      *
      * @return void
      */
-    function inspect($value): ?array
+    function inspect($value): void
     {
         header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
         header('Access-Control-Allow-Credentials: true');
-        http_response_code(400);
+        http_response_code(600);
         /** @noinspection ForgottenDebugOutputInspection */
         var_dump($value);
         die;
