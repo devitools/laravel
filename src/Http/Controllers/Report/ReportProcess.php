@@ -32,6 +32,9 @@ class ReportProcess extends Report
 
         $printing = $request->get('p') === 'true';
         $filters = $request->post();
+        if (isset($filters['Authorization'])) {
+            unset($filters['Authorization']);
+        }
         $arguments = $request->all();
 
         /** @var AbstractReport $fullQualifiedName */
