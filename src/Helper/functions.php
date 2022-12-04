@@ -9,6 +9,7 @@ use Devitools\Persistence\Filter\Filters;
 use Devitools\Persistence\Value\Currency;
 use Exception;
 use Illuminate\Support\Str;
+use JsonException;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 use TypeError;
@@ -403,6 +404,26 @@ if (!function_exists('inspect')) {
         http_response_code(600);
         /** @noinspection ForgottenDebugOutputInspection */
         var_dump($value);
+        die;
+    }
+}
+
+if (!function_exists('debug')) {
+    /**
+     * @param $value
+     *
+     * @return void
+     */
+    function debug($value): void
+    {
+        header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Credentials: true');
+        http_response_code(600);
+        try {
+            echo json_encode($value, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
+        } catch (JsonException $e) {
+            echo $e->getMessage();
+        }
         die;
     }
 }
