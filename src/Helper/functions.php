@@ -393,15 +393,15 @@ if (!function_exists('parseSeparator')) {
 
 if (!function_exists('inspect')) {
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return void
      */
-    function inspect($value): void
+    function inspect(mixed $value): void
     {
         header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
         header('Access-Control-Allow-Credentials: true');
-        http_response_code(600);
+        http_response_code(999);
         /** @noinspection ForgottenDebugOutputInspection */
         var_dump($value);
         die;
@@ -410,19 +410,22 @@ if (!function_exists('inspect')) {
 
 if (!function_exists('debug')) {
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return void
      */
-    function debug($value): void
+    function debug(mixed $value): void
     {
         header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
         header('Access-Control-Allow-Credentials: true');
-        http_response_code(600);
+        header('Content-Type: application/json');
+        http_response_code(999);
         try {
             echo json_encode($value, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
         } catch (JsonException $e) {
-            echo $e->getMessage();
+            echo 'Error on parse JSON: ', $e->getMessage(), PHP_EOL, '--', PHP_EOL;
+            /** @noinspection ForgottenDebugOutputInspection */
+            var_dump($value);
         }
         die;
     }
