@@ -8,6 +8,7 @@ use Devitools\Exceptions\ErrorInvalidArgument;
 use Devitools\Persistence\Filter\Filters;
 use Devitools\Persistence\Value\Currency;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use JsonException;
 use Ramsey\Uuid\Uuid;
@@ -219,7 +220,7 @@ if (!function_exists('ip')) {
             ?? null;
 
         $request = request();
-        if (!$request) {
+        if (!$request instanceof Request) {
             return $native();
         }
         if (!$request->hasHeader('device')) {
