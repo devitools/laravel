@@ -210,13 +210,27 @@ if (!function_exists('ip')) {
      */
     function ip(): ?string
     {
-        return $_SERVER['HTTP_CLIENT_IP']
+        $native = static fn() => $_SERVER['HTTP_CLIENT_IP']
             ?? $_SERVER['HTTP_X_FORWARDED_FOR']
             ?? $_SERVER['HTTP_X_FORWARDED']
             ?? $_SERVER['HTTP_FORWARDED_FOR']
             ?? $_SERVER['HTTP_FORWARDED']
             ?? $_SERVER['REMOTE_ADDR']
-            ?? request()?->ip();
+            ?? null;
+
+        $request = request();
+        if (!$request) {
+            return $native();
+        }
+        if (!$request->hasHeader('device')) {
+            return $native() ?? $request->ip();
+        }
+        $device = $request->header('device');
+        $pieces = explode('@', base64_decode($device));
+        if (count($pieces) !== 2) {
+            return $native() ?? $request->ip();
+        }
+        return $pieces[1];
     }
 }
 
