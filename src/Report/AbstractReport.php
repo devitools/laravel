@@ -43,7 +43,7 @@ abstract class AbstractReport
     /**
      * @var array
      */
-    private array $info;
+    protected array $info;
 
     /**
      * AbstractReport constructor.
@@ -110,7 +110,7 @@ abstract class AbstractReport
             return $info->value ?? false;
         };
         $map = static function ($element) {
-            return $element[__PRIMARY_KEY__] ?? $info['value'] ?? $element;
+            return $element[__PRIMARY_KEY__] ?? $element['value'] ?? $element;
         };
         return array_map($map, array_filter($filters, $callback));
     }
@@ -123,8 +123,9 @@ abstract class AbstractReport
      */
     final public function execute(array $filters, string $type = 'html')
     {
-        if ($type === 'csv') {
-            return $this->csv($filters);
+        /** @noinspection ClassMemberExistenceCheckInspection */
+        if (method_exists($this, $type)) {
+            return $this->$type($filters);
         }
         return $this->html($filters);
     }

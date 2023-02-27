@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devitools\Http\Controllers\Report;
 
+use Devitools\Exceptions\ErrorRuntime;
 use Devitools\Report\AbstractReport;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,12 +21,13 @@ class ReportProcess extends Report
      *
      * @param Request $request
      * @param string $report
+     * @param string $type
      *
      * @return mixed
-     * @throws Exception
+     * @throws ErrorRuntime
      * @link https://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.invoke
      */
-    public function __invoke(Request $request, string $report)
+    public function __invoke(Request $request, string $report, string $type = 'html')
     {
         $fullQualifiedName = $this->getFullQualifiedName($report);
         $user = $this->getUser();
@@ -40,6 +42,6 @@ class ReportProcess extends Report
         /** @var AbstractReport $fullQualifiedName */
         return $fullQualifiedName
             ::build($user, $printing, $arguments)
-            ->execute($filters);
+            ->execute($filters, $type);
     }
 }
