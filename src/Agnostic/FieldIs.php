@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Devitools\Agnostic;
 
-use Devitools\Persistence\AbstractModel;
 use Devitools\Persistence\AbstractRepository;
 use RuntimeException;
 
@@ -22,8 +21,8 @@ trait FieldIs
      */
     protected function isBoolean(): self
     {
-        $this->fields[$this->currentField]->type = 'boolean';
-        $this->fields[$this->currentField]->cast = 'boolean';
+        $this->type('boolean');
+        $this->castAs('boolean');
         return $this;
     }
 
@@ -32,7 +31,7 @@ trait FieldIs
      */
     protected function isInput(): self
     {
-        $this->fields[$this->currentField]->type = 'string';
+        $this->type('string');
         return $this;
     }
 
@@ -41,7 +40,7 @@ trait FieldIs
      */
     protected function isNumber(): self
     {
-        $this->fields[$this->currentField]->type = 'number';
+        $this->type('number');
         return $this;
     }
 
@@ -50,7 +49,7 @@ trait FieldIs
      */
     protected function isPassword(): self
     {
-        $this->fields[$this->currentField]->type = 'password';
+        $this->type('password');
         return $this;
     }
 
@@ -59,7 +58,7 @@ trait FieldIs
      */
     protected function isEmail(): self
     {
-        $this->fields[$this->currentField]->type = 'email';
+        $this->type('email');
         return $this;
     }
 
@@ -68,7 +67,7 @@ trait FieldIs
      */
     protected function isText(): self
     {
-        $this->fields[$this->currentField]->type = 'text';
+        $this->type('text');
         return $this;
     }
 
@@ -85,7 +84,7 @@ trait FieldIs
      */
     protected function isRadio(): self
     {
-        $this->fields[$this->currentField]->type = 'options';
+        $this->type('options');
         return $this;
     }
 
@@ -94,7 +93,7 @@ trait FieldIs
      */
     protected function isSelect(): self
     {
-        $this->fields[$this->currentField]->type = 'options';
+        $this->type('options');
         return $this;
     }
 
@@ -110,7 +109,7 @@ trait FieldIs
         if (method_exists($this, $exposed)) {
             throw new RuntimeException('The exposed "' . $exposed . '" is not available');
         }
-        $this->fields[$this->currentField]->type = 'string';
+        $this->type('string');
         $this->fields[$this->currentField]->manyToOne = (object)[
             'name' => $exposed,
             'remote' => $remote,
@@ -125,7 +124,7 @@ trait FieldIs
      */
     protected function isSelectRemoteMultiple(): self
     {
-        $this->fields[$this->currentField]->type = 'hasMany';
+        $this->type('hasMany');
         return $this;
     }
 
@@ -183,7 +182,7 @@ trait FieldIs
      */
     protected function isDate(): self
     {
-        $this->fields[$this->currentField]->type = 'date';
+        $this->type('date');
         return $this;
     }
 
@@ -192,7 +191,7 @@ trait FieldIs
      */
     protected function isDatetime(): self
     {
-        $this->fields[$this->currentField]->type = 'datetime';
+        $this->type('datetime');
         return $this;
     }
 
@@ -201,7 +200,7 @@ trait FieldIs
      */
     protected function isInputPlan(): self
     {
-        $this->fields[$this->currentField]->type = 'string';
+        $this->type('string');
         return $this;
     }
 
@@ -210,7 +209,7 @@ trait FieldIs
      */
     protected function isUrl(): self
     {
-        $this->fields[$this->currentField]->type = 'url';
+        $this->type('url');
         return $this;
     }
 
@@ -224,7 +223,7 @@ trait FieldIs
      */
     protected function isArray(string $remote, string $foreignKey, $setup = null, string $localKey = null): self
     {
-        $this->fields[$this->currentField]->type = 'hasMany';
+        $this->type('hasMany');
         $this->fields[$this->currentField]->hasMany = (object)[
             'name' => $this->currentField,
             'remote' => $remote,
@@ -271,8 +270,8 @@ trait FieldIs
      */
     protected function isCurrency(): self
     {
-        $this->fields[$this->currentField]->type = 'currency';
-        $this->fields[$this->currentField]->currency = true;
+        $this->type('currency');
+        $this->currency(true);
         return $this;
     }
 
@@ -281,7 +280,7 @@ trait FieldIs
      */
     protected function isImage(): self
     {
-        $this->fields[$this->currentField]->type = 'image';
+        $this->type('image');
         return $this;
     }
 
@@ -290,7 +289,7 @@ trait FieldIs
      */
     protected function isFile(): self
     {
-        $this->fields[$this->currentField]->type = 'file';
+        $this->type('file');
         return $this;
     }
 
@@ -299,7 +298,7 @@ trait FieldIs
      */
     protected function isFileSync(): self
     {
-        $this->fields[$this->currentField]->type = 'file';
+        $this->type('file');
         return $this;
     }
 
@@ -308,7 +307,7 @@ trait FieldIs
      */
     protected function isInternationalPhone(): self
     {
-        $this->fields[$this->currentField]->type = 'string';
+        $this->type('string');
         return $this;
     }
 
@@ -317,8 +316,8 @@ trait FieldIs
      */
     protected function isJSON(): self
     {
-        $this->fields[$this->currentField]->type = 'json';
-        $this->fields[$this->currentField]->cast = 'json';
+        $this->type('json');
+        $this->castAs('json');
         return $this;
     }
 

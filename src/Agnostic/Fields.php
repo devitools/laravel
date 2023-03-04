@@ -159,4 +159,26 @@ trait Fields
     {
         return $this->fields;
     }
+
+    /**
+     * @param string $type
+     *
+     * @return Schema|FieldIs
+     */
+    protected function type(string $type): self
+    {
+        $this->fields[$this->currentField]->type = $type;
+        return $this;
+    }
+
+    /**
+     * @param bool $currency
+     *
+     * @return Schema|FieldIs
+     */
+    protected function currency(bool $currency): self
+    {
+        $this->fields[$this->currentField]->currency = $currency;
+        return $this;
+    }
 }
