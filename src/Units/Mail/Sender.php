@@ -41,6 +41,11 @@ class Sender extends Mailable
     private $payload;
 
     /**
+     * @var array
+     */
+    public array $mailHeaders = [];
+
+    /**
      *
      * Create a new message instance.
      *
@@ -55,12 +60,33 @@ class Sender extends Mailable
     }
 
     /**
+     * Register custom text headers applied when the message is built.
+     *
+     * @param array $headers
+     *
+     * @return $this
+     */
+    public function withHeaders(array $headers): self
+    {
+        $this->mailHeaders = $headers;
+        return $this;
+    }
+
+    /**
      * Build the message.
      *
      * @return $this
      */
     public function build(): self
     {
+        if ($this->mailHeaders) {
+            $this->withSwiftMessage(function ($message) {
+                $headers = $message->getHeaders();
+                foreach ($this->mailHeaders as $name => $value) {
+                    $headers->addTextHeader($name, $value);
+                }
+            });
+        }
         return $this->view($this->template, $this->payload);
     }
 
